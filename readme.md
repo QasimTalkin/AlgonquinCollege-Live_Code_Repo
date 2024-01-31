@@ -1,3 +1,8 @@
+
+# FALL-2024
+
+### [CST-8285-TUESDAY 5:00PM - 7:00PM](https://github.com/QasimTalkin/AlgonquinCollege-Live_Code_Repo/tree/main/win2024)
+
 # FALL -2022
 
 ### [CST-8279-TUESDAY 4:00PM - 6:00PM](https://github.com/QasimTalkin/AlgonquinCollege-Live_Code_Repo/tree/main/fall2022/CST8279-TUE)
