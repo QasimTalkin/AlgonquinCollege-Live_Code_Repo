@@ -81,3 +81,35 @@ nav a:hover {
     color: slategray;
     background-color: antiquewhite;
 }
+
+.continer {
+    display: flex;
+    flex-direction: column-reverse;
+    flex-wrap: wrap;
+    background-color: purple;
+    justify-content: space-between;
+    align-items: end;
+    height: 500px;
+}
+
+.box{
+    height: 50px;
+    min-width: 50px;
+}
+
+.red {
+    background-color: red;
+}
+
+.blue {
+    background-color: blue;
+}
+.green {
+    background-color: green;
+}
+.yellow {
+    background-color: yellow;
+}
+.orange {
+    background-color: orange;
+}
