@@ -1,4 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Protest+Revolution&display=swap');
+:root{
+    --main-color: rgba(202, 142, 31, 0.89);
+    --secondry:  rgba(33, 44, 33, 0.611);
+}
+
 
 body {
     margin: 0px;
@@ -15,8 +20,8 @@ body {
     left: 50px;
     font-family: 'Protest Revolution', sans-serif;
     font-size: 4vw;
-    color: rgba(202, 142, 31, 0.89);
-    background-color: rgba(33, 44, 33, 0.611);
+    color:var(--main-color);
+    background-color: var(--secondry);
 
 }
 .banner img {
@@ -48,3 +53,31 @@ header h2 {
     text-align: center;
 }
 
+nav {
+    background-color: slategray;
+    position: sticky;
+    top:41px
+}
+
+nav ul {
+    list-style-type: none;
+    text-align: center;
+    margin: 0px;
+}
+
+nav li {
+    display: inline-block;
+    padding: 10px;
+}
+
+nav a {
+    text-decoration: none;
+    color: antiquewhite;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+nav a:hover {
+    text-decoration: underline;
+    color: slategray;
+    background-color: antiquewhite;
+}
