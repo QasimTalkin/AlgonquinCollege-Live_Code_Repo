@@ -1,54 +1,50 @@
-h2 {
+@import url('https://fonts.googleapis.com/css2?family=Protest+Revolution&display=swap');
+
+body {
+    margin: 0px;
+    padding: 0px;
+}
+
+.banner {
+    position: relative;
+}
+
+.welcome {
+    position: absolute;
+    top: 50px;
+    left: 50px;
+    font-family: 'Protest Revolution', sans-serif;
+    font-size: 4vw;
+    color: rgba(202, 142, 31, 0.89);
+    background-color: rgba(33, 44, 33, 0.611);
+
+}
+.banner img {
+    max-width: 100%;
+}
+
+
+.welcome span {
+    font-size: 2em;
+}
+header{
+    width: 100%;
+    background-color: rgba(35, 120, 35, 0.611);
+    margin: 0px;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    z-index: 1;
+}
+
+header h2 {
     color: orange;
-    font-size: 40px;
-    display: inline-block;
+    font-size: 10px;
+    display: block;
     text-shadow: 2px 2px slategray;
     border: 2px solid crimson;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 45px;
+    padding: 5px;
+    border-radius: 40px;
+    text-align: center;
 }
 
-p {
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    columns: 2;
-    font-size: 100px;
-}
-
-#contact {
-    color: blueviolet;
-    text-decoration: underline;
-}
-
-a {
-    margin: 20px;
-    color: rgba(150, 97, 26, 0.755);
-    text-decoration: line-through;
-}
-
-label {
-    display: block;
-}
-
-table,
-tr,
-th,
-td {
-    border: 2px solid slateblue;
-}
-
-.web {
-    margin: 2px;
-    color: blue;
-    text-decoration: underline;
-}
-
-a:hover {
-    font-size: 40px;
-    color: goldenrod
-}
-
-p {
-    font-size: 1px;
-    color:red;
-}
