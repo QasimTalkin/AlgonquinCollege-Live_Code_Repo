@@ -1,0 +1,115 @@
+@import url('https://fonts.googleapis.com/css2?family=Protest+Revolution&display=swap');
+:root{
+    --main-color: rgba(202, 142, 31, 0.89);
+    --secondry:  rgba(33, 44, 33, 0.611);
+}
+
+
+body {
+    margin: 0px;
+    padding: 0px;
+}
+
+.banner {
+    position: relative;
+}
+
+.welcome {
+    position: absolute;
+    top: 50px;
+    left: 50px;
+    font-family: 'Protest Revolution', sans-serif;
+    font-size: 4vw;
+    color:var(--main-color);
+    background-color: var(--secondry);
+
+}
+.banner img {
+    max-width: 100%;
+}
+
+
+.welcome span {
+    font-size: 2em;
+}
+header{
+    width: 100%;
+    background-color: rgba(35, 120, 35, 0.611);
+    margin: 0px;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    z-index: 1;
+}
+
+header h2 {
+    color: orange;
+    font-size: 10px;
+    display: block;
+    text-shadow: 2px 2px slategray;
+    border: 2px solid crimson;
+    padding: 5px;
+    border-radius: 40px;
+    text-align: center;
+}
+
+nav {
+    background-color: slategray;
+    position: sticky;
+    top:41px
+}
+
+nav ul {
+    list-style-type: none;
+    text-align: center;
+    margin: 0px;
+}
+
+nav li {
+    display: inline-block;
+    padding: 10px;
+}
+
+nav a {
+    text-decoration: none;
+    color: antiquewhite;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+nav a:hover {
+    text-decoration: underline;
+    color: slategray;
+    background-color: antiquewhite;
+}
+
+.continer {
+    display: flex;
+    flex-direction: column-reverse;
+    flex-wrap: wrap;
+    background-color: purple;
+    justify-content: space-between;
+    align-items: end;
+    height: 500px;
+}
+
+.box{
+    height: 50px;
+    min-width: 50px;
+}
+
+.red {
+    background-color: red;
+}
+
+.blue {
+    background-color: blue;
+}
+.green {
+    background-color: green;
+}
+.yellow {
+    background-color: yellow;
+}
+.orange {
+    background-color: orange;
+}
