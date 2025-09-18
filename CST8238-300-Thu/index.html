@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CST8238 Web Programming | Algonquin College</title>
+     <link rel="stylesheet" href="./myStyles.css"/>
+</head>
+<body>
+  <div> Hello people and hello again</div>
+    <header>
+        <nav>
+            <div class="nav-container">
+                <div class="logo">
+                    <h1>Algonquin College</h1>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#curriculum">Curriculum</a></li>
+                    <li><a href="#resources">Resources</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1>CST8238 Web Programming</h1>
+                <p class="hero-subtitle">Master the fundamentals of modern web development</p>
+                <p class="course-description" id="top-info">
+                    The World Wide Web has become an integrated part of everyday life. Students develop basic skills
+                    of web programming, website design and implementation. <span>JavaScript, HTML5, and PHP </span>are used to
+                    explore web-based solutions to problems of increasing interactivity and complexity.
+
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde mollitia voluptatum, commodi nisi, repellat quaerat aliquam facilis veniam adipisci rem omnis esse magni molestias expedita aperiam tempora reprehenderit soluta consequuntur dolores! Voluptas, suscipit voluptatibus quaerat molestiae, in eligendi ab sed necessitatibus velit a obcaecati consectetur?
+                </p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary">Enroll Now</button>
+                    <button class="btn btn-secondary">Learn More</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="about-section">
+            <div class="container">
+                <h2>Course Overview</h2>
+                <article class="course-info">
+                    <h3>Course Details</h3>
+                    <ul>
+                        <li><strong>Course Code:</strong> CST8238</li>
+                        <li><strong>Prerequisites:</strong> CST8108, CST8116, and CST8215</li>
+                        <li><strong>Hours:</strong> 70 normative hours</li>
+                        <li><strong>Format:</strong> 5 hours online per week + 2 hours self-study</li>
+                    </ul>
+                </article>
+
+                <aside class="note-box">
+                    <h4>Important Note</h4>
+                    <p>For this course, you will be required to bring your own mobile computing device (laptop)
+                    that will enable you to download the appropriate free software. PC or Mac systems are both acceptable.</p>
+                </aside>
+            </div>
+        </section>
+
+        <section id="curriculum" class="curriculum-section">
+            <div class="container">
+                <h2>What You'll Learn</h2>
+
+                <div class="learning-grid">
+                    <div class="learning-card">
+                        <h3>HTML5 & CSS3</h3>
+                        <p>Master modern web markup and styling techniques including CSS Grid and Flexbox with Bootstrap 4.</p>
+                    </div>
+                    <div class="learning-card">
+                        <h3>JavaScript</h3>
+                        <p>Learn client-side scripting and front-end frameworks like Angular for interactive web applications.</p>
+                    </div>
+                    <div class="learning-card">
+                        <h3>PHP Development</h3>
+                        <p>Implement server-side scripting with PHP, including object-oriented programming and database integration.</p>
+                    </div>
+                    <div class="learning-card">
+                        <h3>AJAX & JSON</h3>
+                        <p>Create dynamic Web 2.0 applications with asynchronous data exchange and modern JavaScript libraries.</p>
+                    </div>
+                </div>
+
+                <table class="grade-table">
+                    <caption>Grade Distribution</caption>
+                    <thead>
+                        <tr>
+                            <th>Assessment</th>
+                            <th>Weight</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Final Exam</td>
+                            <td>30%</td>
+                            <td>Comprehensive assessment of all course learning requirements</td>
+                        </tr>
+                        <tr>
+                            <td>Assignments</td>
+                            <td>30%</td>
+                            <td>Practical web development projects</td>
+                        </tr>
+                        <tr>
+                            <td>Lab Activities</td>
+                            <td>30%</td>
+                            <td>Hands-on programming exercises</td>
+                        </tr>
+                        <tr>
+                            <td>Midterm Exam</td>
+                            <td>10%</td>
+                            <td>Mid-course assessment</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="resources" class="resources-section">
+            <div class="container">
+                <h2>Required Resources</h2>
+
+                <div class="resources-grid">
+                    <div class="resource-category">
+                        <h3>Software Requirements</h3>
+                        <ul>
+                            <li>Windows 10 (or other OS with limited support)</li>
+                            <li>AMPPS or WAMP/LAMP/MAMP stack</li>
+                            <li>Eclipse IDE for PHP development</li>
+                        </ul>
+                    </div>
+
+                    <div class="resource-category">
+                        <h3>Recommended Textbooks</h3>
+                        <ul>
+                            <li><em>Fundamentals of Web Development</em> (3rd Edition)<br>
+                                <small>by Randy Connolly and Ricardo Hoar</small></li>
+                            <li><em>Learning PHP, MySQL & JavaScript</em> (5th Edition)<br>
+                                <small>by Robin Nixon</small></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="contact-section">
+            <div class="container">
+                <h2>Get Started Today</h2>
+
+                <form class="contact-form" action="#" method="post">
+                    <fieldset>
+                        <legend>Student Information</legend>
+
+                        <div class="form-group">
+                            <label for="firstName">First Name *</label>
+                            <input type="text" id="firstName" name="firstName" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="lastName">Last Name *</label>
+                            <input type="text" id="lastName" name="lastName" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="studentId">Student ID</label>
+                            <input type="text" id="studentId" name="studentId" pattern="[0-9]{9}"
+                                   placeholder="123456789" title="9-digit student ID">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="program">Program</label>
+                            <select id="program" name="program">
+                                <option value="">Select your program</option>
+                                <option value="0006X01FWO">Computer Eng. Technology - Comp. Science 3 Core</option>
+                                <option value="0006X03FWO">Computer Eng. Technology - Comp. Science 3 Core (Alt)</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="experience">Programming Experience</label>
+                            <div class="radio-group">
+                                <input type="radio" id="beginner" name="experience" value="beginner">
+                                <label for="beginner">Beginner</label>
+
+                                <input type="radio" id="intermediate" name="experience" value="intermediate">
+                                <label for="intermediate">Intermediate</label>
+
+                                <input type="radio" id="advanced" name="experience" value="advanced">
+                                <label for="advanced">Advanced</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="interests">Areas of Interest</label>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="frontend" name="interests" value="frontend">
+                                <label for="frontend">Frontend Development</label>
+
+                                <input type="checkbox" id="backend" name="interests" value="backend">
+                                <label for="backend">Backend Development</label>
+
+                                <input type="checkbox" id="database" name="interests" value="database">
+                                <label for="database">Database Design</label>
+
+                                <input type="checkbox" id="mobile" name="interests" value="mobile">
+                                <label for="mobile">Mobile Development</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message">Questions or Comments</label>
+                            <textarea id="message" name="message" rows="4"
+                                      placeholder="Tell us about your goals and any questions you have..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="checkbox" id="newsletter" name="newsletter" value="yes">
+                            <label for="newsletter">I would like to receive course updates and announcements</label>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-large">Submit Information</button>
+                    </fieldset>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Algonquin College</h4>
+                    <p>Computer Engineering Technology Program</p>
+                    <p>Ottawa • Perth • Pembroke</p>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Land Acknowledgement</h4>
+                    <p>We acknowledge that Algonquin College campuses are located on the traditional
+                    unceded territory of the Anishinàbe Algonquin People.</p>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Contact Information</h4>
+                    <address>
+                        Course Prepared by: Rejaul Chowdhury<br>
+                        Approved by: Jennifer Lexmond, Acting Chair, ICT-AP
+                    </address>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2024-2025 Algonquin College. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
