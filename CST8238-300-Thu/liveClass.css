@@ -1,0 +1,41 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.jumboOpner {
+    width: 100%;
+    max-width: 9000px;
+    background-color: slategray;
+}
+
+#divBox {
+display: flex;
+flex-wrap: wrap;
+height: 50vw;
+align-items: flex-end;
+justify-content: end;
+}
+
+.box {
+    height:50px;
+    flex-basis: 100px;
+
+}
+
+.red {
+    background-color: red;
+}
+
+.green {
+    background-color: green;
+}
+
+.blue {
+    background-color: blue;
+}
+
+.yellow {
+    background-color: yellow;
+}
