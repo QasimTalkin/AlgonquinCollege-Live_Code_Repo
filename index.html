@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CST8238 Web Programming - Midterm Answer Key</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            color: #2980b9;
+            margin-top: 40px;
+            padding: 10px;
+            background: #ecf0f1;
+            border-radius: 4px;
+        }
+
+        h3 {
+            color: #16a085;
+            margin-top: 25px;
+            border-left: 4px solid #16a085;
+            padding-left: 10px;
+        }
+
+        pre {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            border-left: 4px solid #3498db;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+            color: #e83e8c;
+        }
+
+        .answer {
+            background: #e8f4f8;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-weight: 500;
+        }
+
+        .explanation {
+            margin: 15px 0;
+            padding: 15px;
+            background: #f7f9fc;
+            border-radius: 4px;
+        }
+
+        .code-example {
+            margin: 15px 0;
+        }
+
+        .note {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .file-structure {
+            font-family: monospace;
+            white-space: pre;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+        }
+
+        ul, ol {
+            padding-left: 20px;
+        }
+
+        li {
+            margin: 5px 0;
+        }
+
+        .section-divider {
+            height: 3px;
+            background: linear-gradient(to right, #3498db, transparent);
+            margin: 40px 0;
+        }
+
+        .keyword {
+            color: #e83e8c;
+            font-family: monospace;
+            background: #f8f9fa;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+
+        .code-comment {
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+            .container {
+                box-shadow: none;
+            }
+            pre {
+                white-space: pre-wrap;
+            }
+        }
+
+        .top-nav {
+            position: sticky;
+            top: 0;
+            background: white;
+            padding: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+
+        .nav-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .nav-list li a {
+            color: #2980b9;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        .nav-list li a:hover {
+            background: #ecf0f1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="top-nav">
+            <ul class="nav-list">
+                <li><a href="#section-a">Internet & Web</a></li>
+                <li><a href="#section-b">HTML</a></li>
+                <li><a href="#section-c">CSS</a></li>
+                <li><a href="#section-d">JavaScript</a></li>
+                <li><a href="#section-e">PHP</a></li>
+                <li><a href="#section-f">Advanced</a></li>
+            </ul>
+        </nav>
+
+        <h1>CST8238 Web Programming - Midterm Answer Key</h1>
+
+        <!-- Section A -->
+        <section id="section-a">
+            <h2>Section A: Internet and Web Fundamentals</h2>
+
+            <h3>1. Default HTTP Port</h3>
+            <div class="answer">
+                <strong>Answer: C) 80</strong>
+            </div>
+            <div class="explanation">
+                <ul>
+                    <li>Port 80 is the default port for HTTP traffic</li>
+                    <li>Port 443 is used for HTTPS (secure connections)</li>
+                    <li>Port 21 is for FTP (File Transfer Protocol)</li>
+                    <li>Port 8080 is commonly used as an alternative HTTP port</li>
+                </ul>
+            </div>
+
+            <h3>2. DNS Function</h3>
+            <div class="answer">
+                <strong>Answer: A) Domain Name System - maps domain names to IP addresses</strong>
+            </div>
+            <div class="explanation">
+                <ul>
+                    <li>DNS is a fundamental system that translates human-readable domain names into IP addresses</li>
+                    <li>Example: www.google.com → 172.217.xxx.xxx</li>
+                    <li>Without DNS, we would need to remember IP addresses for every website</li>
+                </ul>
+            </div>
+
+            <h3>3. Domain Name Components</h3>
+            <div class="answer">
+                <strong>Answer: C) Top-level domain</strong>
+            </div>
+            <div class="explanation">
+                <p>In www.algonquincollege.com:</p>
+                <ul>
+                    <li><span class="keyword">.com</span> is the top-level domain (TLD)</li>
+                    <li><span class="keyword">algonquincollege</span> is the second-level domain</li>
+                    <li><span class="keyword">www</span> is a subdomain</li>
+                </ul>
+            </div>
+
+            <h3>4. GET vs POST</h3>
+            <div class="answer">
+                <strong>Answer: C) GET is visible in the address bar, POST data is hidden</strong>
+            </div>
+            <div class="code-example">
+                <pre><code>// GET example - Data visible in URL
+http://example.com/search?query=test&page=1
+
+// POST example - Data hidden in request body
+Content-Type: application/x-www-form-urlencoded
+query=test&page=1</code></pre>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- Section B -->
+        <section id="section-b">
+            <h2>Section B: HTML Fundamentals</h2>
+
+            <h3>5. HTML5 Structure</h3>
+            <div class="answer">
+                <strong>Answer: C) &lt;!DOCTYPE html&gt; &lt;html&gt; &lt;head&gt; &lt;body&gt;</strong>
+            </div>
+            <div class="code-example">
+                <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- content goes here --&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+            </div>
+
+            <h3>6. Document Title</h3>
+            <div class="answer">
+                <strong>Answer: B) &lt;title&gt;</strong>
+            </div>
+            <div class="explanation">
+                <p>The <span class="keyword">&lt;title&gt;</span> element defines the page title in browser tab</p>
+            </div>
+            <div class="code-example">
+                <pre><code>&lt;head&gt;
+    &lt;title&gt;My Page Title&lt;/title&gt;
+&lt;/head&gt;</code></pre>
+            </div>
+
+            <h3>7. List Structure</h3>
+            <div class="answer">
+                <strong>Answer: B) Unordered list</strong>
+            </div>
+            <div class="code-example">
+                <pre><code>&lt;ul&gt;  &lt;!-- unordered list --&gt;
+  &lt;li&gt;Coffee&lt;/li&gt;  &lt;!-- list item --&gt;
+  &lt;li&gt;Tea&lt;/li&gt;
+&lt;/ul&gt;
+
+vs.
+
+&lt;ol&gt;  &lt;!-- ordered list --&gt;
+  &lt;li&gt;First&lt;/li&gt;
+  &lt;li&gt;Second&lt;/li&gt;
+&lt;/ol&gt;</code></pre>
+            </div>
+
+            <h3>8. Navigation Element</h3>
+            <div class="answer">
+                <strong>Answer: C) &lt;nav&gt;</strong>
+            </div>
+            <div class="explanation">
+                <p><span class="keyword">&lt;nav&gt;</span> is the semantic HTML5 element for navigation</p>
+            </div>
+            <div class="code-example">
+                <pre><code>&lt;nav&gt;
+    &lt;ul&gt;
+        &lt;li&gt;&lt;a href="/"&gt;Home&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="/about"&gt;About&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/nav&gt;</code></pre>
+            </div>
+
+            <h3>9. Hyperlink Syntax</h3>
+            <div class="answer">
+                <strong>Answer: C) &lt;a href="page.html"&gt;Click here&lt;/a&gt;</strong>
+            </div>
+            <div class="explanation">
+                <p>The anchor tag <span class="keyword">&lt;a&gt;</span> with <span class="keyword">href</span> attribute creates links</p>
+            </div>
+            <div class="code-example">
+                <pre><code>&lt;!-- External link --&gt;
+&lt;a href="https://www.example.com"&gt;Visit Example&lt;/a&gt;
+
+&lt;!-- Internal link --&gt;
+&lt;a href="/about"&gt;About Us&lt;/a&gt;
+
+&lt;!-- Email link --&gt;
+&lt;a href="mailto:example@email.com"&gt;Email Us&lt;/a&gt;</code></pre>
+            </div>
+
+            <h3>10. Relative Path</h3>
+            <div class="answer">
+                <strong>Answer: B) images/logo.gif</strong>
+            </div>
+            <div class="explanation">
+                <p>From index.html, the images folder is in the same directory. Relative paths are relative to current file location.</p>
+            </div>
+            <div class="file-structure">website/
+  index.html         # You are here
+  images/
+    logo.gif         # Target file</div>
+
+            <h3>11. Article Element</h3>
+            <div class="answer">
+                <strong>Answer: B) &lt;article&gt;</strong>
+            </div>
+            <div class="explanation">
+                <p><span class="keyword">&lt;article&gt;</span> represents self-contained content</p>
+                <p>Examples: blog post, news article, forum post</p>
+            </div>
+            <div class="code-example">
+                <pre><code>&lt;article&gt;
+    &lt;h2&gt;Blog Post Title&lt;/h2&gt;
+    &lt;p&gt;Content that makes sense on its own...&lt;/p&gt;
+&lt;/article&gt;</code></pre>
+            </div>
+
+            <h3>12. Alt Attribute</h3>
+            <div class="answer">
+                <strong>Answer: B) To provide alternative text for accessibility</strong>
+            </div>
+            <div class="code-example">
+                <pre><code>&lt;!-- Good alt text --&gt;
+&lt;img src="cat.jpg" alt="Orange cat sleeping on a windowsill"&gt;
+
+&lt;!-- Bad alt text --&gt;
+&lt;img src="cat.jpg" alt="image"&gt;</code></pre>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- Section C -->
+        <section id="section-c">
+            <h2>Section C: CSS Fundamentals</h2>
+
+            <h3>13. Bold Text Syntax</h3>
+            <div class="answer">
+                <strong>Answer: A) p {font-weight: bold;}</strong>
+            </div>
+            <div class="code-example">
+                <pre><code>/* Correct way to make all paragraphs bold */
+p {
+    font-weight: bold;
+}
+
+/* Alternative using font-weight value */
+p {
+    font-weight: 700;
+}</code></pre>
+            </div>
+
+            <h3>14. CSS Specificity</h3>
+            <div class="answer">
+                <strong>Answer: C) ID selector (e.g., #myId)</strong>
+            </div>
+            <div class="explanation">
+                <p><strong>Specificity hierarchy (highest to lowest):</strong></p>
+                <ol>
+                    <li>Inline styles</li>
+                    <li>ID selectors (#myId)</li>
+                    <li>Class selectors (.myClass)</li>
+                    <li>Element selectors (p, div)</li>
+                    <li>Universal selector (*)</li>
+                </ol>
+            </div>
+
+            <h3>15. CSS Descendant Selector</h3>
+            <div class="answer">
+                <strong>Answer: C) Selects all &lt;p&gt; elements that are inside &lt;div&gt; elements at any level</strong>
+            </div>
+            <div class="code-example">
+                <pre><code>/* Matches any p inside any div */
+div p {
+    color: red;
+}
+
+/* vs. direct child selector */
+div > p {
+    color: blue;
+}</code></pre>
+            </div>
+
+            <h3>16. CSS Box Model</h3>
+            <div class="answer">
+                <strong>Answer: B) padding</strong>
+            </div>
+            <div class="explanation">
+                <p><strong>Box Model from inside out:</strong></p>
+                <ol>
+                    <li>Content</li>
+                    <li>Padding (inside spacing)</li>
+                    <li>Border</li>
+                    <li>Margin (outside spacing)</li>
+                </ol>
+            </div>
+
+            <h3>17. Margin vs Padding</h3>
+            <div class="answer">
+                <strong>Answer: B) Margin adds space outside elements, padding adds space inside</strong>
+            </div>
+            <div class="code-example">
+                <pre><code>.box {
+    /* Space inside the element */
+    padding: 20px;
+
+    /* Space outside the element */
+    margin: 20px;
+}</code></pre>
+            </div>
+
+            <h3>18. Background Color</h3>
+            <div class="answer">
+                <strong>Answer: B) background-color</strong>
+            </div>
+            <div class="code-example">
+                <pre><code>.element {
+    background-color: #ff0000;  /* Red */
+    /* Or */
+    background-color: rgb(255, 0, 0);
+    /* Or */
+    background-color: red;
+}</code></pre>
+            </div>
+
+            <h3>19. Box Model Calculation</h3>
+            <div class="answer">
+                <strong>Answer: C) Total width = 250px</strong>
+            </div>
+            <div class="code-example">
+                <pre><code>.box {
+    width: 200px;        /* Content width */
+    padding: 20px;       /* 20px on each side = +40px */
+    border: 5px solid;   /* 5px on each side = +10px */
+}
+/* Total: 200 + 40 + 10 = 250px */</code></pre>
+            </div>
+
+            <h3>20. Hover Pseudo-class</h3>
+            <div class="answer">
+                <strong>Answer: B) :hover</strong>
+            </div>
+            <div class="code-example">
+                <pre><code>/* Changes color when mouse hovers over element */
+.button:hover {
+    background-color: blue;
+    color: white;
+}</code></pre>
+            </div>
+
+            <h3>21. Flexbox Container</h3>
+            <div class="answer">
+                <strong>Answer: B) Creates a flexible box layout container</strong>
+            </div>
+            <div class="code-example">
+                <pre><code>.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}</code></pre>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- Section D -->
+        <section id="section-d">
+            <h2>Section D: JavaScript Fundamentals</h2>
+
+            <h3>22. Block-Scoped Variables</h3>
+            <div class="answer">
+                <strong>Answer: D) Both B and C</strong>
+            </div>
+            <div class="code-example">
+                <pre><code>// let - block-scoped, can be reassigned
+let x = 5;
+x = 10;
+
+// const - block-scoped, cannot be reassigned
+const PI = 3.14;</code></pre>
+            </div>
+
+            <h3>23. String Concatenation</h3>
+            <div class="answer">
+                <strong>Answer: B) "55"</strong>
+            </div>
+            <div class="code-example">
+                <pre><code>console.log(5 + "5");  // "55" (string concatenation)
+console.log(5 + 5);    // 10 (number addition)</code></pre>
+            </div>
+
+            <h3>24. Equality Comparison</h3>
+            <div class="answer">
+                <strong>Answer: C) true, false</strong>
+            </div>
+            <div class="code-example">
+                <pre><code>let x = 5;    // number
+let y = "5";  // string
+
+console.log(x == y);   // true (loose equality, type coercion)
+console.log(x === y);  // false (strict equality, no type coercion)</code></pre>
+            </div>
+
+            <h3>25. Array Method</h3>
+            <div class="answer">
+                <strong>Answer: B) push()</strong>
+            </div>
+            <div class="code-example">
+                <pre><code>let arr = [1, 2, 3];
+arr.push(4);         // adds 4 to end: [1, 2, 3, 4]
+console.log(arr);    // [1, 2, 3, 4]</code></pre>
+            </div>
+
+            <h3>26. Array Length</h3>
+            <div class="answer">
+                <strong>Answer: B) 3</strong>
+            </div>
+            <div class="code-example">
+                <pre><code>const arr = [1, 2, 3];
+console.log(arr.length);  // 3 (counts elements in array)</code></pre>
+            </div>
+
+            <h3>27. Arrow Function</h3>
+            <div class="answer">
+                <strong>Answer: B) const square = (x) => x * x</strong>
+            </div>
+            <div class="code-example">
+                <pre><code>// Arrow function syntax
+const square = (x) => x * x;
+
+// Traditional function equivalent
+function square(x) {
+    return x * x;
+}</code></pre>
+            </div>
+
+            <h3>28. This Keyword</h3>
+            <div class="answer">
+                <strong>Answer: B) Refers to the current execution context</strong>
+            </div>
+            <div class="code-example">
+                <pre><code>class Example {
+    constructor() {
+        this.value = 42;  // 'this' refers to instance
+    }
+
+    method() {
+        // 'this' refers to instance in method
+        console.log(this.value);
+    }
+}</code></pre>
+            </div>
+
+            <h3>29. Hoisting</h3>
+            <div class="answer">
+                <strong>Answer: B) undefined</strong>
+            </div>
+            <div class="code-example">
+                <pre><code>function test() {
+    // var a is hoisted but not initialized
+    console.log(a);  // undefined
+    var a = 10;      // actual declaration
+}
+
+// Equivalent to:
+function test() {
+    var a;           // hoisted declaration
+    console.log(a);  // undefined
+    a = 10;         // initialization
+}</code></pre>
+            </div>
+
+            <h3>30. Array Iteration</h3>
+            <div class="answer">
+                <strong>Answer: C) for (let item of arr)</strong>
+            </div>
+            <div class="code-example">
+                <pre><code>const arr = [1, 2, 3];
+
+// Modern way (best)
+for (let item of arr) {
+    console.log(item);
+}
+
+// Also good for arrays
+arr.forEach(item => console.log(item));
+
+// Traditional way (less preferred)
+for (let i = 0; i < arr.length; i++) {
+    console.log(arr[i]);
+}</code></pre>
+            </div>
+
+            <h3>31. JSON Methods</h3>
+            <div class="answer">
+                <strong>Answer: B) Converts a JSON string to a JavaScript object</strong>
+            </div>
+            <div class="code-example">
+                <pre><code>// String to Object
+const jsonString = '{"name": "John", "age": 30}';
+const obj = JSON.parse(jsonString);
+console.log(obj.name);  // "John"
+
+// Object to String
+const objToConvert = {name: "John", age: 30};
+const jsonStr = JSON.stringify(objToConvert);
+console.log(jsonStr);  // '{"name":"John","age":30}'</code></pre>
+            </div>
+
+            <h3>32. Callback Function</h3>
+            <div class="answer">
+                <strong>Answer: B) A function passed as an argument to another function</strong>
+            </div>
+            <div class="code-example">
+                <pre><code>// Example of callback function
+function doSomething(callback) {
+    console.log("Doing something...");
+    callback();
+}
+
+doSomething(() => {
+    console.log("Callback executed!");
+});</code></pre>
+            </div>
+
+            <h3>33. Closure Example</h3>
+            <div class="answer">
+                <strong>Answer: C) 1, 2, 3</strong>
+            </div>
+            <div class="code-example">
+                <pre><code>function makeCounter() {
+    let count = 0;          // Private variable
+    return function() {     // Closure
+        count++;            // Accesses parent scope
+        return count;
+    };
+}
+
+const counter = makeCounter();
+console.log(counter());  // 1
+console.log(counter());  // 2
+console.log(counter());  // 3</code></pre>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- Section E -->
+        <section id="section-e">
+            <h2>Section E: PHP Basics</h2>
+
+            <h3>34. PHP Opening Tag</h3>
+            <div class="answer">
+                <strong>Answer: B) &lt;?php</strong>
+            </div>
+            <div class="code-example">
+                <pre><code>&lt;?php
+    echo "Hello, World!";
+?&gt;</code></pre>
+            </div>
+
+            <h3>35. PHP Variable Declaration</h3>
+            <div class="answer">
+                <strong>Answer: B) $name;</strong>
+            </div>
+            <div class="code-example">
+                <pre><code>$name = "John";  // Variables start with $
+$age = 25;       // No declaration keyword needed</code></pre>
+            </div>
+
+            <h3>36. PHP String Concatenation</h3>
+            <div class="answer">
+                <strong>Answer: B) 55</strong>
+            </div>
+            <div class="code-example">
+                <pre><code>&lt;?php
+$x = 5;      // number
+$y = "5";    // string
+echo $x . $y; // concatenates to "55"
+?&gt;</code></pre>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- Section F -->
+        <section id="section-f">
+            <h2>Section F: Forms and Advanced Concepts</h2>
+
+            <h3>37. Date Input</h3>
+            <div class="answer">
+                <strong>Answer: B) &lt;input type="date"&gt;</strong>
+            </div>
+            <div class="code-example">
+                <pre><code>&lt;form&gt;
+    &lt;label for="birthday"&gt;Birthday:&lt;/label&gt;
+    &lt;input type="date" id="birthday" name="birthday"&gt;
+&lt;/form&gt;</code></pre>
+            </div>
+
+            <h3>38. Bootstrap Purpose</h3>
+            <div class="answer">
+                <strong>Answer: C) Responsive front-end framework</strong>
+            </div>
+            <div class="explanation">
+                <p><strong>Bootstrap provides:</strong></p>
+                <ul>
+                    <li>Responsive grid system</li>
+                    <li>Pre-styled components</li>
+                    <li>CSS utilities</li>
+                    <li>JavaScript plugins</li>
+                </ul>
+            </div>
+
+            <h3>39. Media Query</h3>
+            <div class="answer">
+                <strong>Answer: B) Makes container 100% width when screen is 768px or smaller</strong>
+            </div>
+            <div class="code-example">
+                <pre><code>@media (max-width: 768px) {
+    .container {
+        width: 100%;  /* Full width on small screens */
+    }
+}</code></pre>
+            </div>
+
+            <h3>40. JavaScript Comments</h3>
+            <div class="answer">
+                <strong>Answer: B) // This is a comment</strong>
+            </div>
+            <div class="code-example">
+                <pre><code>// Single line comment
+
+/*
+   Multi-line
+   comment
+*/</code></pre>
+            </div>
+
+            <h3>41. Array.map()</h3>
+            <div class="answer">
+                <strong>Answer: B) To create a new array by transforming each element</strong>
+            </div>
+            <div class="code-example">
+                <pre><code>const numbers = [1, 2, 3];
+const doubled = numbers.map(num => num * 2);
+console.log(doubled);  // [2, 4, 6]</code></pre>
+            </div>
+
+            <h3>42. Template Literals</h3>
+            <div class="answer">
+                <strong>Answer: B) Hello, John!</strong>
+            </div>
+            <div class="code-example">
+                <pre><code>const name = "John";
+// Template literal using backticks and ${expression}
+const greeting = `Hello, ${name}!`;
+console.log(greeting);  // Hello, John!</code></pre>
+            </div>
+
+            <h3>43. Event Listener</h3>
+            <div class="answer">
+                <strong>Answer: B) element.addEventListener()</strong>
+            </div>
+            <div class="code-example">
+                <pre><code>const button = document.querySelector('#myButton');
+button.addEventListener('click', () => {
+    console.log('Button clicked!');
+});</code></pre>
+            </div>
+
+            <h3>44. Element Selection</h3>
+            <div class="answer">
+                <strong>Answer: C) Both A and B</strong>
+            </div>
+            <div class="code-example">
+                <pre><code>// Both methods work
+const element1 = document.querySelector("#myId");
+const element2 = document.getElementById("myId");</code></pre>
+            </div>
+
+            <h3>45. Array Indexing</h3>
+            <div class="answer">
+                <strong>Answer: B) banana</strong>
+            </div>
+            <div class="code-example">
+                <pre><code>let fruits = ["apple", "banana", "orange"];
+console.log(fruits[1]);  // "banana" (arrays are 0-indexed)</code></pre>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Add syntax highlighting
+        document.querySelectorAll('pre code').forEach(block => {
+            block.innerHTML = block.innerHTML
+                .replace(/(&lt;[\w\/]+&gt;)/g, '<span style="color: #e83e8c;">$1</span>')
+                .replace(/(\/\/.+)/g, '<span style="color: #6c757d;">$1</span>')
+                .replace(/(".*?")/g, '<span style="color: #28a745;">$1</span>');
+        });
+
+        // Smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
