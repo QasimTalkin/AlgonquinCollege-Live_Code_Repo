@@ -1,0 +1,62 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qasim.dev | CST8117-FRI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+    <style>
+        .course-header-area { padding-top: 120px; text-align: center; margin-bottom: 60px; }
+        .file-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 24px; }
+        .file-card { 
+            display: flex; align-items: center; gap: 16px; padding: 20px; 
+            background: var(--glass-bg); border: 1px solid var(--glass-border); 
+            border-radius: var(--radius-md); transition: var(--transition-smooth);
+        }
+        .file-card:hover { background: var(--glass-hover); transform: translateY(-4px); border-color: var(--primary-accent); }
+        .file-icon { font-size: 1.5rem; color: var(--primary-accent); }
+        .file-name { font-weight: 500; word-break: break-all; }
+        .back-btn { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 24px; color: var(--text-secondary); transition: var(--transition-fast); }
+        .back-btn:hover { color: var(--primary-accent); }
+    </style>
+</head>
+<body>
+    <div class="bg-shape shape-1"></div>
+    <div class="bg-shape shape-2"></div>
+    
+    <nav class="navbar scrolled">
+        <div class="container nav-container">
+            <a href="../../index.html" class="logo">
+                <span class="logo-text">Qasim<span class="highlight">.dev</span></span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="../../index.html#courses">Back to Portal</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container course-header-area">
+        <a href="../../index.html#courses" class="back-btn"><i class="fas fa-arrow-left"></i> Course Explorer</a>
+        <div class="badge">Fall 2022</div>
+        <h1 class="hero-title">CST8117-FRI</h1>
+        <p class="hero-subtitle">Directory Listing & Auto-Generated Index</p>
+    </div>
+
+    <div class="container section-padding" style="padding-top: 0;">
+        <div class="file-grid">
+            
+                <a href="./script.js" target="_blank" class="file-card">
+                    <i class="fas fa-code file-icon"></i>
+                    <span class="file-name">script.js</span>
+                </a>
+                <a href="./script.py" target="_blank" class="file-card">
+                    <i class="fas fa-python file-icon"></i>
+                    <span class="file-name">script.py</span>
+                </a>
+        </div>
+    </div>
+</body>
+</html>

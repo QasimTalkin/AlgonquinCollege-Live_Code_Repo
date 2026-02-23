@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CST8238 Midterm - Interactive Learning</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=JetBrains+Mono&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #ec4899;
+            --background: #0f172a;
+            --surface: #1e293b;
+            --text: #f1f5f9;
+            --text-muted: #94a3b8;
+            --correct: #22c55e;
+            --incorrect: #ef4444;
+            --glass: rgba(30, 41, 59, 0.7);
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image:
+                radial-gradient(circle at 20% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(236, 72, 153, 0.15) 0%, transparent 40%);
+            background-attachment: fixed;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 5rem;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #818cf8, #f472b6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .exam-section {
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary);
+            display: inline-block;
+            color: #818cf8;
+        }
+
+        .question-card {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            margin-bottom: 2.5rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .question-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .q-number {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            display: block;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .q-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            color: #fff;
+        }
+
+        .options-grid {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .option {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            padding: 1rem 1.5rem;
+            border-radius: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .option:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--primary);
+        }
+
+        .option.selected {
+            background: rgba(99, 102, 241, 0.1);
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.2);
+        }
+
+        .option.correct {
+            background: rgba(34, 197, 94, 0.1);
+            border-color: var(--correct);
+            color: var(--correct);
+        }
+
+        .option.incorrect {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: var(--incorrect);
+            color: var(--incorrect);
+        }
+
+        .explanation {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 4px solid var(--primary);
+            border-radius: 0 1rem 1rem 0;
+            display: none;
+            animation: slideIn 0.4s ease-out;
+        }
+
+        pre {
+            background: #000;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            color: #d1d5db;
+            margin: 1.5rem 0;
+            border: 1px solid var(--border);
+            overflow-x: auto;
+        }
+
+        code {
+            color: #f472b6;
+        }
+
+        .btn-reveal {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 100px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            font-family: 'Outfit', sans-serif;
+            margin-top: 1rem;
+        }
+
+        .btn-reveal:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .stats-floating {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            border-radius: 100px;
+            border: 1px solid var(--border);
+            z-index: 100;
+            display: flex;
+            gap: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            width: 0%;
+            transition: width 0.3s ease;
+            z-index: 1000;
+        }
+
+        /* Responsive Improvements */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .container {
+                padding: 2rem 1rem;
+            }
+
+            .question-card {
+                padding: 1.5rem;
+            }
+
+            .stats-floating {
+                bottom: 1rem;
+                right: 1rem;
+                padding: 0.8rem 1.2rem;
+                gap: 0.8rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="progress-bar" id="progressBar"></div>
+
+    <div class="stats-floating">
+        <div class="stat-item" style="color: var(--correct)">
+            <span>✓</span> <span id="correctCount">0</span>
+        </div>
+        <div class="stat-item" style="color: var(--incorrect)">
+            <span>✕</span> <span id="incorrectCount">0</span>
+        </div>
+        <div class="stat-item" style="color: var(--text-muted)">
+            <span id="progressText">0/45</span>
+        </div>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>CST8238 Midterm Exam answers</h1>
+            <p class="subtitle">Check if you got your answers right here.</p>
+        </header>
+
+        <div id="quizContainer">
+            <!-- Questions will be injected here -->
+        </div>
+    </div>
+
+    <script>
+        const examData = [
+            // Part 1: HTML
+            {
+                q: "Which declaration must appear at the very beginning of an HTML document to define it as HTML5?",
+                options: ["<html version='5'>", "<!DOCTYPE html>", "<head type='html5'>", "<?xml version='1.0'>"],
+                answer: 1,
+                explanation: "The <code><!DOCTYPE html></code> declaration is the first line of any HTML5 document. It tells the browser that this is an HTML5 page, ensuring it renders in 'standards mode' instead of 'quirks mode'. Simple and efficient!",
+                section: "HTML5 Structure & Semantics"
+            },
+            {
+                q: "Which element serves as the root container that wraps all visible and metadata content on a webpage?",
+                options: ["<body>", "<head>", "<html>", "<root>"],
+                answer: 2,
+                explanation: "The <code><html></code> tag is the big boss—the root element that holds everything else. It usually has the <code>lang</code> attribute to define the page language.",
+                section: "HTML5 Structure & Semantics"
+            },
+            {
+                q: "Where should metadata, such as the character set and page title, be placed within an HTML document?",
+                options: ["Inside the <body> tag", "Inside the <footer> tag", "Inside the <head> tag", "Inside the <nav> tag"],
+                answer: 2,
+                explanation: "The <code><head></code> section is like the 'brain' of your webpage. It contains logic, styles, and data about the page that doesn't necessarily appear as visual content.",
+                section: "HTML5 Structure & Semantics"
+            },
+            {
+                q: "Which semantic element is best suited for defining the introductory content of a page, typically containing the main heading and logo?",
+                options: ["<section>", "<header>", "<article>", "<aside>"],
+                answer: 1,
+                explanation: "The <code><header></code> tag is perfect for the top of your page or section. It usually houses your logo, navigation links, and the main page title.",
+                section: "HTML5 Structure & Semantics"
+            },
+            {
+                q: "To create a navigation menu, which semantic tag should wrap the list of links?",
+                options: ["<menu>", "<navigation>", "<nav>", "<dir>"],
+                answer: 2,
+                explanation: "<code><nav></code> is the semantic way to tell screen readers and search engines: 'Hey, this is where the navigation happens!'",
+                section: "HTML5 Structure & Semantics"
+            },
+            {
+                q: "Which attribute is used within an anchor <a> tag to create a link to a specific section on the same page?",
+                options: ["src='#section-id'", "link='#section-id'", "href='#section-id'", "ref='#section-id'"],
+                answer: 2,
+                explanation: "The <code>href</code> (Hypertext Reference) attribute is the industry standard. When you use a <code>#</code> followed by an ID, you're creating an internal 'jump link'.",
+                section: "HTML5 Structure & Semantics"
+            },
+            {
+                q: "Which semantic element represents a self-contained composition, such as a blog post or news article, that could be distributed independently?",
+                options: ["<section>", "<div>", "<article>", "<span>"],
+                answer: 2,
+                explanation: "The <code><article></code> tag should be used for content that makes sense even if you take it out of context—like a single news story or a product card.",
+                section: "HTML5 Structure & Semantics"
+            },
+            {
+                q: "If you need to display content that is tangentially related to the main content, such as a sidebar or call-out box, which tag should be used?",
+                options: ["<sidebar>", "<aside>", "<section>", "<meta>"],
+                answer: 1,
+                explanation: "The <code><aside></code> tag is exactly what it sounds like. It's for content that sits 'aside' from the main flow, like sidebars or pull quotes.",
+                section: "HTML5 Structure & Semantics"
+            },
+            {
+                q: "Which tag is used to define important text that should typically be rendered in bold?",
+                options: ["<b>", "<bold>", "<strong>", "<em>"],
+                answer: 2,
+                explanation: "While <code><b></code> just makes text bold for style, <code><strong></code> tells browsers and screen readers that the text has 'strong importance'. Accessibility first!",
+                section: "HTML5 Structure & Semantics"
+            },
+            {
+                q: "Which element is used to define abbreviations or acronyms, allowing for a tooltip explanation?",
+                options: ["<acronym>", "<abbr>", "<short>", "<define>"],
+                answer: 1,
+                explanation: "The <code><abbr></code> tag, combined with a <code>title</code> attribute, creates that handy little tooltip that appears when you hover over the text.",
+                section: "HTML5 Structure & Semantics"
+            },
+            {
+                q: "In an HTML table, which tag defines a header cell that is typically bold and centered?",
+                options: ["<td>", "<tr>", "<th>", "<head>"],
+                answer: 2,
+                explanation: "<code><th></code> stands for 'Table Header'. By default, browsers style it bold and centered to make your table data easy to read.",
+                section: "HTML5 Structure & Semantics"
+            },
+            {
+                q: "Which list type is most appropriate for displaying a chronological work history?",
+                options: ["Unordered List (<ul>)", "Definition List (<dl>)", "Ordered List (<ol>)", "Navigation List (<nav>)"],
+                answer: 2,
+                explanation: "When order matters (like dates in a CV), use the <code><ol></code> (Ordered List). It automatically numbers your items!",
+                section: "HTML5 Structure & Semantics"
+            },
+            {
+                q: "Which attribute is mandatory for the <img> tag to ensure accessibility for screen readers?",
+                options: ["title", "src", "alt", "description"],
+                answer: 2,
+                explanation: "The <code>alt</code> attribute provides 'alternative' text if the image fails to load and describes the image for visually impaired users. It's not just good practice; it's essential.",
+                section: "HTML5 Structure & Semantics"
+            },
+            {
+                q: "To embed a video file with play and pause controls visible to the user, which attribute must be added to the <video> tag?",
+                options: ["play", "controls", "manage", "interface"],
+                answer: 1,
+                explanation: "Simply adding the <code>controls</code> boolean attribute gives the user the default browser UI for play, pause, volume, and fullscreen.",
+                section: "HTML5 Structure & Semantics"
+            },
+            {
+                q: "Which form element is used to create a multi-line text input field?",
+                options: ["<input type='text'>", "<textbox>", "<textarea>", "<input type='multiline'>"],
+                answer: 2,
+                explanation: "The <code><textarea></code> element is a special input that allows for large amounts of text. Unlike standard inputs, it's not a self-closing tag.",
+                section: "HTML5 Structure & Semantics"
+            },
+
+            // Part 2: CSS
+            {
+                q: "How do you correctly link an external CSS file named styles.css to an HTML document?",
+                options: ["<style src='styles.css'>", "<link rel='stylesheet' href='styles.css'>", "<css link='styles.css'>", "<script href='styles.css'>"],
+                answer: 1,
+                explanation: "The <code><link></code> tag in the head is the cleanest way to keep your styles separate from your HTML. Remember: <code>rel='stylesheet'</code> is the key!",
+                section: "CSS Fundamentals & Styling"
+            },
+            {
+                q: "Which CSS selector is known as the 'universal selector' and selects all elements on the page?",
+                options: ["#all", ".reset", "*", "body"],
+                answer: 2,
+                explanation: "The asterisk <code>*</code> is the 'one selector to rule them all'. It's often used for global resets like <code>box-sizing: border-box;</code>.",
+                section: "CSS Fundamentals & Styling"
+            },
+            {
+                q: "What is the correct syntax for selecting an element with the class name 'container'?",
+                options: ["#container", "container", ".container", "*container"],
+                answer: 2,
+                explanation: "In CSS, classes start with a dot <code>.</code> and IDs start with a hash <code>#</code>. It's the most common mistake for beginners!",
+                section: "CSS Fundamentals & Styling"
+            },
+            {
+                q: "Which CSS property is used to set the size of the text?",
+                options: ["text-size", "font-size", "size", "font-weight"],
+                answer: 1,
+                explanation: "<code>font-size</code> is the property you're looking for. You can use pixels (px), rems, or percentages to control how big your letters appear.",
+                section: "CSS Fundamentals & Styling"
+            },
+            {
+                q: "To improve the readability of paragraph text, which property controls the vertical space between lines?",
+                options: ["letter-spacing", "word-spacing", "line-height", "vertical-align"],
+                answer: 2,
+                explanation: "<code>line-height</code> is vital for design. Higher values make text easier to read by giving sentences 'breathing room'.",
+                section: "CSS Fundamentals & Styling"
+            },
+            {
+                q: "Which box model property creates space INSIDE an element's border?",
+                options: ["margin", "border", "padding", "spacing"],
+                answer: 2,
+                explanation: "Think of <code>padding</code> as the 'inner space' or bubble wrap around your content, protected inside the border.",
+                section: "CSS Fundamentals & Styling"
+            },
+            {
+                q: "Which box model property creates space OUTSIDE an element's border?",
+                options: ["margin", "border", "padding", "outline"],
+                answer: 0,
+                explanation: "<code>margin</code> is the social distancer of CSS. it pushes other elements away without affecting the element's actual size.",
+                section: "CSS Fundamentals & Styling"
+            },
+            {
+                q: "How do you horizontally center a block-level element with a fixed width?",
+                options: ["margin: center;", "text-align: center;", "margin: 0 auto;", "padding: 0 auto;"],
+                answer: 2,
+                explanation: "Setting <code>margin: 0 auto;</code> calculates equal space on the left and right sides of the element, pushing it perfectly to the center.",
+                section: "CSS Fundamentals & Styling"
+            },
+            {
+                q: "Which pseudo-class selector is used to define styles when a user hovers their mouse over an element?",
+                options: [":active", ":focus", ":hover", ":mouse"],
+                answer: 2,
+                explanation: "The <code>:hover</code> pseudo-class is the secret to interactive web design. it lets you change colors, scales, or shadows when the user engages.",
+                section: "CSS Fundamentals & Styling"
+            },
+            {
+                q: "Which property is used to remove bullet points from an unordered list?",
+                options: ["list-style-type: none;", "bullet-style: none;", "list-type: empty;", "decoration: none;"],
+                answer: 0,
+                explanation: "<code>list-style-type: none;</code> is almost always used when turning lists into navigation bars or clean UI components.",
+                section: "CSS Fundamentals & Styling"
+            },
+            {
+                q: "Which CSS property adds rounded corners to an element?",
+                options: ["border-circle", "border-radius", "corner-round", "image-shape"],
+                answer: 1,
+                explanation: "<code>border-radius</code> is the property that changed web design forever! it lets you create everything from rounded buttons to perfect circles.",
+                section: "CSS Fundamentals & Styling"
+            },
+            {
+                q: "In table styling, which property removes the default space between adjacent cell borders?",
+                options: ["border-spacing: 0;", "border-collapse: collapse;", "border-style: none;", "table-layout: fixed;"],
+                answer: 1,
+                explanation: "<code>border-collapse: collapse;</code> makes a table look unified. instead of two separate borders for each cell, they share a single, clean line.",
+                section: "CSS Fundamentals & Styling"
+            },
+
+            // Part 3: Layout
+            {
+                q: "Which CSS property value turns a container into a Flexbox container?",
+                options: ["display: block;", "display: flex;", "layout: flex;", "position: flex;"],
+                answer: 1,
+                explanation: "<code>display: flex;</code> is the magic switch that gives all child elements superpower control over their space and alignment.",
+                section: "Layout Systems (Flexbox & Grid)"
+            },
+            {
+                q: "In a Flexbox container, which property aligns items along the main axis (e.g., horizontally in a row)?",
+                options: ["align-items", "justify-content", "flex-direction", "flex-wrap"],
+                answer: 1,
+                explanation: "Use <code>justify-content</code> to move items left, right, center, or space them out evenly. Just remember: <strong>J</strong>ustify = <strong>M</strong>ain axis.",
+                section: "Layout Systems (Flexbox & Grid)"
+            },
+            {
+                q: "Which Flexbox property allows items to wrap onto multiple lines if there isn't enough space?",
+                options: ["flex-wrap: wrap;", "flex-flow: row;", "overflow: auto;", "white-space: normal;"],
+                answer: 0,
+                explanation: "By default, flex items try to fit on one line and will shrink to do so. <code>flex-wrap: wrap;</code> lets them drop to a new line when things get crowded.",
+                section: "Layout Systems (Flexbox & Grid)"
+            },
+            {
+                q: "Which CSS property value turns a container into a Grid container?",
+                options: ["display: grid;", "display: table;", "layout: grid;", "position: grid;"],
+                answer: 0,
+                explanation: "<code>display: grid;</code> is the ultimate 2D layout tool. it allows you to define rows and columns simultaneously with pixel-perfect precision.",
+                section: "Layout Systems (Flexbox & Grid)"
+            },
+            {
+                q: "Which CSS Grid property defines the number and size of columns in a grid?",
+                options: ["grid-columns", "grid-template-columns", "grid-layout-columns", "column-count"],
+                answer: 1,
+                explanation: "The <code>grid-template-columns</code> property is where you get creative. you can use <code>1fr 1fr 1fr</code> to create three equal columns!",
+                section: "Layout Systems (Flexbox & Grid)"
+            },
+            {
+                q: "How do you make a grid item span across two columns?",
+                options: ["grid-column: 2;", "grid-span: 2;", "grid-column: span 2;", "col-span: 2;"],
+                answer: 2,
+                explanation: "<code>grid-column: span 2;</code> tells the item: 'Hey, take up as much space as two columns would!'. It's super intuitive.",
+                section: "Layout Systems (Flexbox & Grid)"
+            },
+            {
+                q: "Flexbox is generally best suited for which type of layout?",
+                options: ["Two-dimensional layouts", "One-dimensional layouts", "Complex magazine-style layouts", "Database structure"],
+                answer: 1,
+                explanation: "Flexbox is the king of 1D layouts (one row OR one column). It's perfect for navbars, toolbars, and small component alignment.",
+                section: "Layout Systems (Flexbox & Grid)"
+            },
+            {
+                q: "CSS Grid is generally best suited for which type of layout?",
+                options: ["Simple navigation bars", "One-dimensional lists", "Two-dimensional layouts", "Text typography only"],
+                answer: 2,
+                explanation: "If you're building a full page layout with a header, sidebar, main area, and footer all working together, <strong>Grid</strong> is your best friend.",
+                section: "Layout Systems (Flexbox & Grid)"
+            },
+            {
+                q: "Which property adds consistent spacing between grid or flex items?",
+                options: ["spacing", "gap", "margin-between", "padding-between"],
+                answer: 1,
+                explanation: "The <code>gap</code> property (originally <code>grid-gap</code>) is the modern way to add space between items without needing to mess with individual margins.",
+                section: "Layout Systems (Flexbox & Grid)"
+            },
+
+            // Part 4: Bootstrap
+            {
+                q: "Which meta tag is required in the <head> section to ensure proper rendering on mobile devices?",
+                options: ["<meta name='description'>", "<meta name='viewport' content='width=device-width, initial-scale=1.0'>", "<link rel='mobile' href='responsive'>", "<script src='responsive.js'>"],
+                answer: 1,
+                explanation: "The <strong>Viewport Meta Tag</strong> is what prevents mobile browsers from showing your page in 'desktop zoom'. It makes responsive design possible!",
+                section: "Bootstrap & Responsive Design"
+            },
+            {
+                q: "How is the Bootstrap framework typically included in a project via CDN?",
+                options: ["<script src='bootstrap.js'>", "<link href='bootstrap.css' rel='stylesheet'>", "<import bootstrap>", "<style src='bootstrap'>"],
+                answer: 1,
+                explanation: "Most people link the Bootstrap CSS via CDN to get all those pre-built classes (like <code>.btn</code> or <code>.row</code>) instantly.",
+                section: "Bootstrap & Responsive Design"
+            },
+            {
+                q: "Which Bootstrap class creates a fixed-width responsive container?",
+                options: [".container-fluid", ".wrap", ".container", ".box"],
+                answer: 2,
+                explanation: "<code>.container</code> gives you a centered box with fixed widths that change depending on the screen size. If you want 100% width always, use <code>.container-fluid</code>.",
+                section: "Bootstrap & Responsive Design"
+            },
+            {
+                q: "In the Bootstrap grid system, which class is used to create a horizontal group of columns?",
+                options: [".grid", ".row", ".line", ".section"],
+                answer: 1,
+                explanation: "In Bootstrap, you MUST wrap your columns inside a <code>.row</code> class. This ensures columns align correctly and use negative margins to offset padding.",
+                section: "Bootstrap & Responsive Design"
+            },
+            {
+                q: "Which Bootstrap component is commonly used to create contained content boxes with headers and footers?",
+                options: [".box", ".panel", ".card", ".frame"],
+                answer: 2,
+                explanation: "The <code>.card</code> component is one of Bootstrap's most flexible tools. it replaces the old 'panles' or 'wells' from previous versions.",
+                section: "Bootstrap & Responsive Design"
+            },
+            {
+                q: "What is the standard conventional filename for the homepage of a website?",
+                options: ["home.html", "main.html", "index.html", "default.html"],
+                answer: 2,
+                explanation: "Web servers are configured to look for <code>index.html</code> (or .php, .js) by default when you visit a folder URL. It's the entry point of your site.",
+                section: "Bootstrap & Responsive Design"
+            },
+
+            // Part 5: JS
+            {
+                q: "What will be the output of the following JavaScript code snippet?",
+                type: "code",
+                code: "let a = 5;\nlet b = \"5\";\nconsole.log(a + b);",
+                options: ["10", "\"55\"", "55", "Error"],
+                answer: 1,
+                explanation: "Type coercion strikes again! JavaScript sees a number and a string being added, so it converts the number 5 into the string '5' and sticks them together. Result: \"55\".",
+                section: "JavaScript Fundamentals"
+            },
+            {
+                q: "What is the primary difference between the == and === operators in JavaScript?",
+                options: [
+                    "== compares values (with coercion), while === compares both value and type (strict)",
+                    "=== compares values, == compares both value and type",
+                    "== is for strings, === is for numbers",
+                    "There is no difference"
+                ],
+                answer: 0,
+                explanation: "The double equals (==) is loose and tries to force types to match. Triple equals (===) is strict—if the types don't match, it's an immediate 'false'. Always use === to avoid weird bugs!",
+                section: "JavaScript Fundamentals"
+            },
+            {
+                q: "Which keyword is used to define a function in JavaScript?",
+                options: ["def", "function", "func", "void"],
+                answer: 1,
+                explanation: "The <code>function</code> keyword followed by a name and parentheses <code>()</code> is the classic way to declare a function in JS. Easy peasy!",
+                section: "JavaScript Fundamentals"
+            }
+        ];
+
+        let userProgress = 0;
+        let correctAnswers = 0;
+        let incorrectAnswers = 0;
+        const answeredQuestions = new Set();
+
+        function renderQuestions() {
+            const container = document.getElementById('quizContainer');
+            let currentSection = "";
+
+            examData.forEach((data, index) => {
+                if (data.section !== currentSection) {
+                    currentSection = data.section;
+                    const sectionHeader = document.createElement('div');
+                    sectionHeader.className = 'exam-section';
+                    sectionHeader.innerHTML = `<h2 class="section-title">${currentSection}</h2>`;
+                    container.appendChild(sectionHeader);
+                }
+
+                const card = document.createElement('div');
+                card.className = 'question-card';
+                card.id = `q-${index}`;
+
+                let content = `
+                    <span class="q-number">Question ${index + 1}</span>
+                    <div class="q-text">${data.q}</div>
+                `;
+
+                if (data.type === 'code') {
+                    content += `<pre><code>${data.code}</code></pre>`;
+                }
+
+                content += `<div class="options-grid">`;
+                data.options.forEach((opt, optIndex) => {
+                    content += `
+                        <div class="option" onclick="selectOption(${index}, ${optIndex})">
+                            <span style="font-weight:700; margin-right: 1rem; opacity: 0.5">${String.fromCharCode(65 + optIndex)}.</span>
+                            ${opt}
+                        </div>
+                    `;
+                });
+                content += `</div>`;
+
+                content += `
+                    <button class="btn-reveal" onclick="revealAnswer(${index})">Master Explanation</button>
+                    <div class="explanation" id="exp-${index}">
+                        <div style="font-weight:700; margin-bottom: 0.5rem; color: var(--primary)">THE MASTER'S INSIGHT:</div>
+                        ${data.explanation}
+                    </div>
+                `;
+
+                card.innerHTML = content;
+                container.appendChild(card);
+            });
+        }
+
+        window.selectOption = function (qIndex, optIndex) {
+            if (answeredQuestions.has(qIndex)) return;
+
+            const card = document.getElementById(`q-${qIndex}`);
+            const options = card.querySelectorAll('.option');
+            const data = examData[qIndex];
+
+            options.forEach(opt => opt.classList.remove('selected'));
+            options[optIndex].classList.add('selected');
+
+            // Actual functionality for scoring
+            if (optIndex === data.answer) {
+                options[optIndex].classList.add('correct');
+                correctAnswers++;
+            } else {
+                options[optIndex].classList.add('incorrect');
+                options[data.answer].classList.add('correct');
+                incorrectAnswers++;
+            }
+
+            answeredQuestions.add(qIndex);
+            updateStats();
+            revealAnswer(qIndex);
+        };
+
+        window.revealAnswer = function (index) {
+            const exp = document.getElementById(`exp-${index}`);
+            exp.style.display = 'block';
+            exp.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        };
+
+        function updateStats() {
+            document.getElementById('correctCount').innerText = correctAnswers;
+            document.getElementById('incorrectCount').innerText = incorrectAnswers;
+
+            const total = examData.length;
+            const current = answeredQuestions.size;
+            document.getElementById('progressText').innerText = `${current}/${total}`;
+
+            const percentage = (current / total) * 100;
+            document.getElementById('progressBar').style.width = `${percentage}%`;
+        }
+
+        // Initialize layout
+        document.addEventListener('DOMContentLoaded', renderQuestions);
+    </script>
+</body>
+
+</html>
