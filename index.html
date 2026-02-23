@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abul Qasim | Professor & Web Developer Portfolio</title>
+
+    <!-- SEO and Meta Tags -->
+    <meta name="description"
+        content="Portfolio and interactive course portal for Abul Qasim, Computer Science and Web Development instructor at Algonquin College. Explore courses by semester.">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;600;800;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="./assets/css/styles.css">
+</head>
+
+<body>
+
+    <!-- Dynamic Background Effects -->
+    <div class="bg-shape shape-1"></div>
+    <div class="bg-shape shape-2"></div>
+    <div class="bg-shape shape-3"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+            <a href="#" class="logo">
+                <span class="logo-text">Qasim<span class="highlight">.dev</span></span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#courses">Courses Explorer</a></li>
+                <li><a href="https://github.com/QasimTalkin/AlgonquinCollege-Live_Code_Repo" target="_blank"
+                        class="btn-outline"><i class="fab fa-github"></i> Repository</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container hero-container">
+            <div class="hero-content">
+                <div class="badge">Algonquin College Professor</div>
+                <h1 class="hero-title">
+                    Hi, I'm <span class="gradient-text">Abul Qasim</span>.<br>
+                    I build the web. & I teach it.
+                </h1>
+                <p class="hero-subtitle">
+                    Welcome to my interactive portfolio and course portal. Explore a collection of live coding
+                    repositories, resources, and lessons spanning Computer Science and Web Development.
+                </p>
+                <div class="hero-actions">
+                    <a href="#courses" class="btn-primary">Explore Courses <i class="fas fa-arrow-right"></i></a>
+                    <a href="#about" class="btn-secondary">My Philosophy</a>
+                </div>
+            </div>
+            <div class="hero-graphics">
+                <div class="code-editor-mockup glass-panel">
+                    <div class="editor-header">
+                        <span class="dot red"></span>
+                        <span class="dot yellow"></span>
+                        <span class="dot green"></span>
+                        <span class="editor-title">index.js</span>
+                    </div>
+                    <div class="editor-body">
+                        <pre><code><span class="keyword">const</span> <span class="variable">professor</span> = {
+    <span class="property">name</span>: <span class="string">'Abul Qasim'</span>,
+    <span class="property">passion</span>: <span class="string">'Empowering Students'</span>,
+    <span class="property">skills</span>: [<span class="string">'React'</span>, <span class="string">'Node.js'</span>, <span class="string">'Java'</span>, <span class="string">'Python'</span>],
+    <span class="method">teach</span>: <span class="keyword">function</span>() {
+        <span class="keyword">return</span> <span class="string">"Turning caffeine into code."</span>;
+    }
+};
+
+<span class="variable">professor</span>.<span class="method">teach</span>();</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about section-padding">
+        <div class="container">
+            <div class="section-header center">
+                <h2 class="section-title">Teaching <span class="gradient-text">Philosophy</span></h2>
+                <p class="section-desc">My goal is to give knowledge to students in a fun, interactive, and
+                    comprehensive manner. I believe learning by doing and live coding is the key to mastering
+                    technology.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card glass-panel group-hover">
+                    <div class="feature-icon"><i class="fas fa-laptop-code"></i></div>
+                    <h3>Live Coding</h3>
+                    <p>Real-time problem solving and architectural thinking in front of the classroom.</p>
+                </div>
+                <div class="feature-card glass-panel group-hover">
+                    <div class="feature-icon"><i class="fas fa-project-diagram"></i></div>
+                    <h3>Modern Stack</h3>
+                    <p>Teaching everything from core OOP in Java to modern Web Development with React and Python.</p>
+                </div>
+                <div class="feature-card glass-panel group-hover">
+                    <div class="feature-icon"><i class="fas fa-users"></i></div>
+                    <h3>Student Centric</h3>
+                    <p>Fostering an inclusive environment where questions are encouraged and curiosity is rewarded.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Courses Explorer Section -->
+    <section id="courses" class="courses section-padding">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Course <span class="gradient-text">Repository</span></h2>
+                <p class="section-desc">Browse through the semesters and access live code, masterclasses, and project
+                    materials.</p>
+            </div>
+
+            <!-- Filter Categories -->
+            <div class="course-filters" id="course-filters">
+                <button class="filter-btn active" data-filter="all">All Semesters</button>
+                <button class="filter-btn" data-filter="fall2024">Fall 2024</button>
+                <button class="filter-btn" data-filter="win2024">Winter 2024</button>
+                <button class="filter-btn" data-filter="fall2023">Fall 2023</button>
+                <button class="filter-btn" data-filter="fall2022">Fall 2022</button>
+                <button class="filter-btn" data-filter="python">Python</button>
+            </div>
+
+            <!-- Courses Grid -->
+            <div class="courses-grid" id="courses-grid">
+
+                <!-- Auto-Generated: CST8238-300-Thu -->
+                <a href="./CST8238-300-Thu/masterclass.html" target="_blank" class="course-card glass-panel mix fall2024">
+                    <div class="card-glow"></div>
+                    <div class="course-header">
+                        <span class="semester-tag">Fall 2024</span>
+                        <i class="fab fa-html5 course-icon"></i>
+                    </div>
+                    <h3 class="course-title">CST 8238 Masterclass</h3>
+                    <p class="course-desc">Web Programming Interactive Sessions.</p>
+                    <div class="course-footer">
+                        <span class="view-link">View Materials <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </a>
+
+                <!-- Auto-Generated: fal2023/CST8284 -->
+                <a href="./fal2023/CST8284/" target="_blank" class="course-card glass-panel mix fall2023">
+                    <div class="card-glow"></div>
+                    <div class="course-header">
+                        <span class="semester-tag">Fall 2023</span>
+                        <i class="fab fa-java course-icon"></i>
+                    </div>
+                    <h3 class="course-title">CST8284</h3>
+                    <p class="course-desc">CST8284</p>
+                    <div class="course-footer">
+                        <span class="view-link">View Materials <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </a>
+
+                <!-- Auto-Generated: fall2022/CST8117-FRI -->
+                <a href="./fall2022/CST8117-FRI/" target="_blank" class="course-card glass-panel mix fall2022">
+                    <div class="card-glow"></div>
+                    <div class="course-header">
+                        <span class="semester-tag">Fall 2022</span>
+                        <i class="fab fa-code course-icon"></i>
+                    </div>
+                    <h3 class="course-title">CST8117</h3>
+                    <p class="course-desc">CST8117-FRI</p>
+                    <div class="course-footer">
+                        <span class="view-link">View Materials <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </a>
+
+                <!-- Auto-Generated: fall2022/CST8117-THU -->
+                <a href="./fall2022/CST8117-THU/" target="_blank" class="course-card glass-panel mix fall2022">
+                    <div class="card-glow"></div>
+                    <div class="course-header">
+                        <span class="semester-tag">Fall 2022</span>
+                        <i class="fab fa-code course-icon"></i>
+                    </div>
+                    <h3 class="course-title">CST8117</h3>
+                    <p class="course-desc">CST8117-THU</p>
+                    <div class="course-footer">
+                        <span class="view-link">View Materials <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </a>
+
+                <!-- Auto-Generated: fall2022/CST8209-THU -->
+                <a href="./fall2022/CST8209-THU/" target="_blank" class="course-card glass-panel mix fall2022">
+                    <div class="card-glow"></div>
+                    <div class="course-header">
+                        <span class="semester-tag">Fall 2022</span>
+                        <i class="fab fa-code course-icon"></i>
+                    </div>
+                    <h3 class="course-title">CST8209</h3>
+                    <p class="course-desc">CST8209-THU</p>
+                    <div class="course-footer">
+                        <span class="view-link">View Materials <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </a>
+
+                <!-- Auto-Generated: fall2022/CST8257-W2023 -->
+                <a href="./fall2022/CST8257-W2023/" target="_blank" class="course-card glass-panel mix fall2022">
+                    <div class="card-glow"></div>
+                    <div class="course-header">
+                        <span class="semester-tag">Fall 2022</span>
+                        <i class="fab fa-code course-icon"></i>
+                    </div>
+                    <h3 class="course-title">CST8257</h3>
+                    <p class="course-desc">CST8257-W2023</p>
+                    <div class="course-footer">
+                        <span class="view-link">View Materials <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </a>
+
+                <!-- Auto-Generated: fall2022/CST8279-TUE -->
+                <a href="./fall2022/CST8279-TUE/" target="_blank" class="course-card glass-panel mix fall2022">
+                    <div class="card-glow"></div>
+                    <div class="course-header">
+                        <span class="semester-tag">Fall 2022</span>
+                        <i class="fab fa-code course-icon"></i>
+                    </div>
+                    <h3 class="course-title">CST8279</h3>
+                    <p class="course-desc">CST8279-TUE</p>
+                    <div class="course-footer">
+                        <span class="view-link">View Materials <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </a>
+
+                <!-- Auto-Generated: fall2022/CST8285-FRI -->
+                <a href="./fall2022/CST8285-FRI/" target="_blank" class="course-card glass-panel mix fall2022">
+                    <div class="card-glow"></div>
+                    <div class="course-header">
+                        <span class="semester-tag">Fall 2022</span>
+                        <i class="fab fa-code course-icon"></i>
+                    </div>
+                    <h3 class="course-title">CST8285</h3>
+                    <p class="course-desc">CST8285-FRI</p>
+                    <div class="course-footer">
+                        <span class="view-link">View Materials <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </a>
+
+                <!-- Auto-Generated: fall2022/CST8285-WED -->
+                <a href="./fall2022/CST8285-WED/" target="_blank" class="course-card glass-panel mix fall2022">
+                    <div class="card-glow"></div>
+                    <div class="course-header">
+                        <span class="semester-tag">Fall 2022</span>
+                        <i class="fab fa-code course-icon"></i>
+                    </div>
+                    <h3 class="course-title">CST8285</h3>
+                    <p class="course-desc">CST8285-WED</p>
+                    <div class="course-footer">
+                        <span class="view-link">View Materials <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </a>
+
+                <!-- Auto-Generated: python -->
+                <a href="./python/" target="_blank" class="course-card glass-panel mix python">
+                    <div class="card-glow"></div>
+                    <div class="course-header">
+                        <span class="semester-tag">Python</span>
+                        <i class="fab fa-python course-icon"></i>
+                    </div>
+                    <h3 class="course-title">Python Bootcamp</h3>
+                    <p class="course-desc">Python scripts and lessons.</p>
+                    <div class="course-footer">
+                        <span class="view-link">View Materials <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </a>
+
+                <!-- Auto-Generated: win2024/img -->
+                <a href="./win2024/img/" target="_blank" class="course-card glass-panel mix win2024">
+                    <div class="card-glow"></div>
+                    <div class="course-header">
+                        <span class="semester-tag">Winter 2024</span>
+                        <i class="fab fa-laptop-code course-icon"></i>
+                    </div>
+                    <h3 class="course-title">img</h3>
+                    <p class="course-desc">img</p>
+                    <div class="course-footer">
+                        <span class="view-link">View Materials <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-brand">
+                <span class="logo-text">Qasim<span class="highlight">.dev</span></span>
+                <p>Designed to help students learn better, faster, and write cleaner code.</p>
+            </div>
+            <div class="footer-links">
+                <h3>Campus</h3>
+                <ul>
+                    <li><a href="https://www.algonquincollege.com/" target="_blank">Algonquin College</a></li>
+                    <li><a href="https://brightspace.algonquincollege.com/" target="_blank">Brightspace</a></li>
+                </ul>
+            </div>
+            <div class="footer-connect">
+                <h3>Connect</h3>
+                <div class="social-icons">
+                    <a href="https://github.com/QasimTalkin" target="_blank"><i class="fab fa-github"></i></a>
+                    <a href="#" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; <span id="year"></span> Abul Qasim. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="./assets/js/main.js"></script>
+</body>
+
+</html>
