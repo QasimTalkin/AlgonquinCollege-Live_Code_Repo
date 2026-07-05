@@ -10,10 +10,11 @@ const path = require('path');
 // Configuration
 const ROOT_DIR = __dirname;
 const MAIN_HTML = path.join(ROOT_DIR, 'index.html');
-const IGNORED_DIRS = ['.git', 'node_modules', 'assets', 'css', 'js', '.vscode'];
+const IGNORED_DIRS = ['.git', 'node_modules', 'assets', 'css', 'js', '.vscode', 'img'];
 
 // Define Semesters based on top-level folders
 const SEMESTERS = {
+    '26S_CST8326': { label: 'Summer 2026', icon: 'fa-js', id: 'sum2026' }, // Root level course
     'fall2024': { label: 'Fall 2024', icon: 'fa-html5', id: 'fall2024' },
     'win2024': { label: 'Winter 2024', icon: 'fa-laptop-code', id: 'win2024' },
     'fall2023': { label: 'Fall 2023', icon: 'fa-java', id: 'fall2023' },
@@ -33,8 +34,8 @@ function getCourseFolders() {
     rootItems.forEach(item => {
         if (!item.isDirectory() || IGNORED_DIRS.includes(item.name)) return;
 
-        // Is it a root level course (e.g. CST8238-300-Thu, python)?
-        if (item.name === 'CST8238-300-Thu' || item.name === 'python') {
+        // Is it a root level course (e.g. CST8238-300-Thu, python, 26S_CST8326)?
+        if (item.name === 'CST8238-300-Thu' || item.name === 'python' || item.name === '26S_CST8326') {
             courseFolders.push({
                 path: item.name,
                 name: item.name,
@@ -60,7 +61,7 @@ function getCourseFolders() {
             });
 
             // If the semester folder itself has files directly (like win2024) and no sub-course folders, treat it as a course
-            const hasSubDirs = subItems.some(i => i.isDirectory());
+            const hasSubDirs = subItems.some(i => i.isDirectory() && !IGNORED_DIRS.includes(i.name));
             if (!hasSubDirs) {
                 courseFolders.push({
                     path: item.name,
@@ -192,6 +193,7 @@ function updateMainIndex(courseFolders) {
         let displayDesc = course.name;
 
         // Beautify existing names
+        if (course.name === '26S_CST8326') { displayTitle = 'CST 8326 · Web Programming'; displayDesc = 'The Web Archipelago — weekly concept guides with runnable examples.'; }
         if (course.name === 'python') { displayTitle = 'Python Bootcamp'; displayDesc = 'Python scripts and lessons.'; }
         if (displayTitle === 'CST8238') { displayTitle = 'CST 8238 Masterclass'; displayDesc = 'Web Programming Interactive Sessions.'; }
         if (displayTitle === 'fal2023') { displayTitle = 'Fall 2023 Materials'; }

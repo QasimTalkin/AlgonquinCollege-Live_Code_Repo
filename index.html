@@ -22,6 +22,9 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="./assets/css/styles.css">
+
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦦</text></svg>">
 </head>
 
 <body>
@@ -131,6 +134,7 @@
             <!-- Filter Categories -->
             <div class="course-filters" id="course-filters">
                 <button class="filter-btn active" data-filter="all">All Semesters</button>
+                <button class="filter-btn" data-filter="sum2026">Summer 2026</button>
                 <button class="filter-btn" data-filter="fall2024">Fall 2024</button>
                 <button class="filter-btn" data-filter="win2024">Winter 2024</button>
                 <button class="filter-btn" data-filter="fall2023">Fall 2023</button>
@@ -140,6 +144,20 @@
 
             <!-- Courses Grid -->
             <div class="courses-grid" id="courses-grid">
+
+                <!-- Auto-Generated: 26S_CST8326 -->
+                <a href="./26S_CST8326/" target="_blank" class="course-card glass-panel mix sum2026">
+                    <div class="card-glow"></div>
+                    <div class="course-header">
+                        <span class="semester-tag">Summer 2026</span>
+                        <i class="fab fa-js course-icon"></i>
+                    </div>
+                    <h3 class="course-title">CST 8326 · Web Programming</h3>
+                    <p class="course-desc">The Web Archipelago — weekly concept guides with runnable examples.</p>
+                    <div class="course-footer">
+                        <span class="view-link">View Materials <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </a>
 
                 <!-- Auto-Generated: CST8238-300-Thu -->
                 <a href="./CST8238-300-Thu/masterclass.html" target="_blank" class="course-card glass-panel mix fall2024">
@@ -281,15 +299,15 @@
                     </div>
                 </a>
 
-                <!-- Auto-Generated: win2024/img -->
-                <a href="./win2024/img/" target="_blank" class="course-card glass-panel mix win2024">
+                <!-- Auto-Generated: win2024 -->
+                <a href="./win2024/" target="_blank" class="course-card glass-panel mix win2024">
                     <div class="card-glow"></div>
                     <div class="course-header">
                         <span class="semester-tag">Winter 2024</span>
                         <i class="fab fa-laptop-code course-icon"></i>
                     </div>
-                    <h3 class="course-title">img</h3>
-                    <p class="course-desc">img</p>
+                    <h3 class="course-title">Winter 2024 Materials</h3>
+                    <p class="course-desc">win2024</p>
                     <div class="course-footer">
                         <span class="view-link">View Materials <i class="fas fa-arrow-right"></i></span>
                     </div>
@@ -327,6 +345,7 @@
 
     <!-- Scripts -->
     <script src="./assets/js/main.js"></script>
+    <script src="./assets/js/mascot.js" defer></script>
 </body>
 
 </html>

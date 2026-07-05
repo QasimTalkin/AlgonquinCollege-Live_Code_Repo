@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CST8326 · The Web Archipelago | Summer 2026</title>
+    <meta name="description"
+        content="CST8326 Web Programming (Summer 2026) — The Web Archipelago. Weekly concept guides, runnable examples, and quick summaries for Algonquin College students.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏝️</text></svg>">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;600;800;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="./assets/course.css">
+</head>
+
+<body>
+    <div class="bg-shape shape-1"></div>
+    <div class="bg-shape shape-2"></div>
+
+    <nav class="navbar scrolled">
+        <div class="container nav-container">
+            <a href="../index.html" class="logo">
+                <span class="logo-text">Qasim<span class="highlight">.dev</span></span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#weeks">Weekly Islands</a></li>
+                <li><a href="#resources">Resources</a></li>
+                <li><a href="../index.html#courses" class="btn-outline"><i class="fas fa-arrow-left"></i> Course Portal</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container course-page">
+
+        <!-- Hero -->
+        <header class="course-hero">
+            <div class="course-code-chip"><i class="fas fa-anchor"></i> 26S &middot; CST8326 &middot; WEB PROGRAMMING</div>
+            <h1 class="hero-title">The Web <span class="gradient-text">Archipelago</span></h1>
+            <p class="hero-subtitle">
+                Every week of the course is an island. Sail from one to the next, explore the concepts,
+                run the code right in your browser, and level up your web programming skills.
+            </p>
+            <div class="hero-meta">
+                <span><i class="fas fa-sun"></i> Summer 2026</span>
+                <span><i class="fas fa-graduation-cap"></i> Algonquin College</span>
+                <span><i class="fab fa-js"></i> HTML &middot; CSS &middot; JavaScript</span>
+            </div>
+        </header>
+
+        <div class="ocean" aria-hidden="true">
+            <div class="wave"></div>
+            <div class="wave"></div>
+        </div>
+
+        <!-- How it works -->
+        <section class="section-padding" style="padding: 40px 0;">
+            <div class="features-grid">
+                <div class="feature-card glass-panel">
+                    <div class="feature-icon"><i class="fas fa-book-open"></i></div>
+                    <h3>Clear Breakdowns</h3>
+                    <p>Each island explains one topic properly — short summaries, real explanations, no wall-of-slides.</p>
+                </div>
+                <div class="feature-card glass-panel">
+                    <div class="feature-icon"><i class="fas fa-play"></i></div>
+                    <h3>Runnable Examples</h3>
+                    <p>Press <strong>Run</strong> on any example and watch the console output live. No setup needed.</p>
+                </div>
+                <div class="feature-card glass-panel">
+                    <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+                    <h3>Quick Revision</h3>
+                    <p>Comparison tables, key takeaways and self-check quizzes to review before labs and exams.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Weekly islands -->
+        <section id="weeks" style="padding: 20px 0 60px;">
+            <div class="section-header">
+                <h2 class="section-title">Weekly <span class="gradient-text">Islands</span></h2>
+                <p class="section-desc">New islands are charted as the semester sails on. Check back every week!</p>
+            </div>
+
+            <div class="islands-grid">
+                <div class="island-card locked">
+                    <div class="island-icon">🧭</div>
+                    <span class="island-week">Weeks 1 – 8</span>
+                    <h3>The Voyage So Far</h3>
+                    <p>HTML foundations, CSS layout and styling, JavaScript basics, the DOM and events — covered in class. Materials are being brought online.</p>
+                    <span class="island-status soon"><i class="fas fa-clock"></i> Coming online</span>
+                </div>
+
+                <a href="./week9/index.html" class="island-card live">
+                    <div class="island-icon">⚡</div>
+                    <span class="island-week">Week 9</span>
+                    <h3>Asynchronous JavaScript</h3>
+                    <p>How JS handles time: the event loop, setTimeout, callbacks, Promises, async/await and the Fetch API — with live, runnable demos.</p>
+                    <span class="island-status open"><i class="fas fa-circle-check"></i> Explore this island</span>
+                </a>
+
+                <div class="island-card locked">
+                    <div class="island-icon">🌫️</div>
+                    <span class="island-week">Week 10 +</span>
+                    <h3>Uncharted Waters</h3>
+                    <p>The next islands are still behind the fog. They will appear here as we reach them during the semester.</p>
+                    <span class="island-status soon"><i class="fas fa-map"></i> Charting soon</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Resources -->
+        <section id="resources" style="padding: 20px 0 80px;">
+            <div class="section-header">
+                <h2 class="section-title">Supply <span class="gradient-text">Stations</span></h2>
+                <p class="section-desc">Everything you need for the journey.</p>
+            </div>
+            <div class="features-grid">
+                <a class="feature-card glass-panel" href="https://learn.zybooks.com/" target="_blank" rel="noopener">
+                    <div class="feature-icon"><i class="fas fa-book"></i></div>
+                    <h3>Zybooks</h3>
+                    <p>The official course textbook. Weekly reading sections are listed at the end of each island.</p>
+                </a>
+                <a class="feature-card glass-panel" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" rel="noopener">
+                    <div class="feature-icon"><i class="fab fa-firefox-browser"></i></div>
+                    <h3>MDN Web Docs</h3>
+                    <p>The best reference on the web for HTML, CSS and JavaScript. Bookmark it — professionals use it daily.</p>
+                </a>
+                <a class="feature-card glass-panel" href="https://brightspace.algonquincollege.com/" target="_blank" rel="noopener">
+                    <div class="feature-icon"><i class="fas fa-school"></i></div>
+                    <h3>Brightspace</h3>
+                    <p>Announcements, assignment submissions, grades and official course communication.</p>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-brand">
+                <span class="logo-text">Qasim<span class="highlight">.dev</span></span>
+                <p>CST8326 · The Web Archipelago · Summer 2026</p>
+            </div>
+            <div class="footer-links">
+                <h3>Navigate</h3>
+                <ul>
+                    <li><a href="../index.html">Course Portal</a></li>
+                    <li><a href="./week9/index.html">Week 9 · Async JavaScript</a></li>
+                </ul>
+            </div>
+            <div class="footer-connect">
+                <h3>Connect</h3>
+                <div class="social-icons">
+                    <a href="https://github.com/QasimTalkin" target="_blank" rel="noopener"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; <span id="year"></span> Abul Qasim &middot; Algonquin College</p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+        window.ALGO_TIPS = [
+            "Welcome aboard! I'm Algo the Otter, your CST8326 navigator 🦦",
+            "Week 9 is live! Asynchronous JavaScript awaits — click the ⚡ island.",
+            "Try the runnable examples — reading code is good, running it is better.",
+            "Zybooks reading + the island page + the quiz = exam-ready.",
+            "Bookmark this page. New islands appear every week!",
+            "console.log() is your telescope 🔭 — use it to see what your code is doing."
+        ];
+    </script>
+    <script src="../assets/js/mascot.js" defer></script>
+</body>
+
+</html>

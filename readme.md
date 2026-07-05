@@ -1,4 +1,10 @@
 
+🌐 **Live site:** [qasimtalkin.github.io/AlgonquinCollege-Live_Code_Repo](https://qasimtalkin.github.io/AlgonquinCollege-Live_Code_Repo/)
+
+# SUMMER-2026
+
+### [CST-8326 WEB PROGRAMMING · The Web Archipelago](https://github.com/QasimTalkin/AlgonquinCollege-Live_Code_Repo/tree/main/26S_CST8326)
+
 # FALL-2024
 
 ### [CST-8285-TUESDAY 5:00PM - 7:00PM](https://github.com/QasimTalkin/AlgonquinCollege-Live_Code_Repo/tree/main/win2024)
