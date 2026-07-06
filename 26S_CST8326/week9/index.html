@@ -50,10 +50,17 @@
                 Asynchronous <span class="gradient-text">JavaScript</span>
             </h1>
             <p class="hero-subtitle" style="margin: 0; max-width: 72ch;">
-                JavaScript can only do <em>one thing at a time</em> — yet web apps download data, run timers and react
-                to clicks all at once. This island explains how: the event loop, callbacks, Promises,
-                <span class="inline-code">async/await</span> and the Fetch API.
+                JavaScript does <b class="kw">one thing at a time</b> — yet the page never freezes. This is how.
             </p>
+            <div class="key-strip" style="margin-top: 18px;">
+                <span class="key-label">This week</span>
+                <span class="key-chip">event loop</span>
+                <span class="key-chip">setTimeout</span>
+                <span class="key-chip warm">callbacks</span>
+                <span class="key-chip">Promises</span>
+                <span class="key-chip good">async / await</span>
+                <span class="key-chip">Fetch API</span>
+            </div>
         </header>
 
         <div class="doc-layout">
@@ -84,36 +91,40 @@
                 <!-- 0. OVERVIEW -->
                 <section id="overview">
                     <h2><span class="section-num">0</span> Week at a glance</h2>
-                    <p class="section-lede">
-                        By the end of this week you should be able to answer four questions — everything below serves one of them.
-                    </p>
-                    <ul>
-                        <li><strong>What</strong> is asynchronous programming, and how is it different from synchronous code?</li>
-                        <li><strong>How</strong> does JavaScript — a single-threaded language — handle things that take time?</li>
-                        <li><strong>Which tools</strong> do we have for async work: <strong>callbacks → Promises → async/await</strong> (each generation fixes problems of the previous one)?</li>
-                        <li><strong>How</strong> do we load real data from a server with the <strong>Fetch API</strong>?</li>
+                    <div class="board-line"><i class="fas fa-route"></i>
+                        <span>callbacks <span class="b">→</span> Promises <span class="b">→</span> async/await <span class="b">→</span> fetch. Each generation fixes the last one's problems.</span>
+                    </div>
+                    <ul class="tight">
+                        <li><b class="kw">Async programming</b> — start slow work now, handle the result <em>later</em>, never freeze the page.</li>
+                        <li><b class="kw">Event loop</b> — how one single thread fakes doing many things at once.</li>
+                        <li><b class="kw">Three tools</b> — callbacks (old) · Promises (ES6) · async/await (ES2017, built on Promises).</li>
+                        <li><b class="kw">Fetch API</b> — real data from real servers, returned as a Promise.</li>
                     </ul>
                     <div class="callout tip">
                         <i class="fas fa-lightbulb"></i>
-                        <p><strong>How to study this page:</strong> don't just read — press <strong>Run</strong> on every example
-                        and predict the output <em>before</em> it appears. If your prediction is wrong, that's where the learning is.</p>
+                        <p><strong>Every example is live.</strong> Press <b class="kw">Run</b> to execute — or click into the code and
+                        <b class="kw">edit it</b>. Flip <b class="kw">auto-run</b> (top-right of each example) to re-run automatically as you type.</p>
                     </div>
                 </section>
 
                 <!-- 1. SYNC VS ASYNC -->
                 <section id="sync-vs-async">
                     <h2><span class="section-num">1</span> Synchronous vs. asynchronous</h2>
-                    <p class="section-lede">
-                        Think of a coffee shop with one barista. <strong>Synchronous</strong>: the barista takes your order,
-                        makes your drink, hands it over — and only then serves the next customer. <strong>Asynchronous</strong>:
-                        the barista takes your order, starts the machine, and serves the next customer <em>while</em> your coffee brews.
-                    </p>
+                    <div class="key-strip">
+                        <span class="key-label">Key terms</span>
+                        <span class="key-chip bad">synchronous = blocking</span>
+                        <span class="key-chip good">asynchronous = non-blocking</span>
+                        <span class="key-chip">event-driven</span>
+                    </div>
+                    <div class="board-line"><i class="fas fa-mug-hot"></i>
+                        <span>One barista. <span class="b">Sync:</span> serve one customer start-to-finish. <span class="b">Async:</span> start the machine, serve the next customer while it brews.</span>
+                    </div>
 
-                    <h3><i class="fas fa-hourglass-half"></i> Synchronous (blocking) code</h3>
-                    <p>
-                        In synchronous code, every statement must <strong>finish completely</strong> before the next one starts.
-                        The code below always prints in the exact order it is written — nothing can jump the queue:
-                    </p>
+                    <h3><i class="fas fa-hourglass-half"></i> Synchronous — blocking</h3>
+                    <ul class="tight">
+                        <li>Each line <b class="kw">finishes completely</b> before the next starts. Order is guaranteed.</li>
+                        <li>Cost: while it runs, the page is <b class="kw">frozen</b> — no clicks, no scroll, no animation.</li>
+                    </ul>
                     <div class="code-block runner">
                         <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">synchronous.js</span></div>
                         <pre><code>console.log("Start");
@@ -126,18 +137,12 @@ console.log("End");</code></pre>
                         <div class="code-actions"><button class="run-btn"><i class="fas fa-play"></i> Run</button><button class="clear-btn">Clear</button></div>
                         <div class="run-out" aria-live="polite"></div>
                     </div>
-                    <p>
-                        This is simple and predictable — but it has a dark side: while a synchronous task runs,
-                        <strong>the whole page is frozen</strong>. No clicks, no scrolling, no animation. If that loop took
-                        10 seconds, your user would stare at a dead page for 10 seconds.
-                    </p>
 
-                    <h3><i class="fas fa-bolt"></i> Asynchronous (event-driven) code</h3>
-                    <p>
-                        JavaScript in the browser is <strong>event-driven</strong>: instead of waiting, you register a function
-                        to run <em>later</em>, when something happens (a click, a timer, data arriving). Registration is instant —
-                        the rest of your code keeps going:
-                    </p>
+                    <h3><i class="fas fa-bolt"></i> Asynchronous — event-driven</h3>
+                    <ul class="tight">
+                        <li><b class="kw">Register a function</b> to run later, when something happens (click, timer, data arrives).</li>
+                        <li>Registration is <b class="kw">instant</b> — the rest of the code keeps going.</li>
+                    </ul>
                     <div class="code-block">
                         <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">event-driven.html</span></div>
                         <pre><code>&lt;button id="btn"&gt;Click me&lt;/button&gt;
@@ -145,34 +150,22 @@ console.log("End");</code></pre>
   const button = document.getElementById("btn");
 
   button.addEventListener("click", function () {
-    alert("Button was clicked!");   // runs LATER, only when clicked
+    alert("Button was clicked!");   // runs LATER — only when clicked
   });
 
-  console.log("Page loaded");        // runs IMMEDIATELY
+  console.log("Page loaded");        // runs NOW
 &lt;/script&gt;</code></pre>
                     </div>
-                    <p>
-                        <span class="inline-code">"Page loaded"</span> prints right away, even though the click handler was
-                        written first. The handler waits patiently, possibly forever, until a click actually happens.
-                    </p>
 
-                    <h3><i class="fas fa-question-circle"></i> Why we need asynchronous programming</h3>
-                    <p>Real web apps constantly do things that take unpredictable amounts of time:</p>
-                    <ul>
-                        <li><strong>Communicating with servers</strong> — fetching JSON, submitting forms, loading images</li>
-                        <li><strong>Timers</strong> — countdowns, auto-save, animations, polling</li>
-                        <li><strong>User events</strong> — clicks, keystrokes, scrolling</li>
-                        <li><strong>Heavy processing</strong> — work you don't want to freeze the page</li>
-                    </ul>
-                    <p>Doing these asynchronously gives us:</p>
+                    <h3><i class="fas fa-question-circle"></i> Why we need it</h3>
                     <div class="table-wrap">
                         <table class="doc-table">
-                            <thead><tr><th>Benefit</th><th>What it means</th></tr></thead>
+                            <thead><tr><th>Benefit</th><th>Meaning</th></tr></thead>
                             <tbody>
-                                <tr><td>Better user experience</td><td>The page stays responsive — buttons and scrolling keep working while data loads.</td></tr>
-                                <tr><td>Non-blocking I/O</td><td>Slow operations (network, files) run "in the background" instead of freezing the thread.</td></tr>
-                                <tr><td>Better performance</td><td>Multiple slow operations can be in flight at the same time instead of queuing up.</td></tr>
-                                <tr><td>Scalability</td><td>The same model lets servers (Node.js) handle thousands of simultaneous connections.</td></tr>
+                                <tr><td>Better UX</td><td>Page stays responsive while data loads.</td></tr>
+                                <tr><td>Non-blocking I/O</td><td>Network / file work runs in the background.</td></tr>
+                                <tr><td>Performance</td><td>Many slow operations in flight at once.</td></tr>
+                                <tr><td>Scalability</td><td>Same model powers Node.js servers with thousands of connections.</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -181,21 +174,25 @@ console.log("End");</code></pre>
                 <!-- 2. EVENT LOOP -->
                 <section id="event-loop">
                     <h2><span class="section-num">2</span> How JavaScript executes</h2>
-                    <p class="section-lede">
-                        Here's the puzzle: JavaScript has <strong>one thread</strong> — one call stack, one thing at a time.
-                        So who is counting down the timer while your code keeps running? Answer: <strong>the browser</strong>.
-                    </p>
-                    <p>The mental model has four parts:</p>
-                    <ul>
-                        <li><strong>Call stack</strong> — where JavaScript runs your functions, one at a time.</li>
-                        <li><strong>Web APIs</strong> — browser helpers (timers, network, events) that work <em>outside</em> the JS thread.</li>
-                        <li><strong>Callback queue</strong> — finished background work drops its callback function here to wait.</li>
-                        <li><strong>Event loop</strong> — the doorman: <em>when the call stack is empty</em>, it moves the next callback from the queue onto the stack.</li>
+                    <div class="key-strip">
+                        <span class="key-label">Key terms</span>
+                        <span class="key-chip">single thread</span>
+                        <span class="key-chip">call stack</span>
+                        <span class="key-chip">Web APIs</span>
+                        <span class="key-chip">callback queue</span>
+                        <span class="key-chip good">event loop</span>
+                    </div>
+                    <div class="board-line"><i class="fas fa-infinity"></i>
+                        <span>JS has <span class="b">one thread</span>. The <span class="b">browser</span> does the waiting. The <span class="b">event loop</span> brings results back — when the stack is empty.</span>
+                    </div>
+                    <ul class="tight">
+                        <li><b class="kw">Call stack</b> — where your functions run, one at a time.</li>
+                        <li><b class="kw">Web APIs</b> — browser helpers (timers, network, events) working <em>outside</em> the JS thread.</li>
+                        <li><b class="kw">Callback queue</b> — finished background work waits here.</li>
+                        <li><b class="kw">Event loop</b> — moves queued callbacks onto the stack <em>only when it's empty</em>.</li>
                     </ul>
 
-                    <h3><i class="fas fa-film"></i> Watch it happen — step by step</h3>
-                    <p>Press <strong>Play</strong> and watch how the classic three-line program flows through the system:</p>
-
+                    <h3><i class="fas fa-film"></i> Watch it happen</h3>
                     <div class="eventloop-viz glass-panel" style="padding: 20px; border-radius: var(--radius-md);">
                         <div>
                             <div class="code-block" style="margin: 0 0 12px;">
@@ -216,36 +213,35 @@ console.log("End");</code></pre>
                         </div>
                     </div>
 
-                    <div class="callout def">
-                        <i class="fas fa-book"></i>
-                        <p><strong>Definition — Event loop:</strong> the mechanism that lets single-threaded JavaScript appear to do
-                        many things at once, by handing slow work to the browser and running the callbacks later, when the stack is free.</p>
-                    </div>
                     <div class="callout warn">
                         <i class="fas fa-triangle-exclamation"></i>
-                        <p><strong>Exam favourite:</strong> a callback <em>never interrupts</em> running code. Even
-                        <span class="inline-code">setTimeout(fn, 0)</span> waits until the current code finishes — the delay is a
-                        <em>minimum</em>, not a guarantee.</p>
+                        <p><strong>Exam favourite:</strong> a callback <b class="kw">never interrupts</b> running code.
+                        Even <span class="inline-code">setTimeout(fn, 0)</span> waits for the current code to finish —
+                        the delay is a <b class="kw">minimum</b>, not a guarantee.</p>
                     </div>
                 </section>
 
                 <!-- 3. SETTIMEOUT -->
                 <section id="settimeout">
                     <h2><span class="section-num">3</span> setTimeout &amp; timers</h2>
-                    <p class="section-lede">
-                        <span class="inline-code">setTimeout</span> is the simplest asynchronous tool: "run this function after a delay".
-                        It is our lab rat for the whole week — every async concept can be demonstrated with it.
-                    </p>
+                    <div class="key-strip">
+                        <span class="key-label">Key terms</span>
+                        <span class="key-chip">setTimeout(fn, ms)</span>
+                        <span class="key-chip">callback</span>
+                        <span class="key-chip">1000 ms = 1 s</span>
+                    </div>
                     <div class="code-block">
                         <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">syntax</span></div>
                         <pre><code>setTimeout(callbackFunction, delay, param1, param2, ...);
-// callbackFunction : the code to run after the delay
-// delay            : time to wait, in milliseconds (1000 ms = 1 second)
-// params           : optional arguments passed to the callback</code></pre>
+// callbackFunction : code to run after the delay
+// delay            : wait time in milliseconds
+// params           : optional arguments for the callback</code></pre>
                     </div>
 
                     <h3><i class="fas fa-flask"></i> The most important example of the week</h3>
-                    <p>Before you press Run — <strong>predict the order</strong> of the three messages:</p>
+                    <div class="board-line"><i class="fas fa-hand-point-right"></i>
+                        <span>Predict the order — then Run.</span>
+                    </div>
                     <div class="code-block runner">
                         <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">timers.js</span></div>
                         <pre><code>console.log("Before setTimeout");
@@ -259,30 +255,26 @@ console.log("After setTimeout");</code></pre>
                         <div class="code-actions"><button class="run-btn"><i class="fas fa-play"></i> Run</button><button class="clear-btn">Clear</button></div>
                         <div class="run-out" aria-live="polite"></div>
                     </div>
-                    <p>
-                        <span class="inline-code">"After setTimeout"</span> prints <strong>before</strong>
-                        <span class="inline-code">"A second has passed"</span>. JavaScript does not stop at
-                        <span class="inline-code">setTimeout</span> — it hands the timer to the browser and keeps going.
-                        One second later, the event loop brings the callback back. This one behaviour explains
-                        almost everything else this week.
-                    </p>
+                    <ul class="tight">
+                        <li>JS <b class="kw">does not stop</b> at setTimeout — the timer goes to the browser, the code goes on.</li>
+                        <li>This one behaviour explains <b class="kw">everything else this week</b>.</li>
+                    </ul>
                 </section>
 
                 <!-- 4. CALLBACKS -->
                 <section id="callbacks">
                     <h2><span class="section-num">4</span> Callbacks — the original technique</h2>
-                    <p class="section-lede">
-                        Generation one of async JavaScript (and still everywhere: event listeners, timers, array methods).
-                    </p>
+                    <div class="key-strip">
+                        <span class="key-label">Key terms</span>
+                        <span class="key-chip">function as argument</span>
+                        <span class="key-chip">called back later</span>
+                        <span class="key-chip warm">no parentheses!</span>
+                    </div>
                     <div class="callout def">
                         <i class="fas fa-book"></i>
-                        <p><strong>Definition — Callback:</strong> a function that you <strong>pass as an argument</strong> to another
-                        function, so that it can be <strong>called back</strong> later — usually when some work has finished.</p>
+                        <p><strong>Callback</strong> = a function <b class="kw">passed as an argument</b> to another function,
+                        to be <b class="kw">called back later</b>. Used for HTTP requests, timers, user events, file operations.</p>
                     </div>
-                    <p>
-                        This works because in JavaScript, functions are <strong>values</strong> — you can store them in variables
-                        and hand them to other functions like any other data. The receiving function decides <em>when</em> to call them:
-                    </p>
                     <div class="code-block runner">
                         <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">callback-basics.js</span></div>
                         <pre><code>const doSomething = (cb) =&gt; {
@@ -300,17 +292,14 @@ doSomething(nextStep);        // pass the FUNCTION itself — no parentheses!</c
                     </div>
                     <div class="callout warn">
                         <i class="fas fa-triangle-exclamation"></i>
-                        <p><strong>Classic mistake:</strong> writing <span class="inline-code">doSomething(nextStep())</span> — with
-                        parentheses — calls <span class="inline-code">nextStep</span> <em>immediately</em> and passes its <em>return value</em>.
-                        Pass the function name only: <span class="inline-code">doSomething(nextStep)</span>.</p>
+                        <p><strong>Classic mistake:</strong> <span class="inline-code">doSomething(nextStep())</span> calls it
+                        <b class="kw">now</b>. <span class="inline-code">doSomething(nextStep)</span> passes it to call <b class="kw">later</b>.</p>
                     </div>
 
                     <h3><i class="fas fa-cloud-arrow-down"></i> Callbacks for async work</h3>
-                    <p>
-                        Callbacks shine when the work takes time. Here <span class="inline-code">fetchData</span> simulates a slow
-                        server request (2&nbsp;seconds) and delivers the result <em>through the callback</em> — that's how async
-                        functions "return" values when the caller has already moved on:
-                    </p>
+                    <div class="board-line"><i class="fas fa-truck"></i>
+                        <span>Async functions can't <span class="b">return</span> the result — they <span class="b">deliver</span> it through the callback.</span>
+                    </div>
                     <div class="code-block runner">
                         <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">async-callback.js</span></div>
                         <pre><code>function fetchData(callback) {
@@ -334,82 +323,94 @@ fetchData(processData);          // pass processData as the callback</code></pre
                 <!-- 5. CALLBACK HELL -->
                 <section id="callback-hell">
                     <h2><span class="section-num">5</span> Callback hell</h2>
-                    <p class="section-lede">
-                        Callbacks fall apart when async steps <strong>depend on each other</strong>: get the user →
-                        <em>then</em> get their posts → <em>then</em> get the comments. Each step must nest inside the previous
-                        callback, and the code slides diagonally off the screen:
-                    </p>
-                    <div class="pyramid">
-<span class="lvl1">fetchUser(1, (user) =&gt; {</span>
-<span class="lvl2">    fetchPosts(user, (posts) =&gt; {</span>
-<span class="lvl3">        fetchComments(posts, (comments) =&gt; {</span>
-<span class="lvl4">            console.log("Final data:", comments);   // 3 levels deep already…</span>
+                    <div class="key-strip">
+                        <span class="key-label">Key terms</span>
+                        <span class="key-chip bad">pyramid of doom</span>
+                        <span class="key-chip bad">nesting</span>
+                        <span class="key-chip warm">error handling at every level</span>
+                    </div>
+                    <div class="board-line"><i class="fas fa-fire"></i>
+                        <span>Steps that <span class="b">depend on each other</span> must nest. Add error checks, and the code slides off the screen.</span>
+                    </div>
+                    <div class="pyramid"><span class="lvl1">getUser(1, function (err, user) {</span>
+<span class="lvl2">    getPosts(user.id, function (err, posts) {</span>
+<span class="lvl3">        getComments(posts[0].id, function (err, comments) {</span>
+<span class="lvl4">            getAuthor(comments[0].by, function (err, author) {</span>
+<span class="lvl5">                sendThanks(author, function (err, status) {</span>
+<span class="lvl5">                    // ...you are now 5 levels deep 💀</span>
+<span class="lvl5">                });</span>
+<span class="lvl4">            });</span>
 <span class="lvl3">        });</span>
 <span class="lvl2">    });</span>
-<span class="lvl1">});</span>
-                    </div>
-                    <p>This shape is called the <strong>pyramid of doom</strong>. Try the full version:</p>
+<span class="lvl1">});</span></div>
+                    <p>The real thing, with the error checks every level needs. Try to follow it — that's the point:</p>
                     <div class="code-block runner">
                         <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">callback-hell.js</span></div>
-                        <pre><code>function fetchUser(userId, callback) {
-  setTimeout(() =&gt; {
-    console.log("Fetched user");
-    callback({ id: userId, name: "Dinn" });
-  }, 1000);
-}
+                        <pre><code>// Five fake "API" functions — each takes (input, callback(err, result))
+function getUser(id, cb)       { setTimeout(() =&gt; cb(null, { id: id, name: "Dinn" }), 500); }
+function getPosts(userId, cb)  { setTimeout(() =&gt; cb(null, [{ id: 7, title: "Post 1" }]), 500); }
+function getComments(postId, cb){ setTimeout(() =&gt; cb(null, [{ id: 99, by: 3, text: "Nice!" }]), 500); }
+function getAuthor(userId, cb) { setTimeout(() =&gt; cb(null, { id: userId, name: "Hala" }), 500); }
+function sendThanks(user, cb)  { setTimeout(() =&gt; cb(null, "thanked " + user.name), 500); }
 
-function fetchPosts(user, callback) {
-  setTimeout(() =&gt; {
-    console.log("Fetched posts for " + user.name);
-    callback(["Post 1", "Post 2"]);
-  }, 1000);
-}
-
-function fetchComments(posts, callback) {
-  setTimeout(() =&gt; {
-    console.log("Fetched comments for " + posts[0]);
-    callback(["Comment 1", "Comment 2"]);
-  }, 1000);
-}
-
-// Each step nests inside the previous one…
-fetchUser(1, (user) =&gt; {
-  fetchPosts(user, (posts) =&gt; {
-    fetchComments(posts, (comments) =&gt; {
-      console.log("Final data:", comments);
+// The task: user -&gt; posts -&gt; comments -&gt; comment author -&gt; send thanks
+getUser(1, function (err, user) {
+  if (err) { console.log("could not load user"); return; }
+  console.log("1. got user:", user.name);
+  getPosts(user.id, function (err, posts) {
+    if (err) { console.log("could not load posts"); return; }
+    console.log("2. got " + posts.length + " post(s)");
+    getComments(posts[0].id, function (err, comments) {
+      if (err) { console.log("could not load comments"); return; }
+      console.log("3. got comment:", comments[0].text);
+      getAuthor(comments[0].by, function (err, author) {
+        if (err) { console.log("could not load author"); return; }
+        console.log("4. comment author:", author.name);
+        sendThanks(author, function (err, status) {
+          if (err) { console.log("could not send thanks"); return; }
+          console.log("5. done:", status);
+          // Homework: try inserting ONE new step in the middle 😈
+        });
+      });
     });
   });
 });</code></pre>
                         <div class="code-actions"><button class="run-btn"><i class="fas fa-play"></i> Run</button><button class="clear-btn">Clear</button></div>
                         <div class="run-out" aria-live="polite"></div>
                     </div>
-                    <p>Why this hurts in real projects:</p>
-                    <ul>
-                        <li><strong>Readability</strong> — the logic reads diagonally instead of top-to-bottom.</li>
-                        <li><strong>Error handling</strong> — every level needs its own manual error check; there is no single place to catch failures.</li>
-                        <li><strong>Maintenance</strong> — inserting or reordering a step means re-nesting everything below it.</li>
+                    <ul class="tight">
+                        <li><b class="kw">Reads diagonally</b> — the logic drifts right instead of down.</li>
+                        <li><b class="kw">5 separate error checks</b> — no single place to catch failures.</li>
+                        <li><b class="kw">Fragile</b> — inserting or reordering one step means re-nesting everything below it.</li>
                     </ul>
-                    <p>JavaScript's answer, added in ES6 (2015): <strong>Promises</strong>.</p>
+                    <div class="board-line"><i class="fas fa-life-ring"></i>
+                        <span>The fix, since ES6 (2015): <span class="b">Promises</span>.</span>
+                    </div>
                 </section>
 
                 <!-- 6. PROMISES -->
                 <section id="promises">
                     <h2><span class="section-num">6</span> Promises</h2>
-                    <p class="section-lede">
-                        A Promise is exactly what it sounds like: an IOU. "I don't have your value <em>yet</em>,
-                        but I promise you'll either get it — or a reason why not."
-                    </p>
+                    <div class="key-strip">
+                        <span class="key-label">Key terms</span>
+                        <span class="key-chip warm">pending</span>
+                        <span class="key-chip good">fulfilled</span>
+                        <span class="key-chip bad">rejected</span>
+                        <span class="key-chip">.then()</span>
+                        <span class="key-chip">.catch()</span>
+                        <span class="key-chip">.finally()</span>
+                        <span class="key-chip">chaining</span>
+                    </div>
                     <div class="callout def">
                         <i class="fas fa-book"></i>
-                        <p><strong>Definition — Promise:</strong> an object that represents a value that will be available
-                        <strong>in the future</strong>. It gives all asynchronous code one standard interface.</p>
+                        <p><strong>Promise</strong> = an object representing a <b class="kw">future value</b>. An IOU:
+                        "you'll get the value — or a reason why not."</p>
                     </div>
 
                     <h3><i class="fas fa-diagram-project"></i> The three states</h3>
-                    <p>
-                        A promise starts <strong>pending</strong> and settles <em>exactly once</em>, into one of two final states.
-                        Try it yourself — you play the role of the async operation:
-                    </p>
+                    <div class="board-line"><i class="fas fa-arrows-split-up-and-left"></i>
+                        <span><span class="b">pending</span> → settles <span class="b">exactly once</span> → <span class="b">fulfilled</span> (value) or <span class="b">rejected</span> (reason).</span>
+                    </div>
                     <div class="promise-machine" id="promise-machine">
                         <div class="pm-state pending" id="pm-state">⏳ pending</div>
                         <div class="pm-actions">
@@ -419,27 +420,19 @@ fetchUser(1, (user) =&gt; {
                         </div>
                         <div class="pm-log" id="pm-log">The promise is pending — its <span style="font-family:var(--font-mono)">.then()</span> and <span style="font-family:var(--font-mono)">.catch()</span> handlers are waiting…</div>
                     </div>
-                    <ul>
-                        <li><strong>Pending</strong> — initial state; the operation hasn't finished.</li>
-                        <li><strong>Fulfilled (resolved)</strong> — the operation succeeded; the promise now holds a <em>value</em>.</li>
-                        <li><strong>Rejected</strong> — the operation failed; the promise now holds a <em>reason</em> (an error).</li>
-                    </ul>
                     <div class="callout tip">
                         <i class="fas fa-lightbulb"></i>
-                        <p>Notice in the demo: once settled, the buttons stop working. <strong>A promise can only settle once</strong> —
-                        calling resolve or reject again does nothing.</p>
+                        <p>Once settled, the buttons stop working — <b class="kw">a promise settles only once</b>.</p>
                     </div>
 
                     <h3><i class="fas fa-hammer"></i> Creating a promise</h3>
-                    <p>
-                        You build one with <span class="inline-code">new Promise(executor)</span>. The executor function receives
-                        two functions from JavaScript itself: call <span class="inline-code">resolve(value)</span> on success,
-                        <span class="inline-code">reject(reason)</span> on failure:
-                    </p>
+                    <ul class="tight">
+                        <li>You get two functions from JS: call <b class="kw">resolve(value)</b> on success, <b class="kw">reject(reason)</b> on failure.</li>
+                    </ul>
                     <div class="code-block runner">
                         <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">creating-a-promise.js</span></div>
                         <pre><code>const myPromise = new Promise((resolve, reject) =&gt; {
-  let success = true;              // flip to false to see the rejection path
+  let success = true;              // flip to false → rejection path
 
   setTimeout(() =&gt; {
     if (success) {
@@ -447,7 +440,7 @@ fetchUser(1, (user) =&gt; {
     } else {
       reject("Promise rejected! Something went wrong.");
     }
-  }, 2000);                        // simulate a slow operation
+  }, 2000);
 });
 
 myPromise
@@ -457,12 +450,12 @@ myPromise
                         <div class="run-out" aria-live="polite"></div>
                     </div>
 
-                    <h3><i class="fas fa-inbox"></i> Consuming a promise with <span style="font-family: var(--font-mono);">.then()</span></h3>
-                    <p>
-                        <span class="inline-code">.then(callback)</span> registers what should happen <strong>when the promise
-                        fulfills</strong>. The callback receives the resolved value as its argument. Registering is instant —
-                        the callback runs later:
-                    </p>
+                    <h3><i class="fas fa-inbox"></i> Consuming with <span style="font-family: var(--font-mono);">.then()</span></h3>
+                    <ul class="tight">
+                        <li><b class="kw">.then(callback)</b> = "when fulfilled, run this with the value".</li>
+                        <li>Registering is <b class="kw">instant</b> — the callback runs later.</li>
+                        <li>Shortcuts: <span class="inline-code">Promise.resolve(v)</span> / <span class="inline-code">Promise.reject(r)</span> create already-settled promises.</li>
+                    </ul>
                     <div class="code-block runner">
                         <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">consuming.js</span></div>
                         <pre><code>const setTimeoutPromise = (time) =&gt; {
@@ -481,21 +474,11 @@ console.log("After setTimeoutPromise");</code></pre>
                         <div class="code-actions"><button class="run-btn"><i class="fas fa-play"></i> Run</button><button class="clear-btn">Clear</button></div>
                         <div class="run-out" aria-live="polite"></div>
                     </div>
-                    <p>
-                        Same pattern as section 3 — "After" prints before "one second later" — but now the timer is wrapped
-                        in a promise, which we can chain, combine, and <span class="inline-code">await</span>.
-                        For quick tests there are also shortcuts:
-                        <span class="inline-code">Promise.resolve(value)</span> creates an already-fulfilled promise, and
-                        <span class="inline-code">Promise.reject(reason)</span> an already-rejected one (which is an
-                        <em>Uncaught (in promise)</em> error if you never attach a <span class="inline-code">.catch</span>).
-                    </p>
 
-                    <h3><i class="fas fa-link"></i> Chaining promises</h3>
-                    <p>
-                        The superpower: <strong><span class="inline-code">.then()</span> returns a new promise</strong>, so chains
-                        read top-to-bottom. Whatever you <span class="inline-code">return</span> inside a
-                        <span class="inline-code">.then</span> becomes the input of the next one:
-                    </p>
+                    <h3><i class="fas fa-link"></i> Chaining</h3>
+                    <div class="board-line"><i class="fas fa-hand-point-right"></i>
+                        <span><span class="b">.then() returns a new promise</span> — whatever you <span class="b">return</span> becomes the next .then()'s input.</span>
+                    </div>
                     <div class="code-block runner">
                         <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">chaining.js</span></div>
                         <pre><code>const fetchData = new Promise((resolve) =&gt; {
@@ -507,7 +490,7 @@ console.log("After setTimeoutPromise");</code></pre>
 fetchData
   .then((number) =&gt; {
     console.log("First then:", number);    // 10
-    return number * 2;                     // passed to the next .then()
+    return number * 2;
   })
   .then((newNumber) =&gt; {
     console.log("Second then:", newNumber); // 20
@@ -521,10 +504,9 @@ fetchData
                     </div>
 
                     <h3><i class="fas fa-stairs"></i> Escaping callback hell</h3>
-                    <p>
-                        Rewrite the section-5 functions to <strong>return promises</strong> instead of accepting callbacks,
-                        and the pyramid flattens into a readable pipeline:
-                    </p>
+                    <div class="board-line"><i class="fas fa-wand-magic-sparkles"></i>
+                        <span>Return <span class="b">promises</span> instead of taking callbacks → the pyramid becomes a <span class="b">flat pipeline</span>.</span>
+                    </div>
                     <div class="code-block runner">
                         <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">promise-chain.js</span></div>
                         <pre><code>function fetchUser(userId) {
@@ -554,7 +536,7 @@ function fetchComments(posts) {
   });
 }
 
-// Flat, readable, top-to-bottom:
+// Flat. Readable. Top-to-bottom.
 fetchUser(1)
   .then(fetchPosts)
   .then(fetchComments)
@@ -565,24 +547,23 @@ fetchUser(1)
                         <div class="run-out" aria-live="polite"></div>
                     </div>
 
-                    <h3><i class="fas fa-shield-halved"></i> Handling errors: .then / .catch / .finally</h3>
+                    <h3><i class="fas fa-shield-halved"></i> Errors: .then / .catch / .finally</h3>
                     <div class="table-wrap">
                         <table class="doc-table">
                             <thead><tr><th>Method</th><th>Runs when…</th></tr></thead>
                             <tbody>
-                                <tr><td><span class="inline-code">.then(cb)</span></td><td>the promise is <strong>fulfilled</strong> (and to continue the chain).</td></tr>
-                                <tr><td><span class="inline-code">.catch(cb)</span></td><td>the promise — or <strong>any earlier step in the chain</strong> — is rejected or throws.</td></tr>
-                                <tr><td><span class="inline-code">.finally(cb)</span></td><td><strong>always</strong>, success or failure — perfect for cleanup like hiding a spinner.</td></tr>
+                                <tr><td><span class="inline-code">.then(cb)</span></td><td><b class="kw">fulfilled</b> — and continues the chain.</td></tr>
+                                <tr><td><span class="inline-code">.catch(cb)</span></td><td><b class="kw">any earlier step</b> rejects or throws — one catch guards the whole chain.</td></tr>
+                                <tr><td><span class="inline-code">.finally(cb)</span></td><td><b class="kw">always</b> — cleanup (e.g. hide the spinner).</td></tr>
                             </tbody>
                         </table>
                     </div>
                     <div class="code-block runner">
-                        <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">catch-finally.js</span></div>
+                        <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">catch-finally.js · run it a few times</span></div>
                         <pre><code>function getData() {
   return new Promise((resolve, reject) =&gt; {
     setTimeout(() =&gt; {
-      // Flip Math.random() &lt; 0.5 for a coin-toss between success and failure
-      if (Math.random() &lt; 0.5) {
+      if (Math.random() &lt; 0.5) {       // coin toss
         resolve("fresh data");
       } else {
         reject(new Error("server timeout"));
@@ -599,47 +580,37 @@ getData()
                         <div class="code-actions"><button class="run-btn"><i class="fas fa-play"></i> Run</button><button class="clear-btn">Clear</button></div>
                         <div class="run-out" aria-live="polite"></div>
                     </div>
-                    <div class="callout tip">
-                        <i class="fas fa-lightbulb"></i>
-                        <p>Run this a few times — sometimes it succeeds, sometimes it fails. Notice that one single
-                        <span class="inline-code">.catch</span> at the end guards the <em>entire</em> chain, and
-                        <span class="inline-code">.finally</span> runs every time.</p>
-                    </div>
 
                     <h3><i class="fas fa-scale-balanced"></i> Callbacks vs. Promises</h3>
                     <div class="table-wrap">
                         <table class="doc-table">
                             <thead><tr><th>Feature</th><th>Callbacks</th><th>Promises</th></tr></thead>
                             <tbody>
-                                <tr><td>Definition</td><td>A function passed as an argument, executed later.</td><td>An object representing a future value or error.</td></tr>
-                                <tr><td>Syntax</td><td>Functions passed as parameters.</td><td><span class="inline-code">.then()</span> and <span class="inline-code">.catch()</span>.</td></tr>
-                                <tr><td>Readability</td><td>Can lead to callback hell (deep nesting).</td><td>Flat chains, reads top-to-bottom.</td></tr>
-                                <tr><td>Error handling</td><td>Manual, at every level.</td><td>Built-in <span class="inline-code">.catch()</span> for the whole chain.</td></tr>
-                                <tr><td>Chaining</td><td>Difficult; requires nesting.</td><td>Natural with <span class="inline-code">.then()</span>.</td></tr>
-                                <tr><td>Flexibility</td><td>Poor for complex flows.</td><td>Composable (<span class="inline-code">Promise.all</span>, etc.).</td></tr>
+                                <tr><td>Definition</td><td>Function passed in, run later</td><td>Object holding a future value</td></tr>
+                                <tr><td>Syntax</td><td>Nested functions</td><td><span class="inline-code">.then()</span> / <span class="inline-code">.catch()</span></td></tr>
+                                <tr><td>Readability</td><td>Callback hell</td><td>Flat chains</td></tr>
+                                <tr><td>Error handling</td><td>Manual, every level</td><td>One <span class="inline-code">.catch()</span></td></tr>
+                                <tr><td>Chaining</td><td>Hard — nesting</td><td>Natural</td></tr>
                             </tbody>
                         </table>
                     </div>
-                    <p>
-                        Promises aren't perfect either: long chains can still get hard to debug, error handling across chains
-                        takes care, and forgotten handlers can leak. That's why ES2017 added one more layer of comfort…
-                    </p>
                 </section>
 
                 <!-- 7. ASYNC/AWAIT -->
                 <section id="async-await">
                     <h2><span class="section-num">7</span> Async / await — the modern way</h2>
-                    <p class="section-lede">
-                        <span class="inline-code">async/await</span> (ES2017) is <strong>syntax sugar built 100% on top of
-                        Promises</strong>. Nothing new happens under the hood — your async code just <em>looks</em> synchronous.
-                    </p>
-                    <ul>
-                        <li><span class="inline-code">async</span> before a function makes it <strong>always return a Promise</strong>.</li>
-                        <li><span class="inline-code">await</span> pauses <em>that function</em> until a promise settles, then hands you the resolved value.</li>
-                    </ul>
+                    <div class="key-strip">
+                        <span class="key-label">Key terms</span>
+                        <span class="key-chip">async → returns a Promise</span>
+                        <span class="key-chip">await → pauses the function</span>
+                        <span class="key-chip good">try / catch</span>
+                        <span class="key-chip">ES2017</span>
+                    </div>
+                    <div class="board-line"><i class="fas fa-candy-cane"></i>
+                        <span><span class="b">Syntax sugar over Promises</span> — async code that <span class="b">looks synchronous</span>. Nothing new underneath.</span>
+                    </div>
 
                     <h3><i class="fas fa-equals"></i> async functions return promises</h3>
-                    <p>These two functions are exactly equivalent — returning a plain value from an async function wraps it in a resolved promise automatically:</p>
                     <div class="code-compare">
                         <div>
                             <div class="compare-label">Returning a value</div>
@@ -651,7 +622,7 @@ getData()
 f().then(console.log); // 1</code></pre></div>
                         </div>
                         <div>
-                            <div class="compare-label">Returning a promise</div>
+                            <div class="compare-label">Returning a promise — identical</div>
                             <div class="code-block"><div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">b.js</span></div>
                             <pre><code>async function f() {
   return Promise.resolve(1);
@@ -662,11 +633,11 @@ f().then(console.log); // 1</code></pre></div>
                     </div>
 
                     <h3><i class="fas fa-road"></i> Rules of the road</h3>
-                    <ul>
-                        <li>You can only use <span class="inline-code">await</span> <strong>inside an <span class="inline-code">async</span> function</strong> (or at a module's top level).</li>
-                        <li><span class="inline-code">await</span> works on <strong>promises</strong>: fulfilled → returns the value; rejected → <strong>throws</strong> the error.</li>
-                        <li>While an async function is paused, <strong>the browser is NOT blocked</strong> — other JavaScript keeps running. Only that one function waits.</li>
-                        <li><span class="inline-code">await</span> makes steps run <strong>one after another</strong> — great for dependent steps, wasteful for independent ones.</li>
+                    <ul class="tight">
+                        <li><b class="kw">await only inside async</b> functions (or module top level).</li>
+                        <li>Fulfilled → <b class="kw">returns the value</b>. Rejected → <b class="kw">throws</b>.</li>
+                        <li>Pauses <b class="kw">the function, not the browser</b> — everything else keeps running.</li>
+                        <li>Awaits run <b class="kw">one after another</b> — great for dependent steps.</li>
                     </ul>
 
                     <div class="code-block runner">
@@ -675,13 +646,13 @@ f().then(console.log); // 1</code></pre></div>
   return new Promise((resolve) =&gt; {
     setTimeout(() =&gt; {
       resolve("☕ Coffee is ready!");
-    }, 2000);                       // simulate a 2-second brew
+    }, 2000);                       // 2-second brew
   });
 }
 
 async function prepareBreakfast() {
   console.log("Preparing pancakes...");
-  const coffee = await makeCoffee();   // pause HERE until the promise resolves
+  const coffee = await makeCoffee();   // pause HERE until resolved
   console.log(coffee);
   console.log("🥞 Breakfast is ready!");
 }
@@ -691,14 +662,8 @@ console.log("(meanwhile, the rest of the program keeps running…)");</code></pr
                         <div class="code-actions"><button class="run-btn"><i class="fas fa-play"></i> Run</button><button class="clear-btn">Clear</button></div>
                         <div class="run-out" aria-live="polite"></div>
                     </div>
-                    <p>
-                        Note the last line: it prints <em>before</em> the coffee is ready, proving that
-                        <span class="inline-code">await</span> paused only <span class="inline-code">prepareBreakfast</span>,
-                        not the whole program.
-                    </p>
 
-                    <h3><i class="fas fa-code-compare"></i> The same logic, two styles</h3>
-                    <p>Here is the callback-hell scenario one final time — promise chain on the left, async/await on the right:</p>
+                    <h3><i class="fas fa-code-compare"></i> Same logic, two styles</h3>
                     <div class="code-compare">
                         <div>
                             <div class="compare-label">Promise chain</div>
@@ -720,7 +685,7 @@ console.log("(meanwhile, the rest of the program keeps running…)");</code></pr
 }</code></pre></div>
                         </div>
                         <div>
-                            <div class="compare-label good">Async / await</div>
+                            <div class="compare-label good">Async / await — reads like a recipe</div>
                             <div class="code-block"><div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">await-style.js</span></div>
                             <pre><code>async function loadData() {
   try {
@@ -734,13 +699,8 @@ console.log("(meanwhile, the rest of the program keeps running…)");</code></pr
 }</code></pre></div>
                         </div>
                     </div>
-                    <p>Same behaviour, but the right-hand version reads like a simple recipe: get the user, get the posts, get the comments.</p>
 
-                    <h3><i class="fas fa-shield-halved"></i> Handling rejections with try / catch</h3>
-                    <p>
-                        Because a rejected promise <strong>throws</strong> at the <span class="inline-code">await</span>,
-                        async functions use the classic <span class="inline-code">try…catch</span> statement:
-                    </p>
+                    <h3><i class="fas fa-shield-halved"></i> Rejections → try / catch</h3>
                     <div class="code-block runner">
                         <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">try-catch.js</span></div>
                         <pre><code>function riskyOperation() {
@@ -752,7 +712,7 @@ console.log("(meanwhile, the rest of the program keeps running…)");</code></pr
 async function main() {
   try {
     console.log("Attempting operation…");
-    const result = await riskyOperation();   // this THROWS when rejected
+    const result = await riskyOperation();   // THROWS on rejection
     console.log("Success:", result);         // skipped
   } catch (error) {
     console.log("Caught it:", error.message);
@@ -765,52 +725,50 @@ main();</code></pre>
                     </div>
                     <div class="callout warn">
                         <i class="fas fa-triangle-exclamation"></i>
-                        <p><strong>The golden rule:</strong> every <span class="inline-code">await</span> that can reject must be
-                        covered by a <span class="inline-code">try/catch</span> (or the returned promise must get a
-                        <span class="inline-code">.catch</span>). Uncovered rejections crash into the console as
-                        <em>Uncaught (in promise)</em>.</p>
+                        <p><strong>The golden rule:</strong> every <b class="kw">await that can reject</b> must be covered by
+                        <b class="kw">try/catch</b> — otherwise: <em>Uncaught (in promise)</em>.</p>
                     </div>
                 </section>
 
                 <!-- 8. FETCH -->
                 <section id="fetch">
                     <h2><span class="section-num">8</span> The Fetch API</h2>
-                    <p class="section-lede">
-                        Everything so far used fake timers. Time for the real thing: <span class="inline-code">fetch()</span> is
-                        the browser's built-in API for <strong>reading content from a URL</strong> — and it returns a Promise.
-                    </p>
-                    <div class="code-block">
-                        <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">syntax</span></div>
-                        <pre><code>fetch(url[, options])   // returns a Promise that resolves to a Response object</code></pre>
+                    <div class="key-strip">
+                        <span class="key-label">Key terms</span>
+                        <span class="key-chip">fetch(url)</span>
+                        <span class="key-chip">Response object</span>
+                        <span class="key-chip warm">response.ok</span>
+                        <span class="key-chip">response.json()</span>
+                        <span class="key-chip good">two awaits</span>
                     </div>
-                    <p>The <strong>Response object</strong> you get is not the data itself — it's the envelope:</p>
+                    <div class="board-line"><i class="fas fa-satellite-dish"></i>
+                        <span><span class="b">fetch(url)</span> reads a URL and returns a <span class="b">Promise</span> for a <span class="b">Response</span> — the envelope, not the data.</span>
+                    </div>
                     <div class="table-wrap">
                         <table class="doc-table">
-                            <thead><tr><th>Member</th><th>What it gives you</th></tr></thead>
+                            <thead><tr><th>Member</th><th>Gives you</th></tr></thead>
                             <tbody>
-                                <tr><td><span class="inline-code">response.status</span></td><td>The HTTP status code (200 OK, 404 Not Found, 500 Server Error…).</td></tr>
-                                <tr><td><span class="inline-code">response.ok</span></td><td><span class="inline-code">true</span> if the status is 200–299 — always check this!</td></tr>
-                                <tr><td><span class="inline-code">response.text()</span></td><td>Reads the body as a plain string — <em>returns another Promise</em>.</td></tr>
-                                <tr><td><span class="inline-code">response.json()</span></td><td>Reads the body and parses it as JSON into a JavaScript object — <em>also a Promise</em>.</td></tr>
+                                <tr><td><span class="inline-code">response.status</span></td><td>HTTP status code (200, 404, 500…)</td></tr>
+                                <tr><td><span class="inline-code">response.ok</span></td><td><span class="inline-code">true</span> for 200–299 — <b class="kw">always check!</b></td></tr>
+                                <tr><td><span class="inline-code">response.text()</span></td><td>Body as a string — <b class="kw">returns a Promise</b></td></tr>
+                                <tr><td><span class="inline-code">response.json()</span></td><td>Body parsed into a JS object — <b class="kw">also a Promise</b></td></tr>
                             </tbody>
                         </table>
                     </div>
                     <div class="callout warn">
                         <i class="fas fa-triangle-exclamation"></i>
-                        <p><strong>Two awaits, not one:</strong> reading the body is a <em>second</em> asynchronous step.
-                        That's why every fetch has two stages: <span class="inline-code">await fetch(url)</span> then
-                        <span class="inline-code">await response.json()</span>.</p>
+                        <p><strong>Two awaits, not one:</strong> reading the body is a <b class="kw">second async step</b> —
+                        <span class="inline-code">await fetch(url)</span>, then <span class="inline-code">await response.json()</span>.</p>
                     </div>
 
                     <h3><i class="fas fa-satellite-dish"></i> Fetch with .then() — live demo</h3>
-                    <p>
-                        This demo loads <span class="inline-code">albums.json</span> — a real file sitting next to this page on the
-                        server. Watch the two-stage pattern: parse the response, <em>then</em> use the data:
-                    </p>
+                    <ul class="tight">
+                        <li>Loads <span class="inline-code">albums.json</span> — a real file next to this page.</li>
+                    </ul>
                     <div class="code-block runner">
                         <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">fetch-then.js · live network request</span></div>
                         <pre><code>fetch("albums.json")
-  .then((response) =&gt; response.json())   // parse the body as JSON
+  .then((response) =&gt; response.json())   // parse body as JSON
   .then((data) =&gt; {
     console.log("Loaded", data.length, "albums");
     console.log("First album:", data[0].title);
@@ -820,12 +778,10 @@ main();</code></pre>
                         <div class="run-out" aria-live="polite"></div>
                     </div>
 
-                    <h3><i class="fas fa-circle-check"></i> The robust version — always check response.ok</h3>
-                    <p>
-                        <span class="inline-code">fetch</span> only rejects on <em>network</em> failure. A 404 page still
-                        "succeeds" — with a useless body! Production code checks the status before parsing.
-                        This example calls a real public test API, <a href="https://jsonplaceholder.typicode.com" target="_blank" rel="noopener">JSONPlaceholder</a>:
-                    </p>
+                    <h3><i class="fas fa-circle-check"></i> The robust version — check response.ok</h3>
+                    <div class="board-line"><i class="fas fa-bug"></i>
+                        <span>fetch only rejects on <span class="b">network failure</span> — a 404 still "succeeds"! Check <span class="b">response.ok</span> before parsing.</span>
+                    </div>
                     <div class="code-block runner">
                         <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">fetch-robust.js · live network request</span></div>
                         <pre><code>const apiUrl = "https://jsonplaceholder.typicode.com/posts";
@@ -842,13 +798,13 @@ fetch(apiUrl)
     console.log("First post title:", data[0].title);
   })
   .catch((error) =&gt; {
-    console.error("There was a problem with the fetch operation:", error.message);
+    console.error("Problem with the fetch operation:", error.message);
   });</code></pre>
                         <div class="code-actions"><button class="run-btn"><i class="fas fa-play"></i> Run</button><button class="clear-btn">Clear</button></div>
                         <div class="run-out" aria-live="polite"></div>
                     </div>
 
-                    <h3><i class="fas fa-magnifying-glass"></i> Fetch with async/await — a step-by-step walkthrough</h3>
+                    <h3><i class="fas fa-magnifying-glass"></i> Fetch with async/await — walkthrough</h3>
                     <div class="code-block runner">
                         <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">load-json.js · live network request</span></div>
                         <pre><code>async function loadJson() {
@@ -862,47 +818,35 @@ console.log("after loadJson");</code></pre>
                         <div class="code-actions"><button class="run-btn"><i class="fas fa-play"></i> Run</button><button class="clear-btn">Clear</button></div>
                         <div class="run-out" aria-live="polite"></div>
                     </div>
-                    <p>Here is exactly what the JavaScript engine does, in order:</p>
                     <ol>
-                        <li><span class="inline-code">loadJson()</span> is called and starts running.</li>
-                        <li>At the first <span class="inline-code">await</span>: <span class="inline-code">fetch("albums.json")</span> starts,
-                            and <strong><span class="inline-code">loadJson</span> is paused</strong>. The engine <em>returns out of the function</em>
-                            and continues below — printing <span class="inline-code">"after loadJson"</span>.</li>
-                        <li>The response arrives; the engine resumes <span class="inline-code">loadJson</span>. The await expression
-                            evaluates to the resolved value — the <span class="inline-code">response</span> object.</li>
-                        <li>At the second <span class="inline-code">await</span>: <span class="inline-code">response.json()</span> starts,
-                            and the function pauses again until parsing completes.</li>
-                        <li>Finally, <span class="inline-code">json</span> holds a real JavaScript array, and the last
-                            <span class="inline-code">console.log</span> runs.</li>
+                        <li><span class="inline-code">loadJson()</span> starts.</li>
+                        <li>First <b class="kw">await</b>: fetch starts → <b class="kw">function pauses</b> → engine exits and prints <span class="inline-code">"after loadJson"</span>.</li>
+                        <li>Response arrives → function <b class="kw">resumes</b> — the await gives us the <span class="inline-code">response</span>.</li>
+                        <li>Second <b class="kw">await</b>: parsing → pauses again.</li>
+                        <li><span class="inline-code">json</span> is now a real array → final log runs.</li>
                     </ol>
-                    <p>
-                        That is why the output shows <span class="inline-code">"after loadJson"</span> <em>first</em>,
-                        even though it's the last line of the file — the exact event-loop behaviour from section 2, now with real network requests.
-                    </p>
+                    <div class="board-line"><i class="fas fa-lightbulb"></i>
+                        <span>"after loadJson" prints <span class="b">first</span> — section 2's event loop, now with real network requests.</span>
+                    </div>
                 </section>
 
                 <!-- 9. COMPARE ALL -->
                 <section id="compare-all">
                     <h2><span class="section-num">9</span> Choosing a technique</h2>
-                    <p class="section-lede">Three generations, one family — async/await is built on Promises, which tamed callbacks.</p>
                     <div class="table-wrap">
                         <table class="doc-table">
                             <thead><tr><th></th><th>Callbacks <small>(old)</small></th><th>Promises <small>(ES6 · 2015)</small></th><th>Async/await <small>(ES2017)</small></th></tr></thead>
                             <tbody>
-                                <tr><td>Style</td><td>Function passed in, nested</td><td><span class="inline-code">.then().catch()</span> chain</td><td>Looks synchronous</td></tr>
-                                <tr><td>Error handling</td><td>Manual at each level</td><td>One <span class="inline-code">.catch()</span> per chain</td><td>Standard <span class="inline-code">try/catch</span></td></tr>
+                                <tr><td>Style</td><td>Nested functions</td><td><span class="inline-code">.then().catch()</span> chain</td><td>Looks synchronous</td></tr>
+                                <tr><td>Errors</td><td>Manual, each level</td><td>One <span class="inline-code">.catch()</span></td><td><span class="inline-code">try/catch</span></td></tr>
                                 <tr><td>Dependent steps</td><td>Pyramid of doom</td><td>Flat chain</td><td>One line per step</td></tr>
-                                <tr><td>Debugging</td><td>Hard</td><td>Medium</td><td>Easiest — normal stack traces</td></tr>
-                                <tr><td>Still used for</td><td>Event listeners, timers, array methods</td><td>Libraries, combining tasks (<span class="inline-code">Promise.all</span>)</td><td>Nearly all new application code</td></tr>
+                                <tr><td>Debugging</td><td>Hard</td><td>Medium</td><td>Easiest</td></tr>
+                                <tr><td>Still used for</td><td>Event listeners, timers</td><td>Libraries, <span class="inline-code">Promise.all</span></td><td>New app code</td></tr>
                             </tbody>
                         </table>
                     </div>
-                    <div class="callout tip">
-                        <i class="fas fa-lightbulb"></i>
-                        <p><strong>Rule of thumb for your projects:</strong> write new async code with
-                        <span class="inline-code">async/await</span> + <span class="inline-code">try/catch</span>; use
-                        <span class="inline-code">.then()</span> when it's genuinely shorter; and remember that event listeners
-                        (<span class="inline-code">addEventListener</span>) are — and will always be — callbacks.</p>
+                    <div class="board-line"><i class="fas fa-compass"></i>
+                        <span>Rule of thumb: new code → <span class="b">async/await + try/catch</span>. Event listeners → <span class="b">always callbacks</span>.</span>
                     </div>
                 </section>
 
@@ -910,20 +854,20 @@ console.log("after loadJson");</code></pre>
                 <section id="takeaways">
                     <h2><span class="section-num">10</span> Key takeaways</h2>
                     <ol class="takeaways">
-                        <li>JavaScript is <strong>single-threaded</strong> — the <strong>event loop</strong> + browser Web APIs create the illusion of doing many things at once.</li>
-                        <li><span class="inline-code">setTimeout</span> never blocks: code after it runs <em>first</em>, the callback runs when the timer fires <em>and the stack is empty</em>.</li>
-                        <li>A <strong>callback</strong> is a function passed to another function to be called later. Nesting dependent callbacks creates <strong>callback hell</strong>.</li>
-                        <li>A <strong>Promise</strong> is a future value with three states: <strong>pending → fulfilled / rejected</strong>. It settles exactly once.</li>
-                        <li>Consume promises with <span class="inline-code">.then()</span>, handle failures with <span class="inline-code">.catch()</span>, clean up with <span class="inline-code">.finally()</span> — and chain by <strong>returning</strong> values.</li>
-                        <li><span class="inline-code">async/await</span> is sugar over promises: <span class="inline-code">async</span> functions return promises; <span class="inline-code">await</span> pauses the function (not the browser!) and throws on rejection — so wrap it in <span class="inline-code">try/catch</span>.</li>
-                        <li><span class="inline-code">fetch(url)</span> returns a promise for a <strong>Response</strong>; check <span class="inline-code">response.ok</span>, then parse with <span class="inline-code">response.json()</span> — a second await.</li>
+                        <li>JS is <b class="kw">single-threaded</b> — the <b class="kw">event loop</b> + Web APIs fake multitasking.</li>
+                        <li><b class="kw">setTimeout never blocks</b> — later code runs first; the callback waits for an empty stack.</li>
+                        <li><b class="kw">Callback</b> = function passed in, called later. Nesting them = <b class="kw">callback hell</b>.</li>
+                        <li><b class="kw">Promise</b> = future value. <b class="kw">pending → fulfilled / rejected</b>, settles once.</li>
+                        <li><b class="kw">.then / .catch / .finally</b> — chain by <b class="kw">returning</b> values.</li>
+                        <li><b class="kw">async</b> returns a Promise; <b class="kw">await</b> pauses the function (not the browser) and <b class="kw">throws on rejection</b> → try/catch.</li>
+                        <li><b class="kw">fetch</b> → Response envelope → check <b class="kw">response.ok</b> → <b class="kw">response.json()</b> (second await).</li>
                     </ol>
                 </section>
 
                 <!-- 11. QUIZ -->
                 <section id="quiz">
                     <h2><span class="section-num">11</span> Self-check quiz</h2>
-                    <p class="section-lede">No grades, no pressure — instant feedback. Can you get all six?</p>
+                    <p class="section-lede">No grades, instant feedback. Can you get all six?</p>
 
                     <div class="quiz-q" data-answer="1">
                         <h4><span class="q-num">Q1.</span> What does this print, in order?<br>
@@ -931,7 +875,7 @@ console.log("after loadJson");</code></pre>
                         <button class="quiz-opt">A, B, C — the delay is zero, so B runs immediately</button>
                         <button class="quiz-opt">A, C, B — even a 0 ms callback waits for the current code to finish</button>
                         <button class="quiz-opt">B, A, C — timers always run first</button>
-                        <div class="quiz-feedback">Even with a 0 ms delay, the callback goes through the Web API → callback queue → event loop journey, and the event loop only delivers it once the call stack is empty. So: A, C, B.</div>
+                        <div class="quiz-feedback">Even with a 0 ms delay, the callback goes through Web API → callback queue → event loop, which only delivers it once the call stack is empty. So: A, C, B.</div>
                     </div>
 
                     <div class="quiz-q" data-answer="2">
@@ -944,10 +888,10 @@ console.log("after loadJson");</code></pre>
 
                     <div class="quiz-q" data-answer="0">
                         <h4><span class="q-num">Q3.</span> What does an <span class="inline-code">async</span> function always return?</h4>
-                        <button class="quiz-opt">A Promise — even if you return a plain value, it gets wrapped</button>
+                        <button class="quiz-opt">A Promise — even a plain return value gets wrapped</button>
                         <button class="quiz-opt">Whatever value you return, unchanged</button>
                         <button class="quiz-opt">undefined, always</button>
-                        <div class="quiz-feedback"><span class="inline-code">async function f() { return 1; }</span> returns a promise that resolves to 1 — that's why you can call <span class="inline-code">f().then(...)</span>.</div>
+                        <div class="quiz-feedback"><span class="inline-code">async function f() { return 1; }</span> returns a promise resolving to 1 — that's why <span class="inline-code">f().then(...)</span> works.</div>
                     </div>
 
                     <div class="quiz-q" data-answer="2">
@@ -961,9 +905,9 @@ console.log("after loadJson");</code></pre>
                     <div class="quiz-q" data-answer="1">
                         <h4><span class="q-num">Q5.</span> Why do we call <span class="inline-code">response.json()</span> after <span class="inline-code">fetch()</span>?</h4>
                         <button class="quiz-opt">To convert the JavaScript object into a JSON string</button>
-                        <button class="quiz-opt">To read the response body and parse it into a JavaScript object — it's a second async step</button>
+                        <button class="quiz-opt">To read the body and parse it into a JS object — a second async step</button>
                         <button class="quiz-opt">It's optional — fetch already returns the parsed data</button>
-                        <div class="quiz-feedback">fetch resolves with a <strong>Response envelope</strong>. Reading + parsing the body is a second asynchronous operation, which is why it needs its own <span class="inline-code">await</span> or <span class="inline-code">.then()</span>.</div>
+                        <div class="quiz-feedback">fetch resolves with a <strong>Response envelope</strong>. Reading + parsing the body is a second asynchronous operation — its own <span class="inline-code">await</span> or <span class="inline-code">.then()</span>.</div>
                     </div>
 
                     <div class="quiz-q" data-answer="0">
@@ -971,7 +915,7 @@ console.log("after loadJson");</code></pre>
                         <button class="quiz-opt">An "Uncaught (in promise)" error — the rejection escapes unhandled</button>
                         <button class="quiz-opt">Nothing — rejections are ignored silently</button>
                         <button class="quiz-opt">The browser retries the operation automatically</button>
-                        <div class="quiz-feedback">The golden rule: every await that can reject must be covered by try/catch (or a .catch on the returned promise). Otherwise the rejection surfaces as an uncaught error.</div>
+                        <div class="quiz-feedback">The golden rule: every await that can reject needs try/catch (or a .catch on the returned promise).</div>
                     </div>
                 </section>
 
@@ -980,19 +924,18 @@ console.log("after loadJson");</code></pre>
                     <h2><span class="section-num">12</span> Reading &amp; practice</h2>
                     <div class="callout def">
                         <i class="fas fa-book"></i>
-                        <p><strong>Zybooks — Chapter 8 "More JavaScript": sections 8.13 – 8.15.</strong>
-                        Do the participation activities; they mirror this week's lab.</p>
+                        <p><strong>Zybooks — Chapter 8 "More JavaScript": sections <b class="kw">8.13 – 8.15</b>.</strong>
+                        Do the participation activities — they mirror this week's lab.</p>
                     </div>
-                    <p>Extra fuel for curious sailors:</p>
-                    <ul>
-                        <li><a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Async_JS" target="_blank" rel="noopener">MDN — Asynchronous JavaScript (full module)</a></li>
+                    <ul class="tight">
+                        <li><a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Async_JS" target="_blank" rel="noopener">MDN — Asynchronous JavaScript</a></li>
                         <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises" target="_blank" rel="noopener">MDN — Using Promises</a></li>
                         <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch" target="_blank" rel="noopener">MDN — Using the Fetch API</a></li>
-                        <li><a href="https://jsonplaceholder.typicode.com/" target="_blank" rel="noopener">JSONPlaceholder</a> — free fake API, perfect for practicing fetch.</li>
+                        <li><a href="https://jsonplaceholder.typicode.com/" target="_blank" rel="noopener">JSONPlaceholder</a> — free fake API for practicing fetch.</li>
                     </ul>
-                    <p><strong>Challenge before the lab:</strong> using JSONPlaceholder, write an async function that fetches user #1,
-                    then that user's todos (<span class="inline-code">/users/1/todos</span>), and logs how many are completed.
-                    You'll use everything from this island.</p>
+                    <div class="board-line"><i class="fas fa-dumbbell"></i>
+                        <span><span class="b">Challenge:</span> fetch user #1 from JSONPlaceholder, then their todos (<span class="inline-code">/users/1/todos</span>), and log how many are completed.</span>
+                    </div>
 
                     <div class="doc-pager">
                         <a class="pager-link" href="../index.html">

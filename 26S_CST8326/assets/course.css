@@ -364,6 +364,94 @@
   font-family: var(--font-mono); font-size: 0.8rem; line-height: 1.9; color: var(--text-secondary);
   padding: 18px 22px; margin: 18px 0; border-radius: var(--radius-md);
   background: var(--code-bg); border: 1px solid rgba(248, 113, 113, 0.3); overflow-x: auto;
+  white-space: pre;
 }
 .pyramid .lvl1 { color: #f87171; } .pyramid .lvl2 { color: #fb923c; }
 .pyramid .lvl3 { color: #fbbf24; } .pyramid .lvl4 { color: #a3e635; }
+.pyramid .lvl5 { color: #34d399; }
+
+/* ============ Lecture mode: keyword highlighting ============ */
+.kw {
+  color: var(--primary-accent); font-weight: 700; font-style: normal;
+  background: linear-gradient(transparent 62%, rgba(0, 229, 255, 0.18) 62%);
+  padding: 0 3px; border-radius: 3px;
+}
+.kw.alt {
+  color: #d98cff;
+  background: linear-gradient(transparent 62%, rgba(180, 0, 255, 0.2) 62%);
+}
+.key-strip {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+  margin: 12px 0 22px;
+}
+.key-strip .key-label {
+  font-family: var(--font-heading); font-size: 0.68rem; font-weight: 800;
+  letter-spacing: 2px; text-transform: uppercase; color: var(--text-secondary);
+  margin-right: 4px;
+}
+.key-chip {
+  font-family: var(--font-mono); font-size: 0.8rem; font-weight: 600;
+  padding: 5px 15px; border-radius: var(--radius-full);
+  background: rgba(0, 229, 255, 0.08); border: 1px solid rgba(0, 229, 255, 0.35);
+  color: var(--primary-accent); white-space: nowrap;
+}
+.key-chip.warm { background: rgba(251, 191, 36, 0.08); border-color: rgba(251, 191, 36, 0.4); color: var(--warn); }
+.key-chip.bad  { background: rgba(248, 113, 113, 0.08); border-color: rgba(248, 113, 113, 0.4); color: var(--err); }
+.key-chip.good { background: rgba(52, 211, 153, 0.08); border-color: rgba(52, 211, 153, 0.4); color: var(--ok); }
+
+/* Big single-line board note — the one sentence to say out loud */
+.board-line {
+  display: flex; gap: 14px; align-items: center;
+  font-family: var(--font-heading); font-size: 1.05rem; font-weight: 600;
+  padding: 14px 20px; margin: 18px 0;
+  border-radius: var(--radius-md);
+  background: rgba(0, 229, 255, 0.05); border: 1px solid rgba(0, 229, 255, 0.25);
+}
+.board-line i { color: var(--primary-accent); flex: none; }
+.board-line .b { color: var(--primary-accent); }
+
+/* Tighter lecture bullets */
+.doc-content ul.tight li { margin-bottom: 4px; }
+
+/* ============ Live-editable runners ============ */
+.runner pre > code[contenteditable] {
+  outline: none; caret-color: #fff; display: block; min-height: 1em;
+  border-radius: 6px;
+}
+.runner:focus-within .code-block, .runner.code-block:focus-within {
+  border-color: rgba(0, 229, 255, 0.45);
+}
+.edit-hint {
+  font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-secondary);
+  opacity: 0.55; margin-left: 10px; white-space: nowrap;
+}
+.live-toggle {
+  margin-left: auto; display: inline-flex; align-items: center; gap: 7px;
+  cursor: pointer; font-family: var(--font-mono); font-size: 0.72rem;
+  color: var(--text-secondary); -webkit-user-select: none; user-select: none;
+}
+.live-toggle input {
+  appearance: none; -webkit-appearance: none; margin: 0;
+  width: 32px; height: 17px; border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.1); border: 1px solid var(--glass-border);
+  position: relative; cursor: pointer; transition: var(--transition-fast);
+}
+.live-toggle input::after {
+  content: ""; position: absolute; top: 1px; left: 1px;
+  width: 13px; height: 13px; border-radius: 50%; background: #94a3b8;
+  transition: var(--transition-fast);
+}
+.live-toggle input:checked { background: rgba(0, 229, 255, 0.3); border-color: var(--primary-accent); }
+.live-toggle input:checked::after { left: 16px; background: var(--primary-accent); }
+.live-toggle input:checked ~ .lt-label { color: var(--primary-accent); }
+.runner .live-dot {
+  display: none; width: 7px; height: 7px; border-radius: 50%;
+  background: var(--ok); margin-left: 8px; flex: none;
+  animation: pm-pulse-dot 1.4s ease-in-out infinite;
+}
+.runner.live-mode .live-dot { display: inline-block; }
+@keyframes pm-pulse-dot {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.5); }
+  50% { box-shadow: 0 0 0 5px rgba(52, 211, 153, 0); }
+}
+
