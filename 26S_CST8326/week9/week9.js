@@ -52,12 +52,44 @@
 
   document.querySelectorAll('.runner').forEach(function (runner) {
     var pre = runner.querySelector('pre');
+    var codeEl = runner.querySelector('pre > code');
     var out = runner.querySelector('.run-out');
     var runBtn = runner.querySelector('.run-btn');
     var clearBtn = runner.querySelector('.clear-btn');
+    var head = runner.querySelector('.code-head');
     var runId = 0;
+    var liveTimer = null;
 
-    function makeConsole(myRun, kindDefault) {
+    /* --- live-edit setup: editable code + auto-run toggle in the header --- */
+    codeEl.setAttribute('contenteditable', 'plaintext-only');
+    if (codeEl.contentEditable !== 'plaintext-only') {
+      codeEl.setAttribute('contenteditable', 'true'); // Firefox fallback
+      codeEl.addEventListener('paste', function (e) {
+        e.preventDefault();
+        var text = (e.clipboardData || window.clipboardData).getData('text/plain');
+        document.execCommand('insertText', false, text);
+      });
+    }
+    codeEl.spellcheck = false;
+
+    var hint = document.createElement('span');
+    hint.className = 'edit-hint';
+    hint.textContent = '✏️ editable';
+    head.appendChild(hint);
+
+    var toggle = document.createElement('label');
+    toggle.className = 'live-toggle';
+    toggle.title = 'Auto-run the code whenever it changes';
+    toggle.innerHTML = '<input type="checkbox"><span class="lt-label">auto-run</span><span class="live-dot"></span>';
+    head.appendChild(toggle);
+    var liveBox = toggle.querySelector('input');
+
+    liveBox.addEventListener('change', function () {
+      runner.classList.toggle('live-mode', liveBox.checked);
+      if (liveBox.checked) run(); // run once immediately when going live
+    });
+
+    function makeConsole(myRun) {
       function push(kind) {
         return function () {
           if (runId !== myRun) return; // drop logs from stale runs
@@ -70,19 +102,35 @@
       return { log: push('log'), error: push('error'), warn: push('error'), info: push('log') };
     }
 
-    runBtn.addEventListener('click', function () {
+    function run() {
       runId++;
       out.textContent = '';
       var myRun = runId;
       var sandboxConsole = makeConsole(myRun);
-      runBtn.disabled = true;
-      setTimeout(function () { runBtn.disabled = false; }, 400);
       try {
         var fn = new Function('console', '"use strict";\n' + pre.textContent);
         fn(sandboxConsole);
       } catch (err) {
         sandboxConsole.error(err);
       }
+    }
+
+    runBtn.addEventListener('click', function () {
+      runBtn.disabled = true;
+      setTimeout(function () { runBtn.disabled = false; }, 400);
+      run();
+    });
+
+    // Live mode: debounce re-runs while typing (default OFF — button-only)
+    codeEl.addEventListener('input', function () {
+      if (!liveBox.checked) return;
+      clearTimeout(liveTimer);
+      liveTimer = setTimeout(run, 700);
+    });
+
+    // Re-apply syntax colours once the caret leaves the block
+    codeEl.addEventListener('blur', function () {
+      codeEl.innerHTML = highlight(codeEl.textContent);
     });
 
     clearBtn.addEventListener('click', function () {
