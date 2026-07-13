@@ -305,7 +305,7 @@ doSomething(nextStep);        // pass the FUNCTION itself — no parentheses!</c
                         <pre><code>function fetchData(callback) {
   console.log("Fetching data...");
   setTimeout(() =&gt; {
-    const data = { name: "Hala", role: "Professor" };
+    const data = { name: "Abul Qasim", role: "Professor" };
     callback(data);              // deliver the result via the callback
   }, 2000);
 }
@@ -350,7 +350,7 @@ fetchData(processData);          // pass processData as the callback</code></pre
 function getUser(id, cb)       { setTimeout(() =&gt; cb(null, { id: id, name: "Dinn" }), 500); }
 function getPosts(userId, cb)  { setTimeout(() =&gt; cb(null, [{ id: 7, title: "Post 1" }]), 500); }
 function getComments(postId, cb){ setTimeout(() =&gt; cb(null, [{ id: 99, by: 3, text: "Nice!" }]), 500); }
-function getAuthor(userId, cb) { setTimeout(() =&gt; cb(null, { id: userId, name: "Hala" }), 500); }
+function getAuthor(userId, cb) { setTimeout(() =&gt; cb(null, { id: userId, name: "Abul Qasim" }), 500); }
 function sendThanks(user, cb)  { setTimeout(() =&gt; cb(null, "thanked " + user.name), 500); }
 
 // The task: user -&gt; posts -&gt; comments -&gt; comment author -&gt; send thanks
@@ -942,9 +942,9 @@ console.log("after loadJson");</code></pre>
                             <span class="pager-dir"><i class="fas fa-arrow-left"></i> Back</span>
                             <span class="pager-title">The Web Archipelago</span>
                         </a>
-                        <a class="pager-link next" href="../index.html#weeks">
+                        <a class="pager-link next" href="../week10/index.html">
                             <span class="pager-dir">Next island <i class="fas fa-arrow-right"></i></span>
-                            <span class="pager-title">Week 10 · charting soon</span>
+                            <span class="pager-title">Week 10 · Node.js — JS as Backend</span>
                         </a>
                     </div>
                 </section>
