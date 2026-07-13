@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 10 · Node.js — JavaScript as Backend | CST8326</title>
+    <meta name="description"
+        content="CST8326 Week 10 — Node.js: server-side JavaScript, the V8 engine, the event loop with microtasks, modules, npm & package.json, your first HTTP server, the URL / fs / path modules and MVC. With a built-in Node emulator and runnable examples.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚢</text></svg>">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;600;800;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+    <link rel="stylesheet" href="../assets/course.css">
+</head>
+
+<body>
+    <div id="progress-bar" aria-hidden="true"></div>
+    <div class="bg-shape shape-1"></div>
+    <div class="bg-shape shape-2"></div>
+
+    <nav class="navbar scrolled">
+        <div class="container nav-container">
+            <a href="../../index.html" class="logo">
+                <span class="logo-text">Qasim<span class="highlight">.dev</span></span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="../index.html">The Archipelago</a></li>
+                <li><a href="#quiz">Self-Check</a></li>
+                <li><a href="../index.html#weeks" class="btn-outline"><i class="fas fa-map"></i> All Weeks</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container course-page">
+
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <a href="../../index.html">Portal</a> <i class="fas fa-chevron-right"></i>
+            <a href="../index.html">CST8326 · Summer 2026</a> <i class="fas fa-chevron-right"></i>
+            <span class="crumb-here">Week 10 · Node.js</span>
+        </nav>
+
+        <header class="course-hero" style="text-align:left; padding-top: 10px;">
+            <div class="course-code-chip"><i class="fas fa-ship"></i> WEEK 10 &middot; ISLAND OF PORTS</div>
+            <h1 class="hero-title" style="font-size: clamp(2rem, 5vw, 3.2rem);">
+                Node.js — JavaScript as <span class="gradient-text">Backend</span>
+            </h1>
+            <p class="hero-subtitle" style="margin: 0; max-width: 72ch;">
+                The same JavaScript you've written all semester — now <b class="kw">running the server itself</b>.
+                Every server on this page runs live, in a Node emulator built into your browser.
+            </p>
+            <div class="key-strip" style="margin-top: 18px;">
+                <span class="key-label">This week</span>
+                <span class="key-chip">Node.js</span>
+                <span class="key-chip">V8</span>
+                <span class="key-chip warm">event loop, level 2</span>
+                <span class="key-chip">npm &amp; package.json</span>
+                <span class="key-chip good">http server</span>
+                <span class="key-chip">url · fs · path</span>
+                <span class="key-chip">MVC</span>
+            </div>
+        </header>
+
+        <div class="doc-layout">
+
+            <!-- ============ TOC ============ -->
+            <aside class="doc-toc" aria-label="On this page">
+                <h4><i class="fas fa-map-signs"></i> On this island</h4>
+                <ol>
+                    <li><a href="#overview">0. Week at a glance</a></li>
+                    <li><a href="#why-backend">1. Why backends?</a></li>
+                    <li><a href="#what-is-node">2. What is Node.js</a></li>
+                    <li><a href="#two-worlds">3. One engine, two worlds</a></li>
+                    <li><a href="#event-loop-2">4. Event loop, level 2</a></li>
+                    <li><a href="#install">5. Installing Node</a></li>
+                    <li><a href="#modules">6. Modules &amp; require()</a></li>
+                    <li><a href="#npm">7. npm &amp; package.json</a></li>
+                    <li><a href="#semver">8. Semver &amp; the lockfile</a></li>
+                    <li><a href="#first-server">9. Your first server</a></li>
+                    <li><a href="#url-module">10. The URL module</a></li>
+                    <li><a href="#fs-path">11. fs &amp; path</a></li>
+                    <li><a href="#mvc">12. MVC</a></li>
+                    <li><a href="#takeaways">13. Key takeaways</a></li>
+                    <li><a href="#quiz">14. Self-check quiz</a></li>
+                    <li><a href="#reading">15. Reading &amp; practice</a></li>
+                </ol>
+            </aside>
+
+            <!-- ============ CONTENT ============ -->
+            <div class="doc-content">
+
+                <!-- 0. OVERVIEW -->
+                <section id="overview">
+                    <h2><span class="section-num">0</span> Week at a glance</h2>
+                    <div class="board-line"><i class="fas fa-route"></i>
+                        <span>browser JS <span class="b">→</span> Node.js <span class="b">→</span> npm <span class="b">→</span> your first server <span class="b">→</span> MVC. JavaScript takes over the backend.</span>
+                    </div>
+                    <ul class="tight">
+                        <li><b class="kw">Server-side programming</b> — code that runs on the server, hidden from visitors.</li>
+                        <li><b class="kw">Node.js</b> — Chrome's V8 engine, unplugged from the browser and given server superpowers.</li>
+                        <li><b class="kw">Event loop, level 2</b> — Week 9's loop returns, now with the <em>microtask queue</em>.</li>
+                        <li><b class="kw">npm</b> — the world's biggest code registry, and <span class="inline-code">package.json</span>, your project's manifest.</li>
+                        <li><b class="kw">Core modules</b> — http, url, fs, path: everything you need for a real server.</li>
+                        <li><b class="kw">MVC</b> — the architecture that keeps server code from becoming spaghetti.</li>
+                    </ul>
+                    <div class="callout tip">
+                        <i class="fas fa-lightbulb"></i>
+                        <p><strong>New this week: the Node emulator.</strong> Node code can't normally run in a web page —
+                        so this island ships a <b class="kw">mini Node.js</b> written in JavaScript. Examples marked
+                        <b class="kw">🟢 node emulator</b> support <span class="inline-code">require()</span>, a virtual disk,
+                        and real servers you can visit with the built-in <b class="kw">mini-browser</b>. Everything is editable, as always.</p>
+                    </div>
+                </section>
+
+                <!-- 1. WHY BACKENDS -->
+                <section id="why-backend">
+                    <h2><span class="section-num">1</span> Why backends?</h2>
+                    <div class="key-strip">
+                        <span class="key-label">Key terms</span>
+                        <span class="key-chip">server-side</span>
+                        <span class="key-chip">dynamic pages</span>
+                        <span class="key-chip good">hidden code</span>
+                        <span class="key-chip">web hosting</span>
+                    </div>
+                    <div class="board-line"><i class="fas fa-utensils"></i>
+                        <span>The frontend is the <span class="b">dining room</span>; the backend is the <span class="b">kitchen</span>. Guests never see the kitchen — but that's where everything is made.</span>
+                    </div>
+                    <ul class="tight">
+                        <li>Server-side pages are programs — PHP, Java/JSP, Ruby on Rails, ASP.NET, Python, <b class="kw">and now JavaScript</b>.</li>
+                        <li>They make pages <b class="kw">dynamic</b>: different content per user, per time, per context.</li>
+                        <li>They <b class="kw">talk to other services</b>: databases, e-mail, payment systems.</li>
+                        <li>They <b class="kw">authenticate users</b> and <b class="kw">process form data</b> safely.</li>
+                        <li>They give <b class="kw">security</b>: server code can never be viewed from a browser.</li>
+                    </ul>
+
+                    <h3><i class="fas fa-user-secret"></i> Prove it — what can the visitor actually see?</h3>
+                    <div class="vs-demo glass-panel">
+                        <div class="vs-tabs">
+                            <button class="vs-tab active" data-pane="server"><i class="fas fa-server"></i> What you write (server)</button>
+                            <button class="vs-tab" data-pane="client"><i class="fas fa-globe"></i> What the visitor sees (View Source)</button>
+                        </div>
+                        <div class="vs-pane" data-pane="server">
+                            <div class="code-block" style="margin:0;">
+                                <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">app.js · lives on the server only</span></div>
+                                <pre><code>// Secrets can live here — the browser NEVER receives this file
+const API_KEY = "sk-live-9f2…TOP-SECRET";
+const db = connect("mongodb://albums-db:27017");
+
+server.get("/albums", (req, res) =&gt; {
+  const albums = db.query("SELECT * FROM albums");
+  res.send(renderPage(albums));   // only the RESULT is sent
+});</code></pre>
+                            </div>
+                        </div>
+                        <div class="vs-pane hidden" data-pane="client">
+                            <div class="code-block" style="margin:0;">
+                                <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">Ctrl+U in the browser shows ONLY this</span></div>
+                                <pre><code>&lt;h1&gt;My Music Collection&lt;/h1&gt;
+&lt;ul&gt;
+  &lt;li&gt;OK Computer — Radiohead&lt;/li&gt;
+  &lt;li&gt;Random Access Memories — Daft Punk&lt;/li&gt;
+&lt;/ul&gt;
+&lt;!-- no API key, no database, no server code 🎉 --&gt;</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3><i class="fas fa-gauge-high"></i> Performance &amp; compatibility wins</h3>
+                    <ul class="tight">
+                        <li><b class="kw">Compute once, cache</b> — don't repeat heavy work for every visitor.</li>
+                        <li><b class="kw">Stronger machines</b> — heavy computation runs on server hardware, not a student laptop.</li>
+                        <li><b class="kw">Near the data</b> — data-intensive work runs next to the database.</li>
+                        <li><b class="kw">Compatibility</b> — dynamic behaviour even for clients with little or no JS support.</li>
+                    </ul>
+
+                    <h3><i class="fas fa-warehouse"></i> Web hosting — where servers live</h3>
+                    <p>Hosting = storing files on a server and making them <b class="kw">accessible over the internet</b>, securely and stably.</p>
+                    <div class="table-wrap">
+                        <table class="doc-table">
+                            <thead><tr><th>Hosting type</th><th>The idea</th></tr></thead>
+                            <tbody>
+                                <tr><td>Shared</td><td>Many websites share one machine — cheapest, least control.</td></tr>
+                                <tr><td>VPS (virtual private server)</td><td>One machine sliced into isolated virtual servers.</td></tr>
+                                <tr><td>Dedicated</td><td>A whole physical machine for you alone.</td></tr>
+                                <tr><td>Managed</td><td>Someone else handles updates, backups and security.</td></tr>
+                                <tr><td>Cloud</td><td>Elastic resources across many machines — scale up and down on demand.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="key-strip">
+                        <span class="key-label">Choosing one</span>
+                        <span class="key-chip">reliability</span>
+                        <span class="key-chip">flexibility</span>
+                        <span class="key-chip">security</span>
+                        <span class="key-chip warm">price</span>
+                    </div>
+                </section>
+
+                <!-- 2. WHAT IS NODE -->
+                <section id="what-is-node">
+                    <h2><span class="section-num">2</span> What is Node.js</h2>
+                    <div class="key-strip">
+                        <span class="key-label">Key terms</span>
+                        <span class="key-chip">runtime environment</span>
+                        <span class="key-chip">V8</span>
+                        <span class="key-chip good">event-driven</span>
+                        <span class="key-chip good">non-blocking I/O</span>
+                        <span class="key-chip warm">single-threaded</span>
+                    </div>
+                    <div class="callout def">
+                        <i class="fas fa-book"></i>
+                        <p><strong>Node.js</strong> = a JavaScript <b class="kw">runtime environment</b>, written in C++,
+                        that lets JavaScript run <b class="kw">in the backend</b>. It interprets and executes JS,
+                        and ships a set of libraries (the <b class="kw">Node API</b>) for building server programs.</p>
+                    </div>
+                    <div class="board-line"><i class="fas fa-clock-rotate-left"></i>
+                        <span><span class="b">2009</span> — Ryan Dahl, impressed by the speed of Chrome's <span class="b">V8 engine</span>, pulls JavaScript out of the browser. Node.js is born.</span>
+                    </div>
+
+                    <h3><i class="fas fa-star"></i> The three key features</h3>
+                    <div class="table-wrap">
+                        <table class="doc-table">
+                            <thead><tr><th>Feature</th><th>Meaning</th></tr></thead>
+                            <tbody>
+                                <tr><td>Event-driven architecture</td><td>Handles multiple connections using an <b>event loop</b> — work happens when events fire.</td></tr>
+                                <tr><td>Non-blocking I/O</td><td>Input/output (network, files, databases) runs <b>asynchronously</b> — waiting costs nothing.</td></tr>
+                                <tr><td>Single-threaded</td><td>One thread — yet it manages thousands of requests efficiently. Week 9 explained how!</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3><i class="fas fa-people-arrows"></i> Traditional server vs. Node</h3>
+                    <div class="table-wrap">
+                        <table class="doc-table">
+                            <thead><tr><th></th><th>Traditional (thread-per-request)</th><th>Node.js (event loop)</th></tr></thead>
+                            <tbody>
+                                <tr><td>Each request gets…</td><td>Its own thread</td><td>A callback in the queue</td></tr>
+                                <tr><td>While waiting for the DB…</td><td>The thread sits blocked, wasting memory</td><td>The loop serves other requests</td></tr>
+                                <tr><td>10&thinsp;000 connections</td><td>10&thinsp;000 threads 😰</td><td>Still one thread 😎</td></tr>
+                                <tr><td>Wins</td><td>Simple mental model, true parallel CPU work</td><td>Scalability, responsiveness, resource efficiency, simpler error handling</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3><i class="fas fa-heart"></i> Why developers love it</h3>
+                    <ul class="tight">
+                        <li><b class="kw">Lightweight and fast</b> — V8 compiles JS to machine code.</li>
+                        <li><b class="kw">One language everywhere</b> — JS is the <em>only</em> language that runs both frontend and backend: shared code, shared types, shared libraries.</li>
+                        <li><b class="kw">Easy learning curve</b> — you already know the language!</li>
+                        <li><b class="kw">Ecosystem</b> — npm hosts over two million packages.</li>
+                        <li><b class="kw">Community-powered</b> — cross-platform and multi-purpose.</li>
+                    </ul>
+                    <div class="key-strip">
+                        <span class="key-label">Built with Node</span>
+                        <span class="key-chip">REST APIs</span>
+                        <span class="key-chip">real-time chat</span>
+                        <span class="key-chip">streaming apps</span>
+                        <span class="key-chip">CLI tools</span>
+                        <span class="key-chip">microservices</span>
+                        <span class="key-chip">IoT</span>
+                    </div>
+                </section>
+
+                <!-- 3. TWO WORLDS -->
+                <section id="two-worlds">
+                    <h2><span class="section-num">3</span> One engine, two worlds</h2>
+                    <div class="key-strip">
+                        <span class="key-label">Key terms</span>
+                        <span class="key-chip">V8 engine</span>
+                        <span class="key-chip">DOM APIs</span>
+                        <span class="key-chip">Node APIs</span>
+                        <span class="key-chip bad">no document in Node!</span>
+                    </div>
+                    <div class="board-line"><i class="fas fa-code-branch"></i>
+                        <span>Chrome and Node share the <span class="b">same V8 engine</span> — they just plug <span class="b">different toolboxes</span> into it.</span>
+                    </div>
+
+                    <div class="stack-compare">
+                        <div class="stack-col">
+                            <div class="stack-title">🌐 Chrome (browser)</div>
+                            <div class="stack-box engine">V8 engine<br><small>parser · execution engine · garbage collector · call stack</small></div>
+                            <div class="stack-plus">+</div>
+                            <div class="stack-box api">DOM API implementation<br><small>document, window, alert, fetch, events…</small></div>
+                        </div>
+                        <div class="stack-col">
+                            <div class="stack-title">🟢 Node.js (server)</div>
+                            <div class="stack-box engine">V8 engine<br><small>the exact same engine!</small></div>
+                            <div class="stack-plus">+</div>
+                            <div class="stack-box api">Node API implementation<br><small>http, fs, path, os, process…</small></div>
+                        </div>
+                    </div>
+
+                    <ul class="tight">
+                        <li>Ask Chrome's V8 to run <span class="inline-code">console.log('V8')</span> — works. Ask it for <span class="inline-code">document.querySelector('div')</span> — the <b class="kw">DOM API</b> answers.</li>
+                        <li>Ask Node's V8 to run <span class="inline-code">http.createServer()</span> — the <b class="kw">Node API</b> answers.</li>
+                        <li>Ask Node for <span class="inline-code">document.querySelector('div')</span> — <b class="kw">????????</b> There is no DOM on a server!</li>
+                    </ul>
+
+                    <div class="code-block runner node-run">
+                        <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">no-dom-here.js</span></div>
+                        <pre><code>// This runs in the NODE EMULATOR — there is no web page here.
+console.log("Node says hi — no browser needed!");
+
+const os = require('os');
+console.log("Platform:", os.platform(), "· CPU cores:", os.cpus().length);
+
+// Now try the impossible:
+document.querySelector("div");   // 💥 servers have no document!</code></pre>
+                        <div class="code-actions"><button class="run-btn"><i class="fas fa-play"></i> Run</button><button class="clear-btn">Clear</button></div>
+                        <div class="run-out" aria-live="polite"></div>
+                    </div>
+
+                    <h3><i class="fas fa-gamepad"></i> The sorting game: will it run?</h3>
+                    <div class="board-line"><i class="fas fa-hand-point-right"></i>
+                        <span>For each snippet, decide: <span class="b">Browser</span>, <span class="b">Node</span>, or <span class="b">Both</span>?</span>
+                    </div>
+                    <div class="wir-grid" id="wir-grid">
+                        <div class="wir-card" data-a="browser" data-why="querySelector is a DOM API — only browsers have a document.">
+                            <code>document.querySelector("h1")</code>
+                            <div class="wir-btns"><button data-v="browser">🌐 Browser</button><button data-v="node">🟢 Node</button><button data-v="both">🤝 Both</button></div>
+                            <div class="wir-fb"></div>
+                        </div>
+                        <div class="wir-card" data-a="node" data-why="require() and the http module belong to Node — browsers load code with &lt;script&gt; and import.">
+                            <code>const http = require('http')</code>
+                            <div class="wir-btns"><button data-v="browser">🌐 Browser</button><button data-v="node">🟢 Node</button><button data-v="both">🤝 Both</button></div>
+                            <div class="wir-fb"></div>
+                        </div>
+                        <div class="wir-card" data-a="both" data-why="console lives in both runtimes — it's part of the shared JavaScript world.">
+                            <code>console.log("hello")</code>
+                            <div class="wir-btns"><button data-v="browser">🌐 Browser</button><button data-v="node">🟢 Node</button><button data-v="both">🤝 Both</button></div>
+                            <div class="wir-fb"></div>
+                        </div>
+                        <div class="wir-card" data-a="browser" data-why="alert() pops up a browser window — a Web API. Servers have nobody to alert!">
+                            <code>alert("Hi!")</code>
+                            <div class="wir-btns"><button data-v="browser">🌐 Browser</button><button data-v="node">🟢 Node</button><button data-v="both">🤝 Both</button></div>
+                            <div class="wir-fb"></div>
+                        </div>
+                        <div class="wir-card" data-a="node" data-why="File system access is a Node API. Imagine if any website could read your files… 😱">
+                            <code>const fs = require('fs')</code>
+                            <div class="wir-btns"><button data-v="browser">🌐 Browser</button><button data-v="node">🟢 Node</button><button data-v="both">🤝 Both</button></div>
+                            <div class="wir-fb"></div>
+                        </div>
+                        <div class="wir-card" data-a="both" data-why="Timers exist in both — a browser Web API and a Node API. Same behaviour, different implementation.">
+                            <code>setTimeout(cb, 1000)</code>
+                            <div class="wir-btns"><button data-v="browser">🌐 Browser</button><button data-v="node">🟢 Node</button><button data-v="both">🤝 Both</button></div>
+                            <div class="wir-fb"></div>
+                        </div>
+                        <div class="wir-card" data-a="both" data-why="Surprise! Since Node 18, fetch() ships in Node too — Week 9 skills work on the server.">
+                            <code>fetch("https://api.github.com")</code>
+                            <div class="wir-btns"><button data-v="browser">🌐 Browser</button><button data-v="node">🟢 Node</button><button data-v="both">🤝 Both</button></div>
+                            <div class="wir-fb"></div>
+                        </div>
+                        <div class="wir-card" data-a="browser" data-why="window IS the browser tab. Node has 'global' instead — no tabs on a server.">
+                            <code>window.location.href</code>
+                            <div class="wir-btns"><button data-v="browser">🌐 Browser</button><button data-v="node">🟢 Node</button><button data-v="both">🤝 Both</button></div>
+                            <div class="wir-fb"></div>
+                        </div>
+                    </div>
+                    <div class="wir-score" id="wir-score">0 / 8 sorted</div>
+                </section>
+
+                <!-- 4. EVENT LOOP LEVEL 2 -->
+                <section id="event-loop-2">
+                    <h2><span class="section-num">4</span> The event loop, level 2</h2>
+                    <div class="key-strip">
+                        <span class="key-label">Key terms</span>
+                        <span class="key-chip">call stack</span>
+                        <span class="key-chip">task queue</span>
+                        <span class="key-chip good">micro-task queue</span>
+                        <span class="key-chip warm">priority!</span>
+                    </div>
+                    <div class="board-line"><i class="fas fa-ranking-star"></i>
+                        <span>New this week: Promises get a <span class="b">VIP lane</span>. The <span class="b">micro-task queue</span> always beats the task queue.</span>
+                    </div>
+                    <ul class="tight">
+                        <li><b class="kw">Call stack</b> — runs your functions, one at a time (Week 9 recap).</li>
+                        <li><b class="kw">Internal implementation</b> — the C++ code (browser <em>or</em> Node) behind <span class="inline-code">setTimeout</span> &amp; friends. The host itself is multi-threaded — your JS is not.</li>
+                        <li><b class="kw">Task queue</b> — callbacks from <span class="inline-code">setTimeout</span>, <span class="inline-code">addEventListener</span>… wait here.</li>
+                        <li><b class="kw">Micro-task queue</b> — <b>Promise</b> callbacks are special: they get their own, <b class="kw">higher-priority</b> queue.</li>
+                        <li><b class="kw">Event loop</b> — when the stack empties, it drains <b class="kw">all micro-tasks first</b>, then takes one task.</li>
+                    </ul>
+
+                    <h3><i class="fas fa-film"></i> Watch the VIP lane in action</h3>
+                    <div class="eventloop-viz glass-panel" style="padding: 20px; border-radius: var(--radius-md);">
+                        <div>
+                            <div class="code-block" style="margin: 0 0 12px;">
+                                <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">microtask-demo.js</span></div>
+                                <pre class="el-code" id="el-code"><span class="code-line" data-l="1">console.log("Start");</span><span class="code-line" data-l="2">setTimeout(() =&gt; console.log("Timeout!"), 0);</span><span class="code-line" data-l="3">Promise.resolve().then(() =&gt; console.log("Promise!"));</span><span class="code-line" data-l="4">console.log("End");</span></pre>
+                            </div>
+                            <div style="display:flex; gap:10px;">
+                                <button class="run-btn" id="el-play"><i class="fas fa-play"></i> Play</button>
+                                <button class="clear-btn" id="el-reset">Reset</button>
+                            </div>
+                            <div class="el-narrate" id="el-narrate">Press Play to start the simulation.</div>
+                        </div>
+                        <div class="el-boxes">
+                            <div class="el-box" id="el-stack"><h5>📚 Call stack (JS thread)</h5><div class="el-chips"></div></div>
+                            <div class="el-box" id="el-api"><h5>⚙️ Internal implementation</h5><div class="el-chips"></div></div>
+                            <div class="el-box" id="el-micro"><h5>⚡ Micro-task queue (VIP)</h5><div class="el-chips"></div></div>
+                            <div class="el-box" id="el-queue"><h5>⏳ Task queue</h5><div class="el-chips"></div></div>
+                            <div class="el-box" style="min-height:auto;"><h5>🖥️ Console</h5><div class="el-chips" id="el-console" style="font-family:var(--font-mono); font-size:.78rem; color:#9fb3c8;"></div></div>
+                        </div>
+                    </div>
+
+                    <h3><i class="fas fa-flask"></i> Don't believe the simulation? Run the real thing</h3>
+                    <div class="code-block runner node-run">
+                        <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">priority.js · predict first, then Run</span></div>
+                        <pre><code>console.log("Start");
+
+setTimeout(() =&gt; console.log("Timeout!"), 0);           // task queue
+
+Promise.resolve().then(() =&gt; console.log("Promise!"));  // MICRO-task queue
+
+console.log("End");</code></pre>
+                        <div class="code-actions"><button class="run-btn"><i class="fas fa-play"></i> Run</button><button class="clear-btn">Clear</button></div>
+                        <div class="run-out" aria-live="polite"></div>
+                    </div>
+                    <div class="callout warn">
+                        <i class="fas fa-triangle-exclamation"></i>
+                        <p><strong>Exam favourite:</strong> the order is <b class="kw">Start → End → Promise! → Timeout!</b>
+                        Even at 0&thinsp;ms, the timeout callback waits in the task queue while the Promise callback
+                        <b class="kw">cuts the line</b> through the micro-task queue.</p>
+                    </div>
+                    <div class="callout tip">
+                        <i class="fas fa-gamepad"></i>
+                        <p><strong>Extra practice:</strong> <a href="https://www.jsv9000.app/" target="_blank" rel="noopener">jsv9000.app</a> —
+                        paste any program and step through the loop frame by frame. Edit the code and run it again!</p>
+                    </div>
+                </section>
+
+                <!-- 5. INSTALL -->
+                <section id="install">
+                    <h2><span class="section-num">5</span> Getting Node on your machine</h2>
+                    <div class="code-block">
+                        <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">terminal · check your install</span></div>
+                        <pre><code>node -v     // v22.x  → the runtime
+npm -v      // 10.x   → the package manager (ships WITH Node)</code></pre>
+                    </div>
+                    <div class="callout def">
+                        <i class="fas fa-book"></i>
+                        <p><strong>Installation instructions:</strong> the <b class="kw">Pre-Lab inside Lab 4 on Brightspace</b>
+                        has the full step-by-step guide. Install before the lab — it takes five minutes.</p>
+                    </div>
+                    <div class="board-line"><i class="fas fa-circle-info"></i>
+                        <span>Everything on this page runs in the emulator — but the <span class="b">lab needs the real thing</span>.</span>
+                    </div>
+                </section>
+
+                <!-- 6. MODULES -->
+                <section id="modules">
+                    <h2><span class="section-num">6</span> Modules &amp; require()</h2>
+                    <div class="key-strip">
+                        <span class="key-label">Key terms</span>
+                        <span class="key-chip">core modules</span>
+                        <span class="key-chip">file-based modules</span>
+                        <span class="key-chip">npm modules</span>
+                        <span class="key-chip good">require()</span>
+                    </div>
+                    <div class="board-line"><i class="fas fa-puzzle-piece"></i>
+                        <span>A module = <span class="b">one file, one job</span>. <span class="b">require()</span> is how files borrow each other's tools.</span>
+                    </div>
+                    <div class="table-wrap">
+                        <table class="doc-table">
+                            <thead><tr><th>You write</th><th>Node loads</th></tr></thead>
+                            <tbody>
+                                <tr><td><span class="inline-code">require("fs")</span></td><td>A <b>core module</b> (built into Node) — or an npm package from <span class="inline-code">node_modules/</span>.</td></tr>
+                                <tr><td><span class="inline-code">require("./greet")</span></td><td><b>Your file</b> <span class="inline-code">greet.js</span>, from the <b>same</b> directory.</td></tr>
+                                <tr><td><span class="inline-code">require("../utils/greet")</span></td><td>Your file, from the <b>parent</b> directory.</td></tr>
+                                <tr><td><span class="inline-code">require("/abs/path/greet")</span></td><td>Your file, by <b>absolute</b> path.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3><i class="fas fa-toolbox"></i> The core modules toolbox</h3>
+                    <div class="table-wrap">
+                        <table class="doc-table">
+                            <thead><tr><th>Module</th><th>Job</th></tr></thead>
+                            <tbody>
+                                <tr><td><span class="inline-code">fs</span></td><td>File system operations — reading &amp; writing files.</td></tr>
+                                <tr><td><span class="inline-code">http</span></td><td>Creating HTTP servers and handling requests.</td></tr>
+                                <tr><td><span class="inline-code">path</span></td><td>Working with file and directory paths.</td></tr>
+                                <tr><td><span class="inline-code">os</span></td><td>System information — CPU, memory, platform.</td></tr>
+                                <tr><td><span class="inline-code">events</span></td><td>Event-driven programming (EventEmitter).</td></tr>
+                                <tr><td><span class="inline-code">crypto</span></td><td>Encryption, hashing and security operations.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="code-block runner node-run">
+                        <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">core-modules.js</span></div>
+                        <pre><code>const os = require('os');
+const path = require('path');
+
+console.log("You are on:", os.platform());
+console.log("CPU cores:", os.cpus().length);
+console.log("joined path:", path.join("students", "week10", "app.js"));
+
+// The emulator ships core modules only. Try uncommenting:
+// require('express');   // → Error: Cannot find module 'express'</code></pre>
+                        <div class="code-actions"><button class="run-btn"><i class="fas fa-play"></i> Run</button><button class="clear-btn">Clear</button></div>
+                        <div class="run-out" aria-live="polite"></div>
+                    </div>
+
+                    <h3><i class="fas fa-user-pen"></i> User-defined modules — your own files</h3>
+                    <div class="code-compare">
+                        <div>
+                            <div class="compare-label">greet.js — exports a tool</div>
+                            <div class="code-block"><div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">greet.js</span></div>
+                            <pre><code>function greet(name) {
+  return "Hello, " + name + "!";
+}
+
+module.exports = greet;   // make it borrowable</code></pre></div>
+                        </div>
+                        <div>
+                            <div class="compare-label good">app.js — borrows it</div>
+                            <div class="code-block"><div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">app.js</span></div>
+                            <pre><code>const greet = require("./greet");
+
+console.log(greet("Prof. Abul Qasim"));
+// → Hello, Prof. Abul Qasim!</code></pre></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 7. NPM -->
+                <section id="npm">
+                    <h2><span class="section-num">7</span> npm &amp; package.json</h2>
+                    <div class="key-strip">
+                        <span class="key-label">Key terms</span>
+                        <span class="key-chip">npm init -y</span>
+                        <span class="key-chip">npm install</span>
+                        <span class="key-chip good">package.json</span>
+                        <span class="key-chip">node_modules/</span>
+                        <span class="key-chip warm">devDependencies</span>
+                    </div>
+                    <div class="board-line"><i class="fas fa-store"></i>
+                        <span><span class="b">npm</span> = the app store for Node code. <span class="b">package.json</span> = your project's shopping list.</span>
+                    </div>
+                    <ul class="tight">
+                        <li><b class="kw">npm</b> (Node Package Manager) comes with the Node.js installation.</li>
+                        <li><span class="inline-code">npm install &lt;package&gt;</span> downloads a package into <b class="kw">node_modules/</b> and records it in <b class="kw">package.json</b>.</li>
+                        <li>Installed packages are used via <span class="inline-code">require()</span> — same as core modules.</li>
+                        <li><span class="inline-code">npm install -g nodemon</span> installs <b class="kw">globally</b> — a command available everywhere (nodemon auto-restarts your server on every save).</li>
+                    </ul>
+
+                    <h3><i class="fas fa-terminal"></i> The practice terminal — set up a real project</h3>
+                    <div class="board-line"><i class="fas fa-hand-point-right"></i>
+                        <span>The recipe: <span class="b">npm init -y</span> → <span class="b">npm install express</span> → <span class="b">node app.js</span>. Type it (or click the chips) and watch the folder build itself.</span>
+                    </div>
+                    <div class="npm-lab">
+                        <div class="term">
+                            <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">student@algonquin: ~/my-first-server</span></div>
+                            <div class="term-body" id="term-body"></div>
+                            <form class="term-input-row" id="term-form">
+                                <span class="term-prompt">$</span>
+                                <input id="term-input" autocomplete="off" spellcheck="false" placeholder="type a command… (try: help)">
+                                <button type="submit" class="run-btn" style="padding: 5px 14px;">run</button>
+                            </form>
+                            <div class="term-suggest" id="term-suggest"></div>
+                        </div>
+                        <div class="proj-panel glass-panel">
+                            <h5><i class="fas fa-folder-open"></i> my-first-server/</h5>
+                            <ul class="proj-tree" id="proj-tree"></ul>
+                            <div class="pkg-view" id="pkg-view"><span class="pkg-empty">package.json will appear here after npm init -y</span></div>
+                        </div>
+                    </div>
+
+                    <h3><i class="fas fa-file-code"></i> What is package.json?</h3>
+                    <div class="callout def">
+                        <i class="fas fa-book"></i>
+                        <p><strong>package.json</strong> is the <b class="kw">configuration file</b> of a Node project: its name, version,
+                        scripts, metadata — and most importantly its <b class="kw">dependencies</b>. Created automatically with
+                        <span class="inline-code">npm init -y</span> (<span class="inline-code">-y</span> = "yes to all questions").</p>
+                    </div>
+                    <ul class="tight">
+                        <li>Running <span class="inline-code">npm install</span> with no arguments installs <b class="kw">everything listed</b> in package.json.</li>
+                        <li>That's why <b class="kw">node_modules/ is never committed to git</b> — anyone can rebuild it from package.json.</li>
+                    </ul>
+
+                    <h3><i class="fas fa-code-branch"></i> dependencies vs. devDependencies</h3>
+                    <div class="table-wrap">
+                        <table class="doc-table">
+                            <thead><tr><th></th><th>dependencies</th><th>devDependencies</th></tr></thead>
+                            <tbody>
+                                <tr><td>Needed…</td><td>At <b>runtime</b> — the app breaks without them</td><td>Only <b>while developing</b></td></tr>
+                                <tr><td>Examples</td><td>express</td><td>nodemon, test runners</td></tr>
+                                <tr><td>Install flag</td><td><span class="inline-code">npm install express</span> (<span class="inline-code">--save</span> is the default)</td><td><span class="inline-code">npm install --save-dev nodemon</span></td></tr>
+                                <tr><td>In production</td><td>Installed</td><td>Skipped — smaller, faster deploys</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- 8. SEMVER -->
+                <section id="semver">
+                    <h2><span class="section-num">8</span> Semantic versioning &amp; the lockfile</h2>
+                    <div class="key-strip">
+                        <span class="key-label">Key terms</span>
+                        <span class="key-chip">MAJOR.MINOR.PATCH</span>
+                        <span class="key-chip warm">^ caret</span>
+                        <span class="key-chip warm">~ tilde</span>
+                        <span class="key-chip good">package-lock.json</span>
+                    </div>
+                    <div class="board-line"><i class="fas fa-tags"></i>
+                        <span><span class="b">4.21.2</span> = MAJOR<span class="b">.</span>MINOR<span class="b">.</span>PATCH — breaking changes <span class="b">.</span> new features <span class="b">.</span> bug fixes.</span>
+                    </div>
+
+                    <h3><i class="fas fa-sliders"></i> The ^ and ~ playground</h3>
+                    <p>package.json says <span class="inline-code">"express": "<span id="sv-current">^4.21.2</span>"</span>. Which versions is npm <em>allowed</em> to install? Pick a prefix:</p>
+                    <div class="semver-lab glass-panel">
+                        <div class="sv-btns">
+                            <button class="sv-btn" data-mode="exact"><code>4.21.2</code><small>exact</small></button>
+                            <button class="sv-btn" data-mode="tilde"><code>~4.21.2</code><small>tilde</small></button>
+                            <button class="sv-btn active" data-mode="caret"><code>^4.21.2</code><small>caret</small></button>
+                        </div>
+                        <div class="sv-note" id="sv-note"></div>
+                        <div class="sv-chips" id="sv-chips"></div>
+                    </div>
+                    <div class="callout tip">
+                        <i class="fas fa-lightbulb"></i>
+                        <p><strong>Memory hook:</strong> <b class="kw">~</b> is a small wiggle (patches only) ·
+                        <b class="kw">^</b> points up higher (minors too) · <b class="kw">no prefix</b> = frozen solid.
+                        npm's default when you install is <b class="kw">^</b>.</p>
+                    </div>
+
+                    <h3><i class="fas fa-lock"></i> package-lock.json — the exact receipt</h3>
+                    <ul class="tight">
+                        <li>Generated on <span class="inline-code">npm install</span> — catalogs <b class="kw">exactly</b> what landed in node_modules/.</li>
+                        <li>On the next install, <b class="kw">package-lock.json trumps package.json</b>: the locked versions win.</li>
+                        <li>Result: your teammate installs the <b class="kw">identical</b> versions you have. No "works on my machine".</li>
+                    </ul>
+                    <div class="table-wrap">
+                        <table class="doc-table">
+                            <thead><tr><th>Feature</th><th>package.json</th><th>package-lock.json</th></tr></thead>
+                            <tbody>
+                                <tr><td>Purpose</td><td>Project metadata &amp; dependency <em>ranges</em></td><td>Locks <em>exact</em> versions of everything</td></tr>
+                                <tr><td>Versioning</td><td>Semantic ranges (<span class="inline-code">"express": "^4.21.2"</span>)</td><td>Exact pins (<span class="inline-code">"version": "4.21.2"</span>)</td></tr>
+                                <tr><td>Created by</td><td>You (via <span class="inline-code">npm init</span>, then edited)</td><td>npm, automatically on install</td></tr>
+                                <tr><td>Edit by hand?</td><td>Yes, routinely</td><td><b>Never</b></td></tr>
+                                <tr><td>Guarantees stability?</td><td>No — ranges allow updates</td><td>Yes — prevents version drift</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- 9. FIRST SERVER -->
+                <section id="first-server">
+                    <h2><span class="section-num">9</span> Your first server</h2>
+                    <div class="key-strip">
+                        <span class="key-label">Key terms</span>
+                        <span class="key-chip">http.createServer</span>
+                        <span class="key-chip">req · res</span>
+                        <span class="key-chip">server.listen(port)</span>
+                        <span class="key-chip warm">res.end() — always!</span>
+                        <span class="key-chip">status codes</span>
+                    </div>
+                    <div class="board-line"><i class="fas fa-arrows-turn-to-dots"></i>
+                        <span>Lifecycle of a request: browser sends a <span class="b">request</span> → Node runs <span class="b">your callback</span> with (req, res) → you build and send the <span class="b">response</span>.</span>
+                    </div>
+                    <div class="callout def">
+                        <i class="fas fa-book"></i>
+                        <p><strong>http.createServer(callback)</strong> creates a web server. The callback receives
+                        <b class="kw">req</b> (the incoming request — URL, method, headers) and
+                        <b class="kw">res</b> (an object that collects your response). <b class="kw">server.listen(port)</b>
+                        opens the port and starts accepting visitors.</p>
+                    </div>
+
+                    <h3><i class="fas fa-rocket"></i> Hello, World — a real server, right here</h3>
+                    <div class="board-line"><i class="fas fa-hand-point-right"></i>
+                        <span>Run it, then <span class="b">visit your own server</span> in the mini-browser that appears. Edit the message and run again!</span>
+                    </div>
+                    <div class="code-block runner node-run">
+                        <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">hello-server.js</span></div>
+                        <pre><code>const http = require('http');
+
+const server = http.createServer(function (req, res) {
+  res.writeHead(200, { "Content-Type": "text/plain" });
+  res.write("Hello World from my first server!");
+  res.end();
+});
+
+server.listen(3000, () =&gt; {
+  console.log("Server running at http://localhost:3000");
+});</code></pre>
+                        <div class="code-actions"><button class="run-btn"><i class="fas fa-play"></i> Run</button><button class="clear-btn">Clear</button></div>
+                        <div class="run-out" aria-live="polite"></div>
+                    </div>
+
+                    <h3><i class="fas fa-bug"></i> Spot the bug — the original slide version</h3>
+                    <div class="board-line"><i class="fas fa-magnifying-glass"></i>
+                        <span>This server <span class="b">starts fine</span>… but crashes when someone visits. Run it, visit it, read the error — then <span class="b">fix it live</span>.</span>
+                    </div>
+                    <div class="code-block runner node-run">
+                        <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">buggy-server.js · one letter is wrong</span></div>
+                        <pre><code>var http = require('http');
+
+var server = http.createServer(function (req, res) {
+  res.writeHead(200);
+  resp.write('Hello World');   // 🐛 hmm…
+  res.end();
+});
+
+server.listen(3000);</code></pre>
+                        <div class="code-actions"><button class="run-btn"><i class="fas fa-play"></i> Run</button><button class="clear-btn">Clear</button></div>
+                        <div class="run-out" aria-live="polite"></div>
+                    </div>
+                    <div class="callout warn">
+                        <i class="fas fa-triangle-exclamation"></i>
+                        <p><strong>Lesson inside the bug:</strong> the callback only runs <b class="kw">per request</b> —
+                        a broken handler starts up fine and explodes on the <b class="kw">first visit</b>. Always test by visiting!</p>
+                    </div>
+
+                    <h3><i class="fas fa-inbox"></i> What's inside req?</h3>
+                    <div class="code-block runner node-run">
+                        <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">inspect-request.js · visit different paths and watch the console</span></div>
+                        <pre><code>const http = require('http');
+
+const server = http.createServer((req, res) =&gt; {
+  console.log("method:", req.method);        // 'GET', 'POST', …
+  console.log("url:", req.url);              // '/users', '/about?x=1', …
+  console.log("host header:", req.headers.host);
+  console.log("http version:", req.httpVersion);
+  res.end("Request received — now check the console output!");
+});
+
+server.listen(3000);</code></pre>
+                        <div class="code-actions"><button class="run-btn"><i class="fas fa-play"></i> Run</button><button class="clear-btn">Clear</button></div>
+                        <div class="run-out" aria-live="polite"></div>
+                    </div>
+
+                    <h3><i class="fas fa-reply"></i> Building the response</h3>
+                    <div class="table-wrap">
+                        <table class="doc-table">
+                            <thead><tr><th>Method</th><th>Job</th></tr></thead>
+                            <tbody>
+                                <tr><td><span class="inline-code">res.writeHead(code, headers)</span></td><td>Set the status code + headers in one go.</td></tr>
+                                <tr><td><span class="inline-code">res.write(chunk)</span></td><td>Write a piece of the response body.</td></tr>
+                                <tr><td><span class="inline-code">res.end([chunk])</span></td><td><b>Finish the response — mandatory!</b> Forget it and the browser waits forever.</td></tr>
+                                <tr><td><span class="inline-code">res.json(obj)</span></td><td>Send a JSON response <small>(an Express nicety — the emulator has it too)</small>.</td></tr>
+                                <tr><td><span class="inline-code">res.download(path)</span></td><td>Send a file back <small>(Express)</small>.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3><i class="fas fa-traffic-light"></i> Status codes &amp; MIME types</h3>
+                    <div class="table-wrap">
+                        <table class="doc-table">
+                            <thead><tr><th>Family</th><th>Meaning</th><th>Famous examples</th></tr></thead>
+                            <tbody>
+                                <tr><td>1xx</td><td>Informational</td><td>100 Continue</td></tr>
+                                <tr><td>2xx</td><td>Success</td><td><b>200 OK</b>, 201 Created</td></tr>
+                                <tr><td>3xx</td><td>Redirection</td><td>301 Moved Permanently, 304 Not Modified</td></tr>
+                                <tr><td>4xx</td><td>Client error</td><td><b>404 Not Found</b>, 403 Forbidden</td></tr>
+                                <tr><td>5xx</td><td>Server error</td><td>500 Internal Server Error (you met it in the buggy server!)</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="key-strip">
+                        <span class="key-label">Common MIME types</span>
+                        <span class="key-chip">text/html</span>
+                        <span class="key-chip">application/json</span>
+                        <span class="key-chip">application/pdf</span>
+                        <span class="key-chip">image/png</span>
+                    </div>
+                </section>
+
+                <!-- 10. URL MODULE -->
+                <section id="url-module">
+                    <h2><span class="section-num">10</span> The URL module</h2>
+                    <div class="key-strip">
+                        <span class="key-label">Key terms</span>
+                        <span class="key-chip">new URL()</span>
+                        <span class="key-chip">pathname</span>
+                        <span class="key-chip">search</span>
+                        <span class="key-chip good">searchParams</span>
+                    </div>
+                    <div class="board-line"><i class="fas fa-scissors"></i>
+                        <span>A URL is not a string — it's <span class="b">six pieces</span>. The URL class cuts it up for you, safely.</span>
+                    </div>
+
+                    <h3><i class="fas fa-hand-pointer"></i> Anatomy of a URL — click each piece</h3>
+                    <div class="url-anatomy-wrap glass-panel">
+                        <div class="url-anatomy" id="url-anatomy">
+                            <span class="ua-seg ua-proto" data-name="protocol" data-prop="myUrl.protocol" data-val="'https:'" data-desc="How to talk to the server — https means encrypted.">https://</span><span class="ua-seg ua-host" data-name="hostname" data-prop="myUrl.hostname" data-val="'www.example.com'" data-desc="Which machine on the internet — resolved to an IP address by DNS.">www.example.com</span><span class="ua-seg ua-port" data-name="port" data-prop="myUrl.port" data-val="'8080'" data-desc="Which door on that machine. Defaults: 80 for http, 443 for https.">:8080</span><span class="ua-seg ua-path" data-name="pathname" data-prop="myUrl.pathname" data-val="'/products/shoes'" data-desc="Which resource on the server — your server code routes on this.">/products/shoes</span><span class="ua-seg ua-query" data-name="search / query" data-prop="myUrl.search" data-val="'?color=red&amp;size=10'" data-desc="Extra key=value data — read it with searchParams.get('color').">?color=red&amp;size=10</span><span class="ua-seg ua-hash" data-name="hash" data-prop="myUrl.hash" data-val="'#reviews'" data-desc="A position INSIDE the page — the browser keeps it; servers never even receive it!">#reviews</span>
+                        </div>
+                        <div class="ua-info" id="ua-info">☝️ Click any coloured piece of the URL to dissect it.</div>
+                    </div>
+
+                    <h3><i class="fas fa-vial"></i> Properties &amp; searchParams — live</h3>
+                    <div class="code-block runner node-run">
+                        <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">url-anatomy.js</span></div>
+                        <pre><code>const { URL } = require('url');
+
+const myUrl = new URL("https://www.example.com:8080/products/shoes?color=red&amp;size=10#reviews");
+
+console.log("protocol:", myUrl.protocol);
+console.log("hostname:", myUrl.hostname);
+console.log("port:", myUrl.port);
+console.log("pathname:", myUrl.pathname);
+console.log("search:", myUrl.search);
+console.log("hash:", myUrl.hash);
+
+// searchParams: get / set / append / delete
+const p = myUrl.searchParams;
+console.log("color =", p.get("color"));
+p.set("size", "11");
+p.append("coupon", "WEEK10");
+console.log("updated URL:", myUrl.href);</code></pre>
+                        <div class="code-actions"><button class="run-btn"><i class="fas fa-play"></i> Run</button><button class="clear-btn">Clear</button></div>
+                        <div class="run-out" aria-live="polite"></div>
+                    </div>
+
+                    <h3><i class="fas fa-server"></i> A server that reads the query string</h3>
+                    <div class="board-line"><i class="fas fa-hand-point-right"></i>
+                        <span>Run it, then in the mini-browser try: <span class="b">/calendar?month=July&amp;year=2026</span></span>
+                    </div>
+                    <div class="code-block runner node-run">
+                        <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">query-server.js</span></div>
+                        <pre><code>const http = require('http');
+const { URL } = require('url');
+
+const server = http.createServer(function (req, res) {
+  res.writeHead(200, { "Content-Type": "text/html" });
+
+  const q = new URL(req.url, "http://" + req.headers.host);
+
+  res.write("host = " + req.headers.host);
+  res.write("&lt;br&gt;pathname = " + q.pathname);
+  res.write("&lt;br&gt;search = " + q.search);
+
+  const qdata = q.searchParams;
+  res.write("&lt;br&gt;&lt;b&gt;Month = " + qdata.get("month") + "&lt;/b&gt;");
+  res.write("&lt;br&gt;&lt;b&gt;Year = " + qdata.get("year") + "&lt;/b&gt;");
+  res.end();
+});
+
+server.listen(8080, () =&gt; console.log("Server running at http://localhost:8080"));</code></pre>
+                        <div class="code-actions"><button class="run-btn"><i class="fas fa-play"></i> Run</button><button class="clear-btn">Clear</button></div>
+                        <div class="run-out" aria-live="polite"></div>
+                    </div>
+                </section>
+
+                <!-- 11. FS & PATH -->
+                <section id="fs-path">
+                    <h2><span class="section-num">11</span> The fs &amp; path modules</h2>
+                    <div class="key-strip">
+                        <span class="key-label">Key terms</span>
+                        <span class="key-chip">fs.promises</span>
+                        <span class="key-chip good">await readFile</span>
+                        <span class="key-chip">path.join()</span>
+                        <span class="key-chip">cross-platform</span>
+                    </div>
+                    <div class="board-line"><i class="fas fa-hard-drive"></i>
+                        <span>Browsers must never touch your files. Servers <span class="b">live</span> on files. Enter <span class="b">fs</span> — and everything you learned in Week 9 pays off.</span>
+                    </div>
+                    <ul class="tight">
+                        <li>Node supports <b class="kw">reading, writing, creating and deleting</b> files.</li>
+                        <li><span class="inline-code">require('fs').promises</span> imports the <b class="kw">modern, non-blocking, Promise-based API</b> — made for <span class="inline-code">await</span>.</li>
+                    </ul>
+                    <div class="code-block runner node-run">
+                        <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">files.js · a virtual disk lives in this page</span></div>
+                        <pre><code>const fs = require('fs').promises;   // the Promise-based API
+
+// Week 9 skills, server edition:
+const data = await fs.readFile('example.txt', 'utf8');
+console.log("example.txt says:", data);
+
+await fs.writeFile('notes.txt', 'Node.js writes files!');
+await fs.appendFile('notes.txt', ' And appends too.');
+console.log("notes.txt says:", await fs.readFile('notes.txt', 'utf8'));
+
+console.log("the disk now holds:", await fs.readdir('.'));</code></pre>
+                        <div class="code-actions"><button class="run-btn"><i class="fas fa-play"></i> Run</button><button class="clear-btn">Clear</button></div>
+                        <div class="run-out" aria-live="polite"></div>
+                    </div>
+                    <div class="callout tip">
+                        <i class="fas fa-lightbulb"></i>
+                        <p><strong>The Week 9 connection:</strong> <span class="inline-code">fs.promises</span> methods return
+                        <b class="kw">Promises</b> — so <span class="inline-code">await</span>, <span class="inline-code">try/catch</span>
+                        and everything from the Island of Time applies, unchanged.</p>
+                    </div>
+
+                    <h3><i class="fas fa-signs-post"></i> path — never glue paths by hand</h3>
+                    <ul class="tight">
+                        <li>Windows uses <span class="inline-code">\</span>, Mac/Linux use <span class="inline-code">/</span> — <b class="kw">path</b> handles both, cross-platform.</li>
+                    </ul>
+                    <div class="code-block runner node-run">
+                        <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">paths.js</span></div>
+                        <pre><code>const path = require('path');
+
+const p = "/students/week10/report.pdf";
+console.log("basename:", path.basename(p));   // file name
+console.log("dirname :", path.dirname(p));    // its directory
+console.log("extname :", path.extname(p));    // file extension
+
+// join: cleans up slashes AND resolves '..' automatically
+console.log("join    :", path.join("students", "week10", "..", "week11", "lab.js"));
+
+// resolve: always returns an ABSOLUTE path
+console.log("resolve :", path.resolve("images", "logo.png"));</code></pre>
+                        <div class="code-actions"><button class="run-btn"><i class="fas fa-play"></i> Run</button><button class="clear-btn">Clear</button></div>
+                        <div class="run-out" aria-live="polite"></div>
+                    </div>
+                </section>
+
+                <!-- 12. MVC -->
+                <section id="mvc">
+                    <h2><span class="section-num">12</span> Model – View – Controller</h2>
+                    <div class="key-strip">
+                        <span class="key-label">Key terms</span>
+                        <span class="key-chip">Model = data + logic</span>
+                        <span class="key-chip">View = presentation</span>
+                        <span class="key-chip good">Controller = the brains</span>
+                        <span class="key-chip">separation of concerns</span>
+                    </div>
+                    <div class="board-line"><i class="fas fa-sitemap"></i>
+                        <span>MVC keeps <span class="b">business logic</span> away from the <span class="b">GUI</span> — the design paradigm behind maintainable apps.</span>
+                    </div>
+
+                    <div class="table-wrap">
+                        <table class="doc-table">
+                            <thead><tr><th>Part</th><th>Represents</th><th>Responsibilities</th></tr></thead>
+                            <tbody>
+                                <tr><td>🧠 Model</td><td>Knowledge</td><td>Stores the data + the logic to access and change it. Calculations, data manipulation. Exists independently of how it's displayed.</td></tr>
+                                <tr><td>🎨 View</td><td>Presentation</td><td>How data is shown to the user — renders HTML (or JSON, XML…). Receives data from the controller. Presentation logic <em>only</em>.</td></tr>
+                                <tr><td>🚦 Controller</td><td>The link user ↔ system</td><td>The brains: reads the user's input, validates &amp; sanitizes it, decides how the model changes, and picks which view to render.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3><i class="fas fa-film"></i> Follow one request through MVC</h3>
+                    <div class="mvc-lab glass-panel">
+                        <div class="mvc-flow" id="mvc-flow">
+                            <div class="mvc-box" id="mvc-user"><h5>🧑 Browser</h5><p>the user</p></div>
+                            <div class="mvc-arrow">⇄</div>
+                            <div class="mvc-box" id="mvc-controller"><h5>🚦 Controller</h5><p>decides</p></div>
+                            <div class="mvc-arrow">⇄</div>
+                            <div class="mvc-box" id="mvc-model"><h5>🧠 Model</h5><p>data + logic</p></div>
+                            <div class="mvc-arrow-down">⇅</div>
+                            <div class="mvc-box" id="mvc-view"><h5>🎨 View</h5><p>renders</p></div>
+                        </div>
+                        <div style="display:flex; gap:10px; margin-top:16px;">
+                            <button class="run-btn" id="mvc-play"><i class="fas fa-play"></i> User clicks "Show albums"</button>
+                            <button class="clear-btn" id="mvc-reset">Reset</button>
+                        </div>
+                        <div class="el-narrate" id="mvc-narrate">Press the button to send a request through the M-V-C machine.</div>
+                    </div>
+
+                    <h3><i class="fas fa-thumbs-up"></i> Why bother?</h3>
+                    <ul class="tight">
+                        <li><b class="kw">Separation of concerns</b> — data, logic and looks live apart.</li>
+                        <li>Data can change <b class="kw">independently</b> of its presentation.</li>
+                        <li>The <b class="kw">same data, different views</b> — one model can feed a web page, an app and an API.</li>
+                        <li><b class="kw">Easier maintenance and testing</b> — each part tests in isolation.</li>
+                        <li><b class="kw">Team-friendly</b> — coding tasks split cleanly between people.</li>
+                        <li><b class="kw">Reusability</b> — one model, many views.</li>
+                    </ul>
+                    <div class="board-line"><i class="fas fa-forward"></i>
+                        <span>In Node, MVC usually comes via a framework: <span class="b">Express.js</span> — that's where our voyage heads next.</span>
+                    </div>
+                </section>
+
+                <!-- 13. TAKEAWAYS -->
+                <section id="takeaways">
+                    <h2><span class="section-num">13</span> Key takeaways</h2>
+                    <ol class="takeaways">
+                        <li><b class="kw">Server-side code is invisible</b> to visitors — that's where secrets, databases and authentication live.</li>
+                        <li><b class="kw">Node.js = V8 + Node APIs</b> — Chrome's engine, with http/fs/path instead of the DOM. No <span class="inline-code">document</span> on a server!</li>
+                        <li>Node is <b class="kw">event-driven, non-blocking, single-threaded</b> — one thread serves thousands of connections.</li>
+                        <li>The <b class="kw">micro-task queue (Promises) beats the task queue (setTimeout)</b> — every time the stack empties.</li>
+                        <li><b class="kw">require()</b> loads core modules (<span class="inline-code">"fs"</span>), your files (<span class="inline-code">"./greet"</span>), or npm packages (<span class="inline-code">"express"</span>).</li>
+                        <li><b class="kw">npm init -y</b> creates package.json · <b class="kw">npm install</b> reads it · <b class="kw">package-lock.json</b> pins exact versions and wins.</li>
+                        <li>Semver: <b class="kw">^</b> allows minor + patch, <b class="kw">~</b> allows patch only, <b class="kw">no prefix</b> = exactly that version.</li>
+                        <li><b class="kw">http.createServer((req, res))</b> + <b class="kw">server.listen(port)</b> — and <b class="kw">always res.end()</b>, or the browser waits forever.</li>
+                        <li><b class="kw">new URL()</b> + <b class="kw">searchParams</b> dissect URLs and query strings safely.</li>
+                        <li><b class="kw">MVC</b>: Model = data + logic · View = presentation · Controller = the brains between them.</li>
+                    </ol>
+                </section>
+
+                <!-- 14. QUIZ -->
+                <section id="quiz">
+                    <h2><span class="section-num">14</span> Self-check quiz</h2>
+                    <p class="section-lede">No grades, instant feedback. Can you get all eight?</p>
+
+                    <div class="quiz-q" data-answer="0">
+                        <h4><span class="q-num">Q1.</span> What is Node.js?</h4>
+                        <button class="quiz-opt">A JavaScript runtime built on the V8 engine that runs JS outside the browser</button>
+                        <button class="quiz-opt">A new programming language that replaces JavaScript on servers</button>
+                        <button class="quiz-opt">A browser extension that speeds up web pages</button>
+                        <div class="quiz-feedback">Node.js is a <strong>runtime environment</strong> (written in C++): the same V8 engine as Chrome, paired with the Node APIs (http, fs, path…) instead of the DOM.</div>
+                    </div>
+
+                    <div class="quiz-q" data-answer="2">
+                        <h4><span class="q-num">Q2.</span> What does this print, in order?<br>
+                        <span style="font-family:var(--font-mono); font-weight:400; font-size:.85rem;">console.log("A"); setTimeout(() =&gt; console.log("B"), 0); Promise.resolve().then(() =&gt; console.log("C")); console.log("D");</span></h4>
+                        <button class="quiz-opt">A, B, C, D — everything runs in written order</button>
+                        <button class="quiz-opt">A, D, B, C — the 0 ms timer beats the promise</button>
+                        <button class="quiz-opt">A, D, C, B — micro-tasks (Promises) always cut ahead of the task queue</button>
+                        <div class="quiz-feedback">Synchronous code first (A, D). Then the event loop drains the <strong>micro-task queue</strong> (C) before touching the task queue (B) — even at 0 ms.</div>
+                    </div>
+
+                    <div class="quiz-q" data-answer="1">
+                        <h4><span class="q-num">Q3.</span> package.json says <span class="inline-code">"express": "^4.21.2"</span>. Which version may npm install?</h4>
+                        <button class="quiz-opt">5.0.0 — caret allows everything newer</button>
+                        <button class="quiz-opt">4.30.1 — caret allows minor and patch updates, but not a new major</button>
+                        <button class="quiz-opt">Only exactly 4.21.2, nothing else</button>
+                        <div class="quiz-feedback"><strong>^</strong> means "anything ≥ 4.21.2 but &lt; 5.0.0" — new features and bug fixes yes, breaking changes no. For exact-only you'd write <span class="inline-code">4.21.2</span> with no prefix.</div>
+                    </div>
+
+                    <div class="quiz-q" data-answer="2">
+                        <h4><span class="q-num">Q4.</span> Both package.json and package-lock.json list express. On <span class="inline-code">npm install</span>, which wins?</h4>
+                        <button class="quiz-opt">package.json — it's the file the developer wrote</button>
+                        <button class="quiz-opt">npm asks you to choose interactively</button>
+                        <button class="quiz-opt">package-lock.json — its exact pinned versions trump package.json's ranges</button>
+                        <div class="quiz-feedback">The lockfile "trumps" package.json: everyone on the team installs the <strong>identical</strong> versions. That's also why you never edit package-lock.json by hand.</div>
+                    </div>
+
+                    <div class="quiz-q" data-answer="0">
+                        <h4><span class="q-num">Q5.</span> What's the difference between <span class="inline-code">require("fs")</span> and <span class="inline-code">require("./fs")</span>?</h4>
+                        <button class="quiz-opt">The first loads the built-in core module; the second loads YOUR file fs.js from the same directory</button>
+                        <button class="quiz-opt">No difference — the ./ is optional decoration</button>
+                        <button class="quiz-opt">The second one is faster because the path is explicit</button>
+                        <div class="quiz-feedback">No prefix = core module or node_modules package. <span class="inline-code">./</span> = a file in the same directory, <span class="inline-code">../</span> = the parent directory.</div>
+                    </div>
+
+                    <div class="quiz-q" data-answer="1">
+                        <h4><span class="q-num">Q6.</span> Which line crashes when run in Node.js?</h4>
+                        <button class="quiz-opt"><span style="font-family:var(--font-mono); font-size:.85rem;">console.log(require('path').extname('a.txt'))</span></button>
+                        <button class="quiz-opt"><span style="font-family:var(--font-mono); font-size:.85rem;">document.getElementById("app")</span></button>
+                        <button class="quiz-opt"><span style="font-family:var(--font-mono); font-size:.85rem;">setTimeout(() =&gt; console.log("hi"), 500)</span></button>
+                        <div class="quiz-feedback">Node has no DOM — <span class="inline-code">document</span> is not defined on a server. Timers and core modules work fine.</div>
+                    </div>
+
+                    <div class="quiz-q" data-answer="2">
+                        <h4><span class="q-num">Q7.</span> Your handler runs <span class="inline-code">res.write("hi")</span> but never calls <span class="inline-code">res.end()</span>. The visitor's browser…</h4>
+                        <button class="quiz-opt">Shows "hi" — write is enough</button>
+                        <button class="quiz-opt">Shows a 500 error immediately</button>
+                        <button class="quiz-opt">Waits… and waits — the response is never finished</button>
+                        <div class="quiz-feedback"><span class="inline-code">res.end()</span> is what completes the response. Without it the connection stays open and the browser spins forever (you saw this in the mini-browser's timeout!).</div>
+                    </div>
+
+                    <div class="quiz-q" data-answer="1">
+                        <h4><span class="q-num">Q8.</span> In MVC, which part validates the user's input and decides which view to render?</h4>
+                        <button class="quiz-opt">The Model — it owns all the logic</button>
+                        <button class="quiz-opt">The Controller — it's the brains linking user and system</button>
+                        <button class="quiz-opt">The View — it's closest to the user</button>
+                        <div class="quiz-feedback">The <strong>Controller</strong> reads input, validates &amp; sanitizes it, tells the Model what to change, and picks the View. The Model owns data + business logic; the View only presents.</div>
+                    </div>
+                </section>
+
+                <!-- 15. READING -->
+                <section id="reading">
+                    <h2><span class="section-num">15</span> Reading &amp; practice</h2>
+                    <div class="callout def">
+                        <i class="fas fa-book"></i>
+                        <p><strong>Zybooks — Chapter 10 "node.js": sections <b class="kw">10.1 – 10.3</b>.</strong>
+                        Do the participation activities — they mirror this week's lab.</p>
+                    </div>
+                    <ul class="tight">
+                        <li><a href="https://nodejs.org/en/docs/guides/" target="_blank" rel="noopener">Official Node.js guides</a></li>
+                        <li><a href="https://nodejs.org/dist/latest/docs/api/" target="_blank" rel="noopener">Full Node.js API reference</a> — every core module documented.</li>
+                        <li><a href="https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/" target="_blank" rel="noopener">The Node.js event loop, timers and nextTick</a></li>
+                        <li><a href="https://nodejs.org/en/docs/guides/dont-block-the-event-loop/" target="_blank" rel="noopener">Don't block the event loop</a></li>
+                        <li><a href="https://www.jsv9000.app/" target="_blank" rel="noopener">jsv9000.app</a> — step-by-step event loop visualizer.</li>
+                    </ul>
+                    <div class="board-line"><i class="fas fa-dumbbell"></i>
+                        <span><span class="b">Challenge:</span> in the hello-server example, make the server answer differently on <span class="inline-code">/about</span> (your name) and <span class="inline-code">/</span> (a welcome) — hint: <span class="inline-code">req.url</span> + an if.</span>
+                    </div>
+
+                    <div class="doc-pager">
+                        <a class="pager-link" href="../week9/index.html">
+                            <span class="pager-dir"><i class="fas fa-arrow-left"></i> Previous island</span>
+                            <span class="pager-title">Week 9 · Asynchronous JavaScript</span>
+                        </a>
+                        <a class="pager-link next" href="../index.html#weeks">
+                            <span class="pager-dir">Next island <i class="fas fa-arrow-right"></i></span>
+                            <span class="pager-title">Week 11 · charting soon</span>
+                        </a>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-bottom">
+            <p>CST8326 · Week 10 · Node.js — adapted from the official course slides · &copy; <span id="year"></span> Algonquin College</p>
+        </div>
+    </footer>
+
+    <script>
+        window.ALGO_TIPS = [
+            "Welcome to the Island of Ports 🚢 — Node.js territory! Click me for backend wisdom.",
+            "Every server on this page runs in a Node emulator built into your browser. Edit and re-run!",
+            "Micro-tasks (Promises) always cut in line ahead of setTimeout. Every. Single. Time.",
+            "The holy trinity: npm init -y → npm install express → node app.js 🙏",
+            "^ says 'minor updates OK' · ~ says 'patches only' · no prefix says 'exactly this'.",
+            "Forgot res.end()? The browser will wait… and wait… and wait ⏳",
+            "node_modules never goes to git — package.json can rebuild it anywhere.",
+            "There is no document on a server. Node owns files and ports; the browser owns the page.",
+            "Done exploring? Quiz in section 14 — all eight or walk the plank 🏴‍☠️"
+        ];
+    </script>
+    <script src="../../assets/js/mascot.js" defer></script>
+    <script src="./week10.js" defer></script>
+    <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+
+</html>
