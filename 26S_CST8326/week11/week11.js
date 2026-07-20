@@ -530,7 +530,7 @@
       '<button class="mb-go">Send ⏎</button>' +
       '</div>' +
       (isExpress ? '<div class="mb-body-wrap hidden"><span class="mb-body-label">JSON request body</span>' +
-        '<textarea class="mb-body-input" spellcheck="false">{\n  "title": "My Album",\n  "artist": "Me"\n}</textarea></div>' : '') +
+        '<textarea class="mb-body-input" spellcheck="false">{\n  "title": "Demon Slayer",\n  "studio": "Ufotable"\n}</textarea></div>' : '') +
       '<div class="mb-result"><div class="mb-hint">Your server is running — press <b>Send</b> to make a request.</div></div>';
     runner.appendChild(mb);
 

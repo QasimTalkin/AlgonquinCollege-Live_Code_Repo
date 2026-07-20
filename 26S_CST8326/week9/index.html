@@ -763,15 +763,15 @@ main();</code></pre>
 
                     <h3><i class="fas fa-satellite-dish"></i> Fetch with .then() — live demo</h3>
                     <ul class="tight">
-                        <li>Loads <span class="inline-code">albums.json</span> — a real file next to this page.</li>
+                        <li>Loads <span class="inline-code">anime.json</span> — a real file next to this page.</li>
                     </ul>
                     <div class="code-block runner">
                         <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">fetch-then.js · live network request</span></div>
-                        <pre><code>fetch("albums.json")
+                        <pre><code>fetch("anime.json")
   .then((response) =&gt; response.json())   // parse body as JSON
   .then((data) =&gt; {
-    console.log("Loaded", data.length, "albums");
-    console.log("First album:", data[0].title);
+    console.log("Loaded", data.length, "anime");
+    console.log("First title:", data[0].title);
   })
   .catch((error) =&gt; console.error("Error:", error.message));</code></pre>
                         <div class="code-actions"><button class="run-btn"><i class="fas fa-play"></i> Run</button><button class="clear-btn">Clear</button></div>
@@ -808,9 +808,9 @@ fetch(apiUrl)
                     <div class="code-block runner">
                         <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">load-json.js · live network request</span></div>
                         <pre><code>async function loadJson() {
-  const response = await fetch("albums.json");
+  const response = await fetch("anime.json");
   const json = await response.json();
-  console.log("Got " + json.length + " albums:", json.map(a =&gt; a.title).join(", "));
+  console.log("Got " + json.length + " anime:", json.map(a =&gt; a.title).join(", "));
 }
 
 loadJson();

@@ -909,12 +909,12 @@
     var mvcTimer = null;
 
     var MVC_STEPS = [
-      { on: 'user', say: '1 · The user clicks "Show albums" — the browser sends GET /albums to the server.' },
+      { on: 'user', say: '1 · The user clicks "Show anime" — the browser sends GET /anime to the server.' },
       { on: 'controller', say: '2 · The CONTROLLER receives the request, validates & sanitizes it, and decides what has to happen.' },
-      { on: 'model', say: '3 · The controller asks the MODEL: "give me all albums." The model runs the logic and fetches the data.' },
-      { on: 'controller', say: '4 · The model hands back an array of albums. The controller picks which view should present it.' },
+      { on: 'model', say: '3 · The controller asks the MODEL: "give me all anime." The model runs the logic and fetches the data.' },
+      { on: 'controller', say: '4 · The model hands back an array of anime. The controller picks which view should present it.' },
       { on: 'view', say: '5 · The VIEW renders the data into HTML — presentation only, zero business logic.' },
-      { on: 'user', say: '6 · The controller sends the finished page back — the browser displays the albums. ✅' },
+      { on: 'user', say: '6 · The controller sends the finished page back — the browser displays the anime. ✅' },
       { on: null, say: '✅ One request, three specialists: the Controller decided, the Model knew, the View showed.' }
     ];
 

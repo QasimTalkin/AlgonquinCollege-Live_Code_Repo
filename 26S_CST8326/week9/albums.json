@@ -1,7 +1,0 @@
-[
-  { "id": 1, "title": "Event Loop Grooves", "artist": "The Callbacks", "year": 2015 },
-  { "id": 2, "title": "Pending State of Mind", "artist": "Promise & The Resolvers", "year": 2016 },
-  { "id": 3, "title": "Await for It", "artist": "Async Attitude", "year": 2017 },
-  { "id": 4, "title": "Fetch Me If You Can", "artist": "The Response Objects", "year": 2020 },
-  { "id": 5, "title": "Single Threaded Love", "artist": "Non-Blocking Hearts", "year": 2023 }
-]

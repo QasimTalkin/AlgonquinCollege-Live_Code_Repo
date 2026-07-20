@@ -148,21 +148,21 @@
                                 <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">app.js · lives on the server only</span></div>
                                 <pre><code>// Secrets can live here — the browser NEVER receives this file
 const API_KEY = "sk-live-9f2…TOP-SECRET";
-const db = connect("mongodb://albums-db:27017");
+const db = connect("mongodb://anime-db:27017");
 
-server.get("/albums", (req, res) =&gt; {
-  const albums = db.query("SELECT * FROM albums");
-  res.send(renderPage(albums));   // only the RESULT is sent
+server.get("/anime", (req, res) =&gt; {
+  const anime = db.query("SELECT * FROM anime");
+  res.send(renderPage(anime));   // only the RESULT is sent
 });</code></pre>
                             </div>
                         </div>
                         <div class="vs-pane hidden" data-pane="client">
                             <div class="code-block" style="margin:0;">
                                 <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">Ctrl+U in the browser shows ONLY this</span></div>
-                                <pre><code>&lt;h1&gt;My Music Collection&lt;/h1&gt;
+                                <pre><code>&lt;h1&gt;My Anime Collection&lt;/h1&gt;
 &lt;ul&gt;
-  &lt;li&gt;OK Computer — Radiohead&lt;/li&gt;
-  &lt;li&gt;Random Access Memories — Daft Punk&lt;/li&gt;
+  &lt;li&gt;Death Note — Madhouse&lt;/li&gt;
+  &lt;li&gt;Fullmetal Alchemist: Brotherhood — Bones&lt;/li&gt;
 &lt;/ul&gt;
 &lt;!-- no API key, no database, no server code 🎉 --&gt;</code></pre>
                             </div>
@@ -945,7 +945,7 @@ console.log("resolve :", path.resolve("images", "logo.png"));</code></pre>
                             <div class="mvc-box" id="mvc-view"><h5>🎨 View</h5><p>renders</p></div>
                         </div>
                         <div style="display:flex; gap:10px; margin-top:16px;">
-                            <button class="run-btn" id="mvc-play"><i class="fas fa-play"></i> User clicks "Show albums"</button>
+                            <button class="run-btn" id="mvc-play"><i class="fas fa-play"></i> User clicks "Show anime"</button>
                             <button class="clear-btn" id="mvc-reset">Reset</button>
                         </div>
                         <div class="el-narrate" id="mvc-narrate">Press the button to send a request through the M-V-C machine.</div>

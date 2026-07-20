@@ -1,0 +1,7 @@
+[
+  { "id": 1, "title": "Death Note", "studio": "Madhouse", "year": 2006 },
+  { "id": 2, "title": "Fullmetal Alchemist: Brotherhood", "studio": "Bones", "year": 2009 },
+  { "id": 3, "title": "Demon Slayer", "studio": "Ufotable", "year": 2019 },
+  { "id": 4, "title": "Attack on Titan", "studio": "Wit Studio", "year": 2013 },
+  { "id": 5, "title": "One Punch Man", "studio": "Madhouse", "year": 2015 }
+]

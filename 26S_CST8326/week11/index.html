@@ -585,54 +585,54 @@ app.listen(3000);</code></pre>
                     </div>
 
                     <h3><i class="fas fa-gamepad"></i> The fun one — a real REST API you can poke</h3>
-                    <p>This is a complete in-memory <b class="kw">albums API</b>. Run it, then use the REST tester's <b class="kw">method
-                    selector</b> to <span class="inline-code">GET</span> the list, <span class="inline-code">POST</span> a new album (send a JSON
+                    <p>This is a complete in-memory <b class="kw">anime API</b>. Run it, then use the REST tester's <b class="kw">method
+                    selector</b> to <span class="inline-code">GET</span> the list, <span class="inline-code">POST</span> a new anime (send a JSON
                     body!), and <span class="inline-code">DELETE</span> one by id. The data really changes between requests.</p>
                     <div class="code-block runner express-run">
-                        <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">albums-api.js · a mini REST server</span></div>
+                        <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">anime-api.js · a mini REST server</span></div>
                         <pre><code>const express = require('express');
 const app = express();
 app.use(express.json());
 
 // Our "database" — just an array (Model, Week 10 style)
-let albums = [
-  { id: 1, title: "Await for It", artist: "Async Attitude" },
-  { id: 2, title: "Event Loop Grooves", artist: "The Callbacks" }
+let anime = [
+  { id: 1, title: "Death Note", studio: "Madhouse" },
+  { id: 2, title: "Attack on Titan", studio: "Wit Studio" }
 ];
 let nextId = 3;
 
-// READ all  →  GET /albums
-app.get('/albums', (req, res) =&gt; res.json(albums));
+// READ all  →  GET /anime
+app.get('/anime', (req, res) =&gt; res.json(anime));
 
-// READ one  →  GET /albums/2
-app.get('/albums/:id', (req, res) =&gt; {
-  const album = albums.find(a =&gt; a.id === Number(req.params.id));
-  if (!album) return res.status(404).json({ error: 'no album with id ' + req.params.id });
-  res.json(album);
+// READ one  →  GET /anime/2
+app.get('/anime/:id', (req, res) =&gt; {
+  const show = anime.find(a =&gt; a.id === Number(req.params.id));
+  if (!show) return res.status(404).json({ error: 'no anime with id ' + req.params.id });
+  res.json(show);
 });
 
-// CREATE  →  POST /albums   body: { "title": "...", "artist": "..." }
-app.post('/albums', (req, res) =&gt; {
-  const album = { id: nextId++, title: req.body.title, artist: req.body.artist };
-  albums.push(album);
-  res.status(201).json(album);
+// CREATE  →  POST /anime   body: { "title": "...", "studio": "..." }
+app.post('/anime', (req, res) =&gt; {
+  const show = { id: nextId++, title: req.body.title, studio: req.body.studio };
+  anime.push(show);
+  res.status(201).json(show);
 });
 
-// DELETE  →  DELETE /albums/1
-app.delete('/albums/:id', (req, res) =&gt; {
-  albums = albums.filter(a =&gt; a.id !== Number(req.params.id));
-  res.json({ deleted: req.params.id, remaining: albums.length });
+// DELETE  →  DELETE /anime/1
+app.delete('/anime/:id', (req, res) =&gt; {
+  anime = anime.filter(a =&gt; a.id !== Number(req.params.id));
+  res.json({ deleted: req.params.id, remaining: anime.length });
 });
 
-app.listen(3000, () =&gt; console.log('Albums API ready — try GET /albums'));</code></pre>
+app.listen(3000, () =&gt; console.log('Anime API ready — try GET /anime'));</code></pre>
                         <div class="code-actions"><button class="run-btn"><i class="fas fa-play"></i> Run</button><button class="clear-btn">Clear</button></div>
                         <div class="run-out" aria-live="polite"></div>
                     </div>
                     <div class="callout tip">
                         <i class="fas fa-flask"></i>
-                        <p><strong>Class challenge:</strong> after running, <span class="inline-code">POST</span> <span class="inline-code">{ "title": "My Album", "artist": "Me" }</span>
-                        to <span class="inline-code">/albums</span>, then <span class="inline-code">GET /albums</span> and watch it appear. Then
-                        <span class="inline-code">DELETE /albums/1</span> and GET again. Add a <span class="inline-code">PUT /albums/:id</span> route yourself!</p>
+                        <p><strong>Class challenge:</strong> after running, <span class="inline-code">POST</span> <span class="inline-code">{ "title": "Demon Slayer", "studio": "Ufotable" }</span>
+                        to <span class="inline-code">/anime</span>, then <span class="inline-code">GET /anime</span> and watch it appear. Then
+                        <span class="inline-code">DELETE /anime/1</span> and GET again. Add a <span class="inline-code">PUT /anime/:id</span> route yourself!</p>
                     </div>
                 </section>
 
@@ -916,10 +916,10 @@ html
                     </div>
 
                     <div class="quiz-q" data-answer="0">
-                        <h4><span class="q-num">Q3.</span> Which line registers a handler for POST requests to <span class="inline-code">/albums</span>?</h4>
-                        <button class="quiz-opt"><span style="font-family:var(--font-mono); font-size:.85rem;">app.post('/albums', handler)</span></button>
-                        <button class="quiz-opt"><span style="font-family:var(--font-mono); font-size:.85rem;">app.get('/albums', 'POST', handler)</span></button>
-                        <button class="quiz-opt"><span style="font-family:var(--font-mono); font-size:.85rem;">app.route.POST('/albums')</span></button>
+                        <h4><span class="q-num">Q3.</span> Which line registers a handler for POST requests to <span class="inline-code">/anime</span>?</h4>
+                        <button class="quiz-opt"><span style="font-family:var(--font-mono); font-size:.85rem;">app.post('/anime', handler)</span></button>
+                        <button class="quiz-opt"><span style="font-family:var(--font-mono); font-size:.85rem;">app.get('/anime', 'POST', handler)</span></button>
+                        <button class="quiz-opt"><span style="font-family:var(--font-mono); font-size:.85rem;">app.route.POST('/anime')</span></button>
                         <div class="quiz-feedback">The shape is <strong>app.METHOD(path, handler)</strong> — the method is the function name: <span class="inline-code">app.post(...)</span>, <span class="inline-code">app.get(...)</span>, etc.</div>
                     </div>
 
@@ -978,7 +978,7 @@ html
                         <li><a href="https://pugjs.org/api/getting-started.html" target="_blank" rel="noopener">Pug documentation</a> · <a href="https://html-to-pug.com/" target="_blank" rel="noopener">html-to-pug converter</a></li>
                     </ul>
                     <div class="board-line"><i class="fas fa-dumbbell"></i>
-                        <span><span class="b">Challenge:</span> in the albums API, add a <span class="inline-code">PUT /albums/:id</span> route that updates an album's title from <span class="inline-code">req.body</span> — then test it in the REST tester.</span>
+                        <span><span class="b">Challenge:</span> in the anime API, add a <span class="inline-code">PUT /anime/:id</span> route that updates an anime's studio from <span class="inline-code">req.body</span> — then test it in the REST tester.</span>
                     </div>
 
                     <div class="doc-pager">
