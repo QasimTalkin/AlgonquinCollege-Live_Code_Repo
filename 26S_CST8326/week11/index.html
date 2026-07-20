@@ -136,7 +136,7 @@ const app = express();                // 2. make an app
 
 // 3. answer GET / with a message
 app.get('/', (req, res) =&gt; {
-  res.send('Hello from Express! 🚂');
+  res.send('Welcome to the Anime Archive! 🎬');
 });
 
 // 4. open the door on port 3000
@@ -188,12 +188,12 @@ const app = express();
 // runs on EVERY request, then hands off with next()
 app.use((req, res, next) =&gt; {
   console.log('👀 ' + req.method + ' ' + req.url);
-  req.vibe = 'you look great today';   // add something for later
+  req.hero = 'Saitama';   // stash something for the routes to use
   next();          // ⬅️ forget this and the request hangs forever
 });
 
-app.get('/', (req, res) =&gt; res.send('Home — ' + req.vibe));
-app.get('/anime', (req, res) =&gt; res.send('Anime list — ' + req.vibe));
+app.get('/', (req, res) =&gt; res.send('Home — today\'s hero: ' + req.hero));
+app.get('/anime', (req, res) =&gt; res.send('Anime list, brought to you by ' + req.hero));
 
 app.listen(3000);</code></pre>
                         <div class="code-actions"><button class="run-btn"><i class="fas fa-play"></i> Run</button><button class="clear-btn">Clear</button></div>
@@ -265,7 +265,7 @@ app.listen(3000);</code></pre>
                             </tbody>
                         </table>
                     </div>
-                    <p>Quick play — run it, then visit <span class="inline-code">/search?q=otter&amp;sort=asc</span> and watch <b class="kw">req.query</b> come back as JSON:</p>
+                    <p>Quick play — run it, then visit <span class="inline-code">/search?q=titan&amp;sort=year</span> and watch <b class="kw">req.query</b> come back as JSON:</p>
                     <div class="code-block runner express-run">
                         <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">query.js</span></div>
                         <pre><code>const express = require('express');
@@ -273,12 +273,12 @@ const app = express();
 
 app.get('/search', (req, res) =&gt; {
   if (!req.query.q) {
-    return res.status(400).json({ error: 'add ?q=something to the URL' });
+    return res.status(400).json({ error: 'add ?q=titan to search the anime list' });
   }
-  res.json({ youSearched: req.query.q, sortedBy: req.query.sort || 'default' });
+  res.json({ searchingFor: req.query.q, sortedBy: req.query.sort || 'default' });
 });
 
-app.get('/', (req, res) =&gt; res.send('try /search?q=otter&amp;sort=asc'));
+app.get('/', (req, res) =&gt; res.send('try /search?q=titan&amp;sort=year'));
 
 app.listen(3000);</code></pre>
                         <div class="code-actions"><button class="run-btn"><i class="fas fa-play"></i> Run</button><button class="clear-btn">Clear</button></div>
@@ -303,9 +303,10 @@ app.use(express.json());          // so POST bodies land in req.body
 // 🗂️ our "database" — just an array
 let anime = [
   { id: 1, title: "Death Note", studio: "Madhouse" },
-  { id: 2, title: "Attack on Titan", studio: "Wit Studio" }
+  { id: 2, title: "Fullmetal Alchemist: Brotherhood", studio: "Bones" },
+  { id: 3, title: "Attack on Titan", studio: "Wit Studio" }
 ];
-let nextId = 3;
+let nextId = 4;
 
 app.get('/anime', (req, res) =&gt; res.json(anime));          // read all
 
@@ -333,7 +334,7 @@ app.listen(3000, () =&gt; console.log('anime API ready — GET /anime'));</code>
                     <div class="callout tip">
                         <i class="fas fa-flask"></i>
                         <p><strong>Try this run, in order:</strong>
-                        ① <span class="inline-code">GET /anime</span> (2 shows) →
+                        ① <span class="inline-code">GET /anime</span> (3 shows) →
                         ② switch to <span class="inline-code">POST</span>, send the default body (Demon Slayer) →
                         ③ <span class="inline-code">GET /anime</span> again — it's there! →
                         ④ <span class="inline-code">DELETE /anime/1</span>. <br>
