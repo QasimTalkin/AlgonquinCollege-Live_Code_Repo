@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Week 11 · Express.js | CST8326</title>
     <meta name="description"
-        content="CST8326 Week 11 — Express.js: the Node web framework. Middleware, routing, route parameters, the request &amp; response objects, HTTP methods, static files and the Pug template engine. With a live Express emulator, a REST tester and a Pug renderer built into the page.">
+        content="CST8326 Week 11 — Express.js made fun: routing, middleware, route params, req/res and the Pug template engine. Build a live REST API and play with a Pug renderer right in the page.">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚂</text></svg>">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -30,7 +30,7 @@
             </a>
             <ul class="nav-links">
                 <li><a href="../index.html">The Archipelago</a></li>
-                <li><a href="#quiz">Self-Check</a></li>
+                <li><a href="#boss">REST API</a></li>
                 <li><a href="../index.html#weeks" class="btn-outline"><i class="fas fa-map"></i> All Weeks</a></li>
             </ul>
         </div>
@@ -47,23 +47,18 @@
         <header class="course-hero" style="text-align:left; padding-top: 10px;">
             <div class="course-code-chip"><i class="fas fa-train"></i> WEEK 11 &middot; ISLAND OF ROUTES</div>
             <h1 class="hero-title" style="font-size: clamp(2rem, 5vw, 3.2rem);">
-                Express.js — the <span class="gradient-text">Framework</span>
+                Express.js, the <span class="gradient-text">fun way</span>
             </h1>
-            <p class="hero-subtitle" style="margin: 0; max-width: 72ch;">
-                Last week you built a server with raw <span class="inline-code">http</span>. This week
-                <b class="kw">Express</b> does the heavy lifting — routing, middleware and views in a few clean lines.
-                Every server here runs live in an <b class="kw">Express emulator</b> built into the page.
+            <p class="hero-subtitle" style="margin: 0; max-width: 66ch;">
+                Six short stops, one goal: by the bottom of this page you'll have built a <b class="kw">working REST API</b>
+                for your anime list — running live, right here in the browser. Less reading, more playing. 🚂
             </p>
             <div class="key-strip" style="margin-top: 18px;">
-                <span class="key-label">This week</span>
-                <span class="key-chip">Express.js</span>
-                <span class="key-chip good">middleware</span>
-                <span class="key-chip">routing</span>
-                <span class="key-chip warm">route params</span>
-                <span class="key-chip">req &amp; res</span>
-                <span class="key-chip">HTTP methods</span>
-                <span class="key-chip">static files</span>
-                <span class="key-chip">Pug</span>
+                <span class="key-label">Today's toys</span>
+                <span class="key-chip good">live Express server</span>
+                <span class="key-chip">middleware conveyor</span>
+                <span class="key-chip warm">REST tester</span>
+                <span class="key-chip">Pug playground</span>
             </div>
         </header>
 
@@ -71,191 +66,100 @@
 
             <!-- ============ TOC ============ -->
             <aside class="doc-toc" aria-label="On this page">
-                <h4><i class="fas fa-map-signs"></i> On this island</h4>
+                <h4><i class="fas fa-map-signs"></i> The route</h4>
                 <ol>
-                    <li><a href="#overview">0. Week at a glance</a></li>
-                    <li><a href="#why-express">1. Why Express?</a></li>
-                    <li><a href="#hello">2. Hello World server</a></li>
-                    <li><a href="#middleware">3. Middleware</a></li>
-                    <li><a href="#middleware-types">4. Types of middleware</a></li>
-                    <li><a href="#routing">5. Routing</a></li>
-                    <li><a href="#route-paths">6. Route paths</a></li>
-                    <li><a href="#route-params">7. Route parameters</a></li>
-                    <li><a href="#req-res">8. Request &amp; Response</a></li>
-                    <li><a href="#http-methods">9. HTTP methods &amp; REST</a></li>
-                    <li><a href="#static">10. Static files</a></li>
-                    <li><a href="#templates">11. Template engines &amp; Pug</a></li>
-                    <li><a href="#pug-syntax">12. Pug syntax &amp; layouts</a></li>
-                    <li><a href="#mvc">13. MVC in Express</a></li>
-                    <li><a href="#takeaways">14. Key takeaways</a></li>
-                    <li><a href="#quiz">15. Self-check quiz</a></li>
-                    <li><a href="#reading">16. Reading &amp; practice</a></li>
+                    <li><a href="#why">0. The 30-second why</a></li>
+                    <li><a href="#hello">1. Hello, Express 👋</a></li>
+                    <li><a href="#middleware">2. Middleware 🎢</a></li>
+                    <li><a href="#routing">3. Routes &amp; params 🎯</a></li>
+                    <li><a href="#reqres">4. req &amp; res cheat card 🎴</a></li>
+                    <li><a href="#boss">5. Boss level: REST API ⭐</a></li>
+                    <li><a href="#pug">6. Views with Pug 🐶</a></li>
+                    <li><a href="#wrap">7. Wrap-up &amp; quiz</a></li>
                 </ol>
             </aside>
 
             <!-- ============ CONTENT ============ -->
             <div class="doc-content">
 
-                <!-- 0. OVERVIEW -->
-                <section id="overview">
-                    <h2><span class="section-num">0</span> Week at a glance</h2>
-                    <div class="board-line"><i class="fas fa-route"></i>
-                        <span>raw http <span class="b">→</span> Express <span class="b">→</span> middleware <span class="b">→</span> routes <span class="b">→</span> views. The framework that runs most of the Node web.</span>
-                    </div>
-                    <ul class="tight">
-                        <li><b class="kw">Express.js</b> — a thin, fast web framework for Node. Routing + middleware + views, minus the boilerplate.</li>
-                        <li><b class="kw">Middleware</b> — functions a request flows through, one after another. The heart of Express.</li>
-                        <li><b class="kw">Routing</b> — <span class="inline-code">app.METHOD(path, handler)</span>: match a URL + method, run a handler.</li>
-                        <li><b class="kw">Route params</b> — capture pieces of the URL: <span class="inline-code">/users/:id</span> → <span class="inline-code">req.params.id</span>.</li>
-                        <li><b class="kw">Template engine (Pug)</b> — fill an HTML template with data on the server, send finished HTML.</li>
-                    </ul>
-                    <div class="callout tip">
-                        <i class="fas fa-lightbulb"></i>
-                        <p><strong>New this week: the Express emulator.</strong> Examples marked <b class="kw">🚂 express emulator</b>
-                        run a <b class="kw">mini-Express</b> right in this page — <span class="inline-code">require('express')</span>, real
-                        middleware, routing and <span class="inline-code">res.render()</span>. Hit your servers with the built-in
-                        <b class="kw">REST tester</b> (choose GET / POST / PUT / DELETE and send a body). Everything is editable.</p>
-                    </div>
-                </section>
-
-                <!-- 1. WHY EXPRESS -->
-                <section id="why-express">
-                    <h2><span class="section-num">1</span> Why Express?</h2>
-                    <div class="key-strip">
-                        <span class="key-label">Key terms</span>
-                        <span class="key-chip">framework</span>
-                        <span class="key-chip good">middleware</span>
-                        <span class="key-chip">routing</span>
-                        <span class="key-chip">views</span>
-                        <span class="key-chip">convenience methods</span>
-                    </div>
-                    <div class="callout def">
-                        <i class="fas fa-book"></i>
-                        <p><strong>Express.js</strong> is a <b class="kw">Node.js web application framework</b> — a robust set of
-                        features for building web apps and APIs, layered on top of the <span class="inline-code">http</span> module you met in Week 10.</p>
-                    </div>
+                <!-- 0. WHY -->
+                <section id="why">
+                    <h2><span class="section-num">0</span> The 30-second why</h2>
                     <div class="board-line"><i class="fas fa-hand-fist"></i>
-                        <span>Raw <span class="b">http</span> gives you a hammer. <span class="b">Express</span> gives you the whole workshop — but it's still just Node underneath.</span>
-                    </div>
-                    <p>The four things Express hands you out of the box:</p>
-                    <ul class="tight">
-                        <li><b class="kw">Middleware</b> — let a request flow through multiple functions before you answer it.</li>
-                        <li><b class="kw">Routing</b> — handle a request at a specific URL + method, cleanly.</li>
-                        <li><b class="kw">Convenience methods</b> — <span class="inline-code">res.send()</span>, <span class="inline-code">res.json()</span>, <span class="inline-code">res.redirect()</span>… no manual headers.</li>
-                        <li><b class="kw">Views</b> — dynamically render HTML with a template engine like Pug.</li>
-                    </ul>
-
-                    <h3><i class="fas fa-code-compare"></i> Same server, two ways</h3>
-                    <div class="board-line"><i class="fas fa-hand-point-right"></i>
-                        <span>Both servers answer "Hello World" at <span class="b">/</span>. Count the moving parts.</span>
+                        <span>Raw <span class="b">http</span> is a hammer. <span class="b">Express</span> is the power tools — same Node underneath, way less code.</span>
                     </div>
                     <div class="code-compare">
                         <div>
-                            <div class="compare-label">Raw http (Week 10)</div>
-                            <div class="code-block"><div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">http-way.js</span></div>
+                            <div class="compare-label">Raw http (last week)</div>
+                            <div class="code-block"><div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">the hard way</span></div>
                             <pre><code>const http = require('http');
-
-const server = http.createServer((req, res) =&gt; {
+http.createServer((req, res) =&gt; {
   if (req.url === '/' &amp;&amp; req.method === 'GET') {
     res.writeHead(200, { 'Content-Type': 'text/plain' });
-    res.end('Hello World!');
+    res.end('Hi!');
   } else {
-    res.writeHead(404);
-    res.end('Not found');
+    res.writeHead(404); res.end('Nope');
   }
-});
-
-server.listen(3000);</code></pre></div>
+}).listen(3000);</code></pre></div>
                         </div>
                         <div>
-                            <div class="compare-label good">Express way</div>
-                            <div class="code-block"><div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">express-way.js</span></div>
+                            <div class="compare-label good">Express (this week)</div>
+                            <div class="code-block"><div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">the fun way</span></div>
                             <pre><code>const express = require('express');
 const app = express();
 
-app.get('/', (req, res) =&gt; {
-  res.send('Hello World!');
-});
+app.get('/', (req, res) =&gt; res.send('Hi!'));
 
 app.listen(3000);</code></pre></div>
                         </div>
                     </div>
+                    <p>Express gives you four superpowers: <b class="kw">routing</b>, <b class="kw">middleware</b>,
+                    <b class="kw">convenience methods</b> (<span class="inline-code">res.send</span>, <span class="inline-code">res.json</span>…)
+                    and <b class="kw">views</b>. We'll play with all four.</p>
                     <div class="callout tip">
-                        <i class="fas fa-lightbulb"></i>
-                        <p>Express handles the method check, the status code, the <span class="inline-code">Content-Type</span> header and the
-                        404 fallback <b class="kw">for you</b>. You describe <em>what</em> to answer, not <em>how</em> to wire it.</p>
+                        <i class="fas fa-gamepad"></i>
+                        <p><strong>How to play:</strong> every <b class="kw">🚂 express emulator</b> block is a real server running in this page.
+                        Press <b class="kw">Run</b>, then poke it with the <b class="kw">REST tester</b> that appears. Edit the code and run again — nothing to install.</p>
                     </div>
                 </section>
 
-                <!-- 2. HELLO WORLD -->
+                <!-- 1. HELLO -->
                 <section id="hello">
-                    <h2><span class="section-num">2</span> Hello World server — line by line</h2>
-                    <div class="key-strip">
-                        <span class="key-label">Key terms</span>
-                        <span class="key-chip">require('express')</span>
-                        <span class="key-chip">express()</span>
-                        <span class="key-chip">app.get</span>
-                        <span class="key-chip">app.listen</span>
-                        <span class="key-chip warm">process.env.PORT</span>
-                    </div>
+                    <h2><span class="section-num">1</span> Hello, Express 👋</h2>
                     <div class="board-line"><i class="fas fa-hand-point-right"></i>
-                        <span>Run it, then <span class="b">visit your server</span> in the mini-browser. Change the message and run again!</span>
+                        <span>Press <span class="b">Run</span>, then hit <span class="b">Send</span> in the tester. Change the message and run again.</span>
                     </div>
                     <div class="code-block runner express-run">
-                        <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">hello-express.js</span></div>
-                        <pre><code>const express = require('express');   // import the module
-const app = express();                // create an app instance
+                        <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">hello.js</span></div>
+                        <pre><code>const express = require('express');   // 1. grab Express
+const app = express();                // 2. make an app
 
-const port = process.env.PORT || 3000;   // pick a port
-
-// When a GET request hits "/", run this callback.
-// It gets the request (req) and the response (res).
-app.get('/', function (req, res) {
-  res.send('Hello World!');
+// 3. answer GET / with a message
+app.get('/', (req, res) =&gt; {
+  res.send('Hello from Express! 🚂');
 });
 
-// Start listening. The callback fires once the server is up.
-app.listen(port, function () {
-  console.log('Example app listening on port ' + port);
-});</code></pre>
+// 4. open the door on port 3000
+app.listen(3000, () =&gt; console.log('server up on :3000'));</code></pre>
                         <div class="code-actions"><button class="run-btn"><i class="fas fa-play"></i> Run</button><button class="clear-btn">Clear</button></div>
                         <div class="run-out" aria-live="polite"></div>
                     </div>
-                    <div class="table-wrap">
-                        <table class="doc-table">
-                            <thead><tr><th>Line</th><th>What it does</th></tr></thead>
-                            <tbody>
-                                <tr><td><span class="inline-code">require('express')</span></td><td>Loads the Express package (installed with <span class="inline-code">npm install express</span>).</td></tr>
-                                <tr><td><span class="inline-code">express()</span></td><td>Creates your application object, <span class="inline-code">app</span> — the thing you attach routes to.</td></tr>
-                                <tr><td><span class="inline-code">app.get('/', cb)</span></td><td>Registers a handler for <b>GET</b> requests to <b>/</b>. The callback receives <span class="inline-code">req</span> &amp; <span class="inline-code">res</span>.</td></tr>
-                                <tr><td><span class="inline-code">res.send(...)</span></td><td>Sends the response — sets status 200 and the right headers automatically.</td></tr>
-                                <tr><td><span class="inline-code">app.listen(port, cb)</span></td><td>Opens the port and starts accepting requests.</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
+                    <p>Four lines and you have a server. <span class="inline-code">res.send()</span> even sets the status code and headers for you.
+                    That's the whole pitch. 🎉</p>
                 </section>
 
-                <!-- 3. MIDDLEWARE -->
+                <!-- 2. MIDDLEWARE -->
                 <section id="middleware">
-                    <h2><span class="section-num">3</span> Middleware — the heart of Express</h2>
-                    <div class="key-strip">
-                        <span class="key-label">Key terms</span>
-                        <span class="key-chip">(req, res, next)</span>
-                        <span class="key-chip good">next()</span>
-                        <span class="key-chip">the stack</span>
-                        <span class="key-chip warm">order matters!</span>
-                    </div>
+                    <h2><span class="section-num">2</span> Middleware 🎢</h2>
                     <div class="callout def">
                         <i class="fas fa-book"></i>
-                        <p><strong>Middleware</strong> = a function that sits <b class="kw">between</b> the incoming request and the final
-                        response. It receives <span class="inline-code">(req, res, next)</span>, can inspect or modify req/res, and then
-                        calls <b class="kw">next()</b> to pass control to the next function in line.</p>
+                        <p><strong>Middleware</strong> = a function <span class="inline-code">(req, res, next)</span> your request rides through
+                        on the way to the answer. Each one does its bit, then calls <b class="kw">next()</b> to send the request onward.</p>
                     </div>
-                    <div class="board-line"><i class="fas fa-passport"></i>
-                        <span>A request is a traveller at the airport. Each middleware is a <span class="b">checkpoint</span>. <span class="b">next()</span> waves them through to the next one.</span>
+                    <div class="board-line"><i class="fas fa-conveyor-belt-boxes"></i>
+                        <span>Think airport security: a line of <span class="b">checkpoints</span>, and <span class="b">next()</span> waves you to the next one. Press play. ▶️</span>
                     </div>
 
-                    <h3><i class="fas fa-diagram-project"></i> Watch a request flow through the stack</h3>
                     <div class="mw-pipe glass-panel">
                         <div class="mw-track" id="mw-track">
                             <div class="mw-token" id="mw-token">📦</div>
@@ -274,29 +178,22 @@ app.listen(port, function () {
                         <div class="mw-narrate" id="mw-narrate">Press the button — a request enters the middleware stack.</div>
                     </div>
 
-                    <h3><i class="fas fa-play"></i> Real middleware, running live</h3>
-                    <div class="board-line"><i class="fas fa-hand-point-right"></i>
-                        <span>Run it, then visit any path. Watch the <span class="b">console</span> — every request passes the logger <em>first</em>.</span>
-                    </div>
+                    <p>Now for real: this logger runs on <em>every</em> request and tags it before the routes even see it.
+                    Run it and visit a couple of paths — watch the <b class="kw">console</b>.</p>
                     <div class="code-block runner express-run">
                         <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">middleware.js</span></div>
                         <pre><code>const express = require('express');
 const app = express();
 
-// A middleware: runs on EVERY request, then hands control on with next()
-app.use(function (req, res, next) {
-  console.log('[' + req.method + '] ' + req.url + ' — logged by middleware');
-  req.visitedAt = new Date().toLocaleTimeString();   // add data for later
-  next();   // ⬅️ forget this and the request hangs forever!
+// runs on EVERY request, then hands off with next()
+app.use((req, res, next) =&gt; {
+  console.log('👀 ' + req.method + ' ' + req.url);
+  req.vibe = 'you look great today';   // add something for later
+  next();          // ⬅️ forget this and the request hangs forever
 });
 
-app.get('/', (req, res) =&gt; {
-  res.send('Home page — you arrived at ' + req.visitedAt);
-});
-
-app.get('/about', (req, res) =&gt; {
-  res.send('About page — logged at ' + req.visitedAt);
-});
+app.get('/', (req, res) =&gt; res.send('Home — ' + req.vibe));
+app.get('/anime', (req, res) =&gt; res.send('Anime list — ' + req.vibe));
 
 app.listen(3000);</code></pre>
                         <div class="code-actions"><button class="run-btn"><i class="fas fa-play"></i> Run</button><button class="clear-btn">Clear</button></div>
@@ -304,195 +201,46 @@ app.listen(3000);</code></pre>
                     </div>
                     <div class="callout warn">
                         <i class="fas fa-triangle-exclamation"></i>
-                        <p><strong>The #1 Express bug:</strong> forgetting <b class="kw">next()</b>. Without it, the request stops at that
-                        middleware and the browser waits forever — just like forgetting <span class="inline-code">res.end()</span> in Week 10.
-                        Delete <span class="inline-code">next()</span> above and visit a page to feel it.</p>
+                        <p><strong>The #1 Express gotcha:</strong> forget <b class="kw">next()</b> and the request just… stops. The browser spins forever.
+                        Delete it above and visit a page to feel the pain. Two built-ins you'll use forever:
+                        <span class="inline-code">express.json()</span> (fills <span class="inline-code">req.body</span>) and
+                        <span class="inline-code">express.static('public')</span> (serves your HTML/CSS/images).</p>
                     </div>
                 </section>
 
-                <!-- 4. MIDDLEWARE TYPES -->
-                <section id="middleware-types">
-                    <h2><span class="section-num">4</span> Types of middleware</h2>
-                    <div class="key-strip">
-                        <span class="key-label">Three kinds</span>
-                        <span class="key-chip">built-in</span>
-                        <span class="key-chip">application-level</span>
-                        <span class="key-chip">router-level</span>
-                    </div>
-                    <div class="table-wrap">
-                        <table class="doc-table">
-                            <thead><tr><th>Type</th><th>What it is</th><th>Example</th></tr></thead>
-                            <tbody>
-                                <tr><td>Built-in</td><td>Ships with Express — handles common tasks.</td><td><span class="inline-code">express.json()</span>, <span class="inline-code">express.static()</span></td></tr>
-                                <tr><td>Application-level</td><td>Bound to the whole app with <span class="inline-code">app.use()</span>.</td><td>Your logger, your auth check</td></tr>
-                                <tr><td>Router-level</td><td>Bound to a specific path or router.</td><td><span class="inline-code">app.use('/admin', adminMw)</span></td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <h3><i class="fas fa-box-open"></i> The two built-ins you'll use constantly</h3>
-                    <ul class="tight">
-                        <li><b class="kw">express.json()</b> — parses incoming <b class="kw">JSON request bodies</b> into <span class="inline-code">req.body</span>.</li>
-                        <li><b class="kw">express.static('public')</b> — serves <b class="kw">static files</b> (HTML, CSS, images) from a folder.</li>
-                    </ul>
-                    <div class="board-line"><i class="fas fa-hand-point-right"></i>
-                        <span>Run it, then in the REST tester switch the method to <span class="b">POST</span>, send a JSON body, and watch <span class="b">req.body</span> come alive.</span>
-                    </div>
-                    <div class="code-block runner express-run">
-                        <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">json-body.js</span></div>
-                        <pre><code>const express = require('express');
-const app = express();
-
-app.use(express.json());   // ⬅️ built-in: fills req.body from JSON
-
-app.post('/echo', (req, res) =&gt; {
-  // Without express.json(), req.body would be undefined!
-  res.json({
-    youSent: req.body,
-    itemCount: Object.keys(req.body).length
-  });
-});
-
-app.get('/', (req, res) =&gt; {
-  res.send('POST some JSON to /echo — use the method selector below ↓');
-});
-
-app.listen(3000);</code></pre>
-                        <div class="code-actions"><button class="run-btn"><i class="fas fa-play"></i> Run</button><button class="clear-btn">Clear</button></div>
-                        <div class="run-out" aria-live="polite"></div>
-                    </div>
-                </section>
-
-                <!-- 5. ROUTING -->
+                <!-- 3. ROUTING & PARAMS -->
                 <section id="routing">
-                    <h2><span class="section-num">5</span> Routing</h2>
-                    <div class="key-strip">
-                        <span class="key-label">Key terms</span>
-                        <span class="key-chip">app.METHOD(path, handler)</span>
-                        <span class="key-chip">get · post · put · delete</span>
-                        <span class="key-chip">app.all</span>
-                    </div>
-                    <div class="callout def">
-                        <i class="fas fa-book"></i>
-                        <p><strong>A route</strong> is a URL the server listens to and responds to when a client makes a request.
-                        The shape is always <b class="kw">app.METHOD(PATH, HANDLER)</b>.</p>
-                    </div>
-                    <ul class="tight">
-                        <li><b class="kw">METHOD</b> — <span class="inline-code">get</span>, <span class="inline-code">post</span>, <span class="inline-code">put</span>, <span class="inline-code">delete</span>, <span class="inline-code">all</span>, and more (lower-case).</li>
-                        <li><b class="kw">PATH</b> — a string like <span class="inline-code">'/users'</span> (or a pattern — see next section).</li>
-                        <li><b class="kw">HANDLER</b> — the callback <span class="inline-code">(req, res) =&gt; { ... }</span> that answers.</li>
-                    </ul>
-                    <div class="code-block runner express-run">
-                        <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">routing.js · visit /, /users, /contact</span></div>
-                        <pre><code>const express = require('express');
-const app = express();
-
-app.get('/', (req, res) =&gt; {
-  res.send('&lt;h1&gt;Welcome home&lt;/h1&gt;&lt;a href="/users"&gt;See users&lt;/a&gt;');
-});
-
-app.get('/users', (req, res) =&gt; {
-  res.send('List of users: Ada, Linus, Grace');
-});
-
-app.get('/contact', (req, res) =&gt; {
-  res.send('Email us at hello@archipelago.dev');
-});
-
-app.listen(3000, () =&gt; console.log('Server running on port 3000'));</code></pre>
-                        <div class="code-actions"><button class="run-btn"><i class="fas fa-play"></i> Run</button><button class="clear-btn">Clear</button></div>
-                        <div class="run-out" aria-live="polite"></div>
-                    </div>
-                </section>
-
-                <!-- 6. ROUTE PATHS -->
-                <section id="route-paths">
-                    <h2><span class="section-num">6</span> Route paths</h2>
-                    <div class="key-strip">
-                        <span class="key-label">Key terms</span>
-                        <span class="key-chip">exact strings</span>
-                        <span class="key-chip">patterns</span>
-                        <span class="key-chip">? + * ( )</span>
-                    </div>
-                    <div class="board-line"><i class="fas fa-asterisk"></i>
-                        <span>Paths can be plain strings <span class="b">or</span> patterns using <span class="b">?</span> <span class="b">+</span> <span class="b">*</span> <span class="b">( )</span>.</span>
-                    </div>
-                    <div class="table-wrap">
-                        <table class="doc-table">
-                            <thead><tr><th>Route</th><th>Matches</th></tr></thead>
-                            <tbody>
-                                <tr><td><span class="inline-code">app.get('/', ...)</span></td><td>The root: <span class="inline-code">/</span></td></tr>
-                                <tr><td><span class="inline-code">app.get('/about', ...)</span></td><td>Exactly <span class="inline-code">/about</span></td></tr>
-                                <tr><td><span class="inline-code">app.get('/ab(cd)?e', ...)</span></td><td><span class="inline-code">/abe</span> and <span class="inline-code">/abcde</span> — the <span class="inline-code">(cd)</span> is optional</td></tr>
-                                <tr><td><span class="inline-code">app.get('/ab*cd', ...)</span></td><td><span class="inline-code">/abcd</span>, <span class="inline-code">/abXYZcd</span> — <span class="inline-code">*</span> matches anything</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="code-block runner express-run">
-                        <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">route-paths.js · try /abe and /abcde</span></div>
-                        <pre><code>const express = require('express');
-const app = express();
-
-app.get('/', (req, res) =&gt; res.send('root'));
-
-app.get('/about', (req, res) =&gt; res.send('about'));
-
-// (cd) is optional → matches /abe AND /abcde
-app.get('/ab(cd)?e', (req, res) =&gt; res.send('matched the ab(cd)?e pattern!'));
-
-app.listen(3000);</code></pre>
-                        <div class="code-actions"><button class="run-btn"><i class="fas fa-play"></i> Run</button><button class="clear-btn">Clear</button></div>
-                        <div class="run-out" aria-live="polite"></div>
-                    </div>
-                </section>
-
-                <!-- 7. ROUTE PARAMETERS -->
-                <section id="route-params">
-                    <h2><span class="section-num">7</span> Route parameters</h2>
-                    <div class="key-strip">
-                        <span class="key-label">Key terms</span>
-                        <span class="key-chip">:name</span>
-                        <span class="key-chip good">req.params</span>
-                        <span class="key-chip">named segments</span>
-                    </div>
-                    <div class="callout def">
-                        <i class="fas fa-book"></i>
-                        <p><strong>Route parameters</strong> are <b class="kw">named URL segments</b> that capture values at a position in
-                        the URL. Express stores them in the <b class="kw">req.params</b> object, keyed by name.</p>
-                    </div>
-                    <div class="board-line"><i class="fas fa-crosshairs"></i>
-                        <span>Path <span class="b">/users/:userId/books/:bookId</span> · URL <span class="b">/users/34/books/8989</span> · <span class="b">req.params</span> = { userId: "34", bookId: "8989" }</span>
+                    <h2><span class="section-num">3</span> Routes &amp; params 🎯</h2>
+                    <div class="board-line"><i class="fas fa-signs-post"></i>
+                        <span>Every route is <span class="b">app.METHOD(path, handler)</span>. Put a <span class="b">:name</span> in the path and Express hands you <span class="b">req.params.name</span>.</span>
                     </div>
 
-                    <h3><i class="fas fa-wand-magic-sparkles"></i> The matcher — type a pattern and a URL</h3>
+                    <p>Play with the matcher — type a route pattern and a URL, watch Express pull out the params (or 404):</p>
                     <div class="param-lab glass-panel">
                         <div class="param-row">
                             <label>Route path</label>
-                            <input id="param-pattern" value="/users/:userId/books/:bookId" spellcheck="false">
+                            <input id="param-pattern" value="/anime/:id/episodes/:ep" spellcheck="false">
                         </div>
                         <div class="param-row">
                             <label>Request URL</label>
-                            <input id="param-url" value="/users/34/books/8989" spellcheck="false">
+                            <input id="param-url" value="/anime/1/episodes/25" spellcheck="false">
                         </div>
                         <div class="param-result" id="param-result"></div>
                     </div>
 
-                    <h3><i class="fas fa-play"></i> Live — a server that reads params</h3>
-                    <div class="board-line"><i class="fas fa-hand-point-right"></i>
-                        <span>Run it, then visit <span class="b">/users/34/books/8989</span> — or change the numbers.</span>
-                    </div>
+                    <p>And here it is live — run it, then visit <span class="inline-code">/anime/7</span> or <span class="inline-code">/anime/42</span>:</p>
                     <div class="code-block runner express-run">
-                        <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">params.js</span></div>
+                        <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">routes.js</span></div>
                         <pre><code>const express = require('express');
 const app = express();
 
-app.get('/users/:userId/books/:bookId', function (req, res) {
-  // Everything after the : is captured into req.params
-  res.json(req.params);
-});
-
 app.get('/', (req, res) =&gt;
-  res.send('Try visiting /users/34/books/8989 in the tester below ↓'));
+  res.send('&lt;h1&gt;Home&lt;/h1&gt;&lt;a href="/anime/1"&gt;go to anime #1&lt;/a&gt;'));
+
+// :id is a route parameter → req.params.id
+app.get('/anime/:id', (req, res) =&gt; {
+  res.send('You asked for anime #' + req.params.id + ' 🎬');
+});
 
 app.listen(3000);</code></pre>
                         <div class="code-actions"><button class="run-btn"><i class="fas fa-play"></i> Run</button><button class="clear-btn">Clear</button></div>
@@ -500,69 +248,37 @@ app.listen(3000);</code></pre>
                     </div>
                 </section>
 
-                <!-- 8. REQ & RES -->
-                <section id="req-res">
-                    <h2><span class="section-num">8</span> The Request &amp; Response objects</h2>
-                    <div class="key-strip">
-                        <span class="key-label">Read from req</span>
-                        <span class="key-chip">req.params</span>
-                        <span class="key-chip">req.query</span>
-                        <span class="key-chip">req.body</span>
-                        <span class="key-chip">req.ip</span>
-                    </div>
+                <!-- 4. REQ & RES -->
+                <section id="reqres">
+                    <h2><span class="section-num">4</span> req &amp; res cheat card 🎴</h2>
                     <div class="board-line"><i class="fas fa-arrows-left-right"></i>
-                        <span><span class="b">req</span> = everything the client sent. <span class="b">res</span> = everything you send back.</span>
+                        <span><span class="b">req</span> = what the client sent. <span class="b">res</span> = what you send back. That's it.</span>
                     </div>
                     <div class="table-wrap">
                         <table class="doc-table">
-                            <thead><tr><th>req property</th><th>Holds</th></tr></thead>
+                            <thead><tr><th>Read from req</th><th>Send with res</th></tr></thead>
                             <tbody>
-                                <tr><td><span class="inline-code">req.params</span></td><td>Named route parameters — <span class="inline-code">/users/:id</span> → <span class="inline-code">req.params.id</span>.</td></tr>
-                                <tr><td><span class="inline-code">req.query</span></td><td>URL query-string values — <span class="inline-code">?sort=asc</span> → <span class="inline-code">req.query.sort</span>.</td></tr>
-                                <tr><td><span class="inline-code">req.body</span></td><td>Parsed request body — needs <span class="inline-code">express.json()</span> (or a body-parser).</td></tr>
-                                <tr><td><span class="inline-code">req.ip</span></td><td>The client's IP address.</td></tr>
-                                <tr><td><span class="inline-code">req.method</span> / <span class="inline-code">req.path</span></td><td>The HTTP verb and the path portion of the URL.</td></tr>
+                                <tr><td><span class="inline-code">req.params</span> — <span class="inline-code">/anime/:id</span></td><td><span class="inline-code">res.send(html)</span> — text/HTML</td></tr>
+                                <tr><td><span class="inline-code">req.query</span> — <span class="inline-code">?sort=asc</span></td><td><span class="inline-code">res.json(obj)</span> — API responses</td></tr>
+                                <tr><td><span class="inline-code">req.body</span> — POST data <small>(needs express.json)</small></td><td><span class="inline-code">res.status(404)</span> — chainable</td></tr>
+                                <tr><td><span class="inline-code">req.method</span> · <span class="inline-code">req.ip</span></td><td><span class="inline-code">res.render(view, data)</span> — Pug</td></tr>
                             </tbody>
                         </table>
                     </div>
-                    <div class="table-wrap">
-                        <table class="doc-table">
-                            <thead><tr><th>res method</th><th>Sends</th></tr></thead>
-                            <tbody>
-                                <tr><td><span class="inline-code">res.send(body)</span></td><td>Text or HTML — sets the content type automatically.</td></tr>
-                                <tr><td><span class="inline-code">res.json(obj)</span></td><td>A JSON response — the workhorse of APIs.</td></tr>
-                                <tr><td><span class="inline-code">res.status(code)</span></td><td>Sets the status code — chainable: <span class="inline-code">res.status(404).send('Nope')</span>.</td></tr>
-                                <tr><td><span class="inline-code">res.redirect(url)</span></td><td>Sends a redirect to another URL.</td></tr>
-                                <tr><td><span class="inline-code">res.render(view, data)</span></td><td>Renders a template (Pug) with data into HTML.</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="board-line"><i class="fas fa-hand-point-right"></i>
-                        <span>Run it, then visit <span class="b">/search?q=otter&amp;sort=asc</span> to see <span class="b">req.query</span> in action.</span>
-                    </div>
+                    <p>Quick play — run it, then visit <span class="inline-code">/search?q=otter&amp;sort=asc</span> and watch <b class="kw">req.query</b> come back as JSON:</p>
                     <div class="code-block runner express-run">
-                        <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">req-res.js</span></div>
+                        <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">query.js</span></div>
                         <pre><code>const express = require('express');
 const app = express();
 
 app.get('/search', (req, res) =&gt; {
-  // /search?q=otter&amp;sort=asc  →  req.query = { q: 'otter', sort: 'asc' }
-  const term = req.query.q || '(nothing)';
-  const sort = req.query.sort || 'default';
-
   if (!req.query.q) {
-    return res.status(400).json({ error: 'add ?q=your-search to the URL' });
+    return res.status(400).json({ error: 'add ?q=something to the URL' });
   }
-
-  res.json({
-    youSearchedFor: term,
-    sortedBy: sort,
-    from: req.ip,
-    method: req.method
-  });
+  res.json({ youSearched: req.query.q, sortedBy: req.query.sort || 'default' });
 });
 
-app.get('/', (req, res) =&gt; res.send('Try /search?q=otter&amp;sort=asc'));
+app.get('/', (req, res) =&gt; res.send('try /search?q=otter&amp;sort=asc'));
 
 app.listen(3000);</code></pre>
                         <div class="code-actions"><button class="run-btn"><i class="fas fa-play"></i> Run</button><button class="clear-btn">Clear</button></div>
@@ -570,415 +286,184 @@ app.listen(3000);</code></pre>
                     </div>
                 </section>
 
-                <!-- 9. HTTP METHODS / REST -->
-                <section id="http-methods">
-                    <h2><span class="section-num">9</span> HTTP methods &amp; REST</h2>
-                    <div class="key-strip">
-                        <span class="key-label">The verbs</span>
-                        <span class="key-chip good">GET — read</span>
-                        <span class="key-chip">POST — create</span>
-                        <span class="key-chip warm">PUT — update</span>
-                        <span class="key-chip bad">DELETE — remove</span>
-                    </div>
+                <!-- 5. BOSS LEVEL -->
+                <section id="boss">
+                    <h2><span class="section-num">5</span> Boss level: build a REST API ⭐</h2>
                     <div class="board-line"><i class="fas fa-table-list"></i>
-                        <span>Same URL, different <span class="b">verb</span>, different action. That's <span class="b">REST</span>: <span class="b">GET</span> read · <span class="b">POST</span> create · <span class="b">PUT</span> update · <span class="b">DELETE</span> remove.</span>
+                        <span>Same URL, different verb, different action. <span class="b">GET</span> read · <span class="b">POST</span> create · <span class="b">PUT</span> update · <span class="b">DELETE</span> remove.</span>
                     </div>
-
-                    <h3><i class="fas fa-gamepad"></i> The fun one — a real REST API you can poke</h3>
-                    <p>This is a complete in-memory <b class="kw">anime API</b>. Run it, then use the REST tester's <b class="kw">method
-                    selector</b> to <span class="inline-code">GET</span> the list, <span class="inline-code">POST</span> a new anime (send a JSON
-                    body!), and <span class="inline-code">DELETE</span> one by id. The data really changes between requests.</p>
+                    <p>Here's a complete, in-memory <b class="kw">anime API</b> — Model (an array), Controller (the routes), all in one. Run it, then use
+                    the tester's <b class="kw">method dropdown</b> to poke it. The data really changes between requests. This is the main event. 🎮</p>
                     <div class="code-block runner express-run">
-                        <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">anime-api.js · a mini REST server</span></div>
+                        <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">anime-api.js · your first REST server</span></div>
                         <pre><code>const express = require('express');
 const app = express();
-app.use(express.json());
+app.use(express.json());          // so POST bodies land in req.body
 
-// Our "database" — just an array (Model, Week 10 style)
+// 🗂️ our "database" — just an array
 let anime = [
   { id: 1, title: "Death Note", studio: "Madhouse" },
   { id: 2, title: "Attack on Titan", studio: "Wit Studio" }
 ];
 let nextId = 3;
 
-// READ all  →  GET /anime
-app.get('/anime', (req, res) =&gt; res.json(anime));
+app.get('/anime', (req, res) =&gt; res.json(anime));          // read all
 
-// READ one  →  GET /anime/2
-app.get('/anime/:id', (req, res) =&gt; {
+app.get('/anime/:id', (req, res) =&gt; {                       // read one
   const show = anime.find(a =&gt; a.id === Number(req.params.id));
-  if (!show) return res.status(404).json({ error: 'no anime with id ' + req.params.id });
+  if (!show) return res.status(404).json({ error: 'not found' });
   res.json(show);
 });
 
-// CREATE  →  POST /anime   body: { "title": "...", "studio": "..." }
-app.post('/anime', (req, res) =&gt; {
+app.post('/anime', (req, res) =&gt; {                          // create
   const show = { id: nextId++, title: req.body.title, studio: req.body.studio };
   anime.push(show);
   res.status(201).json(show);
 });
 
-// DELETE  →  DELETE /anime/1
-app.delete('/anime/:id', (req, res) =&gt; {
+app.delete('/anime/:id', (req, res) =&gt; {                    // remove
   anime = anime.filter(a =&gt; a.id !== Number(req.params.id));
-  res.json({ deleted: req.params.id, remaining: anime.length });
+  res.json({ deleted: req.params.id, left: anime.length });
 });
 
-app.listen(3000, () =&gt; console.log('Anime API ready — try GET /anime'));</code></pre>
+app.listen(3000, () =&gt; console.log('anime API ready — GET /anime'));</code></pre>
                         <div class="code-actions"><button class="run-btn"><i class="fas fa-play"></i> Run</button><button class="clear-btn">Clear</button></div>
                         <div class="run-out" aria-live="polite"></div>
                     </div>
                     <div class="callout tip">
                         <i class="fas fa-flask"></i>
-                        <p><strong>Class challenge:</strong> after running, <span class="inline-code">POST</span> <span class="inline-code">{ "title": "Demon Slayer", "studio": "Ufotable" }</span>
-                        to <span class="inline-code">/anime</span>, then <span class="inline-code">GET /anime</span> and watch it appear. Then
-                        <span class="inline-code">DELETE /anime/1</span> and GET again. Add a <span class="inline-code">PUT /anime/:id</span> route yourself!</p>
+                        <p><strong>Try this run, in order:</strong>
+                        ① <span class="inline-code">GET /anime</span> (2 shows) →
+                        ② switch to <span class="inline-code">POST</span>, send the default body (Demon Slayer) →
+                        ③ <span class="inline-code">GET /anime</span> again — it's there! →
+                        ④ <span class="inline-code">DELETE /anime/1</span>. <br>
+                        <strong>Mini-quest:</strong> add a <span class="inline-code">PUT /anime/:id</span> route that changes a show's studio. You've got this. 💪</p>
                     </div>
                 </section>
 
-                <!-- 10. STATIC -->
-                <section id="static">
-                    <h2><span class="section-num">10</span> Serving static files</h2>
-                    <div class="key-strip">
-                        <span class="key-label">Key terms</span>
-                        <span class="key-chip good">express.static('public')</span>
-                        <span class="key-chip">no route needed</span>
-                        <span class="key-chip">HTML · CSS · images</span>
-                    </div>
-                    <div class="board-line"><i class="fas fa-folder-tree"></i>
-                        <span>Frontend files (HTML/CSS/images) don't need a route each — point Express at a <span class="b">folder</span> and it serves them all.</span>
-                    </div>
-                    <div class="code-block">
-                        <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">static.js</span></div>
-                        <pre><code>const express = require('express');
-const app = express();
-
-// Anything inside the /public folder is served automatically:
-//   public/index.html   →  http://localhost:3000/index.html
-//   public/style.css    →  http://localhost:3000/style.css
-//   public/logo.png     →  http://localhost:3000/logo.png
-app.use(express.static('public'));
-
-app.listen(3000);</code></pre>
-                    </div>
-                    <div class="board-line"><i class="fas fa-people-arrows"></i>
-                        <span>This is how <span class="b">frontend + backend</span> live together: static middleware serves the frontend, routes serve the data.</span>
-                    </div>
-                </section>
-
-                <!-- 11. TEMPLATES / PUG -->
-                <section id="templates">
-                    <h2><span class="section-num">11</span> Template engines &amp; Pug</h2>
-                    <div class="key-strip">
-                        <span class="key-label">Key terms</span>
-                        <span class="key-chip">template engine</span>
-                        <span class="key-chip good">Pug</span>
-                        <span class="key-chip">res.render()</span>
-                        <span class="key-chip">#{variables}</span>
-                    </div>
-                    <div class="callout def">
-                        <i class="fas fa-book"></i>
-                        <p><strong>A template engine</strong> lets you write an HTML template with <b class="kw">placeholders</b>, then fill
-                        them with real data in JavaScript. Node replaces the variables and sends finished HTML to the client.</p>
-                    </div>
+                <!-- 6. PUG -->
+                <section id="pug">
+                    <h2><span class="section-num">6</span> Views with Pug 🐶</h2>
                     <div class="board-line"><i class="fas fa-fill-drip"></i>
-                        <span>Server gets <span class="b">GET /dog</span> → fills a template with <span class="b">{ word: "dog", definition: "…" }</span> → returns a complete page.</span>
+                        <span>A <span class="b">template engine</span> fills an HTML template with data on the server. <span class="b">Pug</span> = HTML with no closing tags, indentation for nesting.</span>
                     </div>
-                    <ul class="tight">
-                        <li>Popular engines: <b class="kw">Pug</b>, <b class="kw">EJS</b>, <b class="kw">Handlebars</b>.</li>
-                        <li>This course uses <b class="kw">Pug</b> — cleaner, indentation-based, no closing tags.</li>
-                    </ul>
-
-                    <h3><i class="fas fa-gear"></i> Setting up Pug in Express</h3>
-                    <div class="code-block">
-                        <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">app.js</span></div>
-                        <pre><code>// 1. install:  npm install pug
-const express = require('express');
-const app = express();
-
-// 2. tell Express to use Pug, and where the templates live
-app.set('view engine', 'pug');
-app.set('views', './views');
-
-// 3. create views/index.pug, then render it with data:
-app.get('/', (req, res) =&gt; {
-  res.render('index', { name: 'John', items: ['Apple', 'Banana', 'Cherry'] });
-});
-
-app.listen(3000);</code></pre>
-                    </div>
-
-                    <h3><i class="fas fa-wand-sparkles"></i> The Pug playground — type Pug, see HTML</h3>
-                    <div class="board-line"><i class="fas fa-hand-point-right"></i>
-                        <span>Edit the Pug on the left; the rendered page updates on the right. Try changing <span class="b">name</span> in the data box.</span>
-                    </div>
+                    <p>Best learned by playing. Edit the Pug on the left, change the <b class="kw">data</b> box, watch the page rebuild live:</p>
                     <div class="pug-lab">
                         <div class="pug-pane">
                             <div class="pug-label"><i class="fas fa-code"></i> index.pug <span class="express-badge">✏️ editable</span></div>
                             <div class="pug-data-row">
                                 <label>data =</label>
-                                <input id="pug-data" spellcheck="false" value='{ "name": "Ada", "items": ["Apple", "Banana", "Cherry"] }'>
+                                <input id="pug-data" spellcheck="false" value='{ "name": "Light", "shows": ["Death Note", "One Punch Man"] }'>
                             </div>
-                            <textarea class="pug-editor" id="pug-editor" spellcheck="false">doctype html
-html
-  head
-    title My Pug Page
-  body
-    h1 Welcome, #{name}!
-    p This is a Pug template.
-    ul
-      each item in items
-        li= item</textarea>
+                            <textarea class="pug-editor" id="pug-editor" spellcheck="false">h1 Hi, #{name}!
+p My top anime:
+ul
+  each show in shows
+    li= show</textarea>
                         </div>
                         <div class="pug-pane">
-                            <div class="pug-label out"><i class="fas fa-eye"></i> rendered result</div>
+                            <div class="pug-label out"><i class="fas fa-eye"></i> live result</div>
                             <div class="pug-preview">
                                 <iframe id="pug-frame" sandbox="" title="Pug preview"></iframe>
                                 <pre class="pug-html" id="pug-html"></pre>
                             </div>
                         </div>
                     </div>
-                </section>
-
-                <!-- 12. PUG SYNTAX -->
-                <section id="pug-syntax">
-                    <h2><span class="section-num">12</span> Pug syntax &amp; layouts</h2>
-                    <div class="key-strip">
-                        <span class="key-label">Key terms</span>
-                        <span class="key-chip">indentation = nesting</span>
-                        <span class="key-chip">tag.class#id</span>
-                        <span class="key-chip">#{var}</span>
-                        <span class="key-chip">each / if</span>
-                        <span class="key-chip good">extends / block</span>
-                    </div>
-                    <div class="table-wrap">
-                        <table class="doc-table">
-                            <thead><tr><th>Pug</th><th>HTML</th></tr></thead>
-                            <tbody>
-                                <tr><td><span class="inline-code">h1 Welcome to Pug!</span></td><td><span class="inline-code">&lt;h1&gt;Welcome to Pug!&lt;/h1&gt;</span></td></tr>
-                                <tr><td><span class="inline-code">a(href="/") Home</span></td><td><span class="inline-code">&lt;a href="/"&gt;Home&lt;/a&gt;</span></td></tr>
-                                <tr><td><span class="inline-code">p Hello, #{name}!</span></td><td><span class="inline-code">&lt;p&gt;Hello, Ada!&lt;/p&gt;</span></td></tr>
-                                <tr><td><span class="inline-code">nav.navbar</span></td><td><span class="inline-code">&lt;nav class="navbar"&gt;&lt;/nav&gt;</span></td></tr>
-                                <tr><td><span class="inline-code">li= item</span></td><td><span class="inline-code">&lt;li&gt;(value of item)&lt;/li&gt;</span></td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <h3><i class="fas fa-code-branch"></i> Logic &amp; iteration</h3>
-                    <div class="code-compare">
-                        <div>
-                            <div class="compare-label">Conditionals</div>
-                            <div class="code-block"><div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">if.pug</span></div>
-                            <pre><code>if loggedIn
-  p Welcome back!
-else
-  p Please log in.</code></pre></div>
-                        </div>
-                        <div>
-                            <div class="compare-label">Loops</div>
-                            <div class="code-block"><div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">each.pug</span></div>
-                            <pre><code>ul
-  each item in items
-    li= item</code></pre></div>
-                        </div>
-                    </div>
-
-                    <h3><i class="fas fa-layer-group"></i> Layouts — extends &amp; block</h3>
-                    <div class="board-line"><i class="fas fa-clone"></i>
-                        <span>Write the shell <span class="b">once</span> in a layout; each page <span class="b">extends</span> it and fills the <span class="b">block</span>s.</span>
-                    </div>
-                    <div class="code-compare">
-                        <div>
-                            <div class="compare-label">views/layout.pug</div>
-                            <div class="code-block"><div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">layout.pug</span></div>
-                            <pre><code>doctype html
-html(lang='en')
-  head
-    title #{title} — MyApp
-  body
-    nav.navbar
-      a(href='/') Home
-      a(href='/about') About
-    main.page-content
-      block content
-    footer
-      p &copy; 2026 MyApp</code></pre></div>
-                        </div>
-                        <div>
-                            <div class="compare-label good">views/index.pug</div>
-                            <div class="code-block"><div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">index.pug</span></div>
-                            <pre><code>extends layout
-
-block content
-  h1 Welcome to MyApp!
-  p This is the home page.
-  a(href='/users') See all users</code></pre></div>
-                        </div>
-                    </div>
-                    <div class="callout tip">
-                        <i class="fas fa-lightbulb"></i>
-                        <p><strong>Handy tool:</strong> paste HTML into <a href="https://html-to-pug.com/" target="_blank" rel="noopener">html-to-pug.com</a>
-                        to convert existing markup to Pug while you're learning the syntax.</p>
-                    </div>
-                </section>
-
-                <!-- 13. MVC -->
-                <section id="mvc">
-                    <h2><span class="section-num">13</span> MVC in Express</h2>
-                    <div class="key-strip">
-                        <span class="key-label">Key terms</span>
-                        <span class="key-chip">Model = data</span>
-                        <span class="key-chip">View = Pug</span>
-                        <span class="key-chip good">Controller = routes</span>
-                    </div>
-                    <div class="board-line"><i class="fas fa-sitemap"></i>
-                        <span>Week 10 taught <span class="b">MVC</span>. Express makes it natural: <span class="b">Model</span> = data · <span class="b">Controller</span> = your route handlers · <span class="b">View</span> = Pug.</span>
-                    </div>
-                    <p>A complete little MVC app — a Model (array), a Controller (the route) and a View (rendered Pug). Run it and visit <span class="inline-code">/</span>:</p>
+                    <p>To use it in Express: tell the app you're using Pug, then <span class="inline-code">res.render()</span> a view with data.
+                    That's the <b class="kw">V</b> in MVC (Model = your array, Controller = the route, View = the Pug). Run it and visit <span class="inline-code">/</span>:</p>
                     <div class="code-block runner express-run">
-                        <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">mvc-app.js</span></div>
+                        <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">views.js</span></div>
                         <pre><code>const express = require('express');
 const app = express();
-app.set('view engine', 'pug');
+app.set('view engine', 'pug');    // 1. use Pug
 
-// 🧠 MODEL — the data + logic (no database yet, just an array)
-const students = [
-  { name: 'Ada Lovelace', grade: 'A+' },
-  { name: 'Linus Torvalds', grade: 'A' },
-  { name: 'Grace Hopper', grade: 'A+' }
-];
+const shows = ['Death Note', 'Demon Slayer', 'One Punch Man'];
 
-// 🚦 CONTROLLER — the route decides what to do and picks a view
 app.get('/', (req, res) =&gt; {
-  res.render('students', { title: 'Class List', students: students });
+  // 2. render the "index" view with data → finished HTML
+  res.render('index', { name: 'Class', items: shows });
 });
 
-app.listen(3000);
-
-/* 🎨 VIEW — views/students.pug (provided for you in the emulator):
-
-doctype html
-html
-  head
-    title #{title}
-  body
-    h1= title
-    ul
-      each s in students
-        li #{s.name} — #{s.grade}
-*/</code></pre>
+app.listen(3000);</code></pre>
                         <div class="code-actions"><button class="run-btn"><i class="fas fa-play"></i> Run</button><button class="clear-btn">Clear</button></div>
                         <div class="run-out" aria-live="polite"></div>
                     </div>
                     <div class="callout tip">
                         <i class="fas fa-lightbulb"></i>
-                        <p>The emulator ships the <span class="inline-code">students.pug</span> view so <span class="inline-code">res.render()</span>
-                        works. In a real project it lives in <span class="inline-code">views/students.pug</span> — separation of concerns, exactly like Week 10.</p>
+                        <p>Learning Pug from existing HTML? Paste it into <a href="https://html-to-pug.com/" target="_blank" rel="noopener">html-to-pug.com</a>.
+                        Layouts share one shell with <span class="inline-code">extends</span> + <span class="inline-code">block</span> — try adding
+                        <span class="inline-code">a(href="/")</span> Home to the playground above.</p>
                     </div>
                 </section>
 
-                <!-- 14. TAKEAWAYS -->
-                <section id="takeaways">
-                    <h2><span class="section-num">14</span> Key takeaways</h2>
+                <!-- 7. WRAP-UP -->
+                <section id="wrap">
+                    <h2><span class="section-num">7</span> Wrap-up &amp; quiz</h2>
                     <ol class="takeaways">
-                        <li><b class="kw">Express = Node's web framework</b> — routing, middleware and views on top of the <span class="inline-code">http</span> module.</li>
-                        <li><b class="kw">express()</b> creates <span class="inline-code">app</span>; <b class="kw">app.listen(port)</b> starts it — far less boilerplate than raw http.</li>
-                        <li><b class="kw">Middleware</b> is <span class="inline-code">(req, res, next)</span> — inspect, modify, then <b class="kw">call next()</b> or the request hangs.</li>
-                        <li>Three kinds: <b class="kw">built-in</b> (<span class="inline-code">express.json</span>, <span class="inline-code">express.static</span>), <b class="kw">application-level</b>, <b class="kw">router-level</b>.</li>
-                        <li>Routing is <b class="kw">app.METHOD(path, handler)</b> — the path can be a string or a pattern (<span class="inline-code">? + * ()</span>).</li>
-                        <li><b class="kw">:params</b> land in <span class="inline-code">req.params</span> · query strings in <span class="inline-code">req.query</span> · JSON body in <span class="inline-code">req.body</span> (with <span class="inline-code">express.json()</span>).</li>
-                        <li><b class="kw">res.send / res.json / res.status / res.render</b> — convenience methods that handle headers for you.</li>
-                        <li><b class="kw">REST</b>: GET reads · POST creates · PUT updates · DELETE removes — same URL, different verb.</li>
-                        <li><b class="kw">express.static('public')</b> serves frontend files with no route each.</li>
-                        <li><b class="kw">Pug</b> + <span class="inline-code">res.render()</span> turn templates + data into HTML — and <b class="kw">extends/block</b> share one layout. Model = data, Controller = routes, View = Pug.</li>
+                        <li><b class="kw">express()</b> makes an app; <b class="kw">app.listen(port)</b> starts it — a server in 4 lines.</li>
+                        <li><b class="kw">Middleware</b> is <span class="inline-code">(req, res, next)</span> — do your thing, then <b class="kw">call next()</b> or it hangs.</li>
+                        <li>Routes are <b class="kw">app.METHOD(path, handler)</b>; <b class="kw">:params</b> → <span class="inline-code">req.params</span>, query → <span class="inline-code">req.query</span>, body → <span class="inline-code">req.body</span>.</li>
+                        <li><b class="kw">REST</b>: GET read · POST create · PUT update · DELETE remove — one resource, four verbs.</li>
+                        <li><b class="kw">res.render()</b> + <b class="kw">Pug</b> turn a template + data into HTML — the View in MVC.</li>
                     </ol>
-                </section>
 
-                <!-- 15. QUIZ -->
-                <section id="quiz">
-                    <h2><span class="section-num">15</span> Self-check quiz</h2>
-                    <p class="section-lede">No grades, instant feedback. Can you get all eight?</p>
-
-                    <div class="quiz-q" data-answer="1">
-                        <h4><span class="q-num">Q1.</span> What is Express.js?</h4>
-                        <button class="quiz-opt">A database that stores JavaScript objects on the server</button>
-                        <button class="quiz-opt">A Node.js web framework for routing, middleware and views</button>
-                        <button class="quiz-opt">A browser API that replaces fetch()</button>
-                        <div class="quiz-feedback">Express is a <strong>web application framework for Node.js</strong> — it sits on top of the <span class="inline-code">http</span> module and gives you routing, middleware and view rendering.</div>
-                    </div>
+                    <h3><i class="fas fa-circle-question"></i> Quick self-check (6 questions)</h3>
 
                     <div class="quiz-q" data-answer="2">
-                        <h4><span class="q-num">Q2.</span> A middleware function runs but never calls <span class="inline-code">next()</span>. What happens?</h4>
-                        <button class="quiz-opt">Express calls next() for you automatically</button>
-                        <button class="quiz-opt">The next middleware runs anyway after a short delay</button>
-                        <button class="quiz-opt">The request stops there — the browser waits forever</button>
-                        <div class="quiz-feedback"><span class="inline-code">next()</span> passes control to the next function in the stack. Skip it (and don't send a response) and the request hangs — the classic Express bug.</div>
+                        <h4><span class="q-num">Q1.</span> A middleware runs but never calls <span class="inline-code">next()</span> (and never responds). What happens?</h4>
+                        <button class="quiz-opt">Express calls next() for you</button>
+                        <button class="quiz-opt">The next route runs after a short delay</button>
+                        <button class="quiz-opt">The request hangs — the browser waits forever</button>
+                        <div class="quiz-feedback"><span class="inline-code">next()</span> passes control down the line. No next(), no response → the request never finishes.</div>
                     </div>
 
                     <div class="quiz-q" data-answer="0">
-                        <h4><span class="q-num">Q3.</span> Which line registers a handler for POST requests to <span class="inline-code">/anime</span>?</h4>
+                        <h4><span class="q-num">Q2.</span> Which registers a handler for POST to <span class="inline-code">/anime</span>?</h4>
                         <button class="quiz-opt"><span style="font-family:var(--font-mono); font-size:.85rem;">app.post('/anime', handler)</span></button>
                         <button class="quiz-opt"><span style="font-family:var(--font-mono); font-size:.85rem;">app.get('/anime', 'POST', handler)</span></button>
                         <button class="quiz-opt"><span style="font-family:var(--font-mono); font-size:.85rem;">app.route.POST('/anime')</span></button>
-                        <div class="quiz-feedback">The shape is <strong>app.METHOD(path, handler)</strong> — the method is the function name: <span class="inline-code">app.post(...)</span>, <span class="inline-code">app.get(...)</span>, etc.</div>
+                        <div class="quiz-feedback">The shape is <strong>app.METHOD(path, handler)</strong> — the verb is the method name: <span class="inline-code">app.post(...)</span>.</div>
                     </div>
 
                     <div class="quiz-q" data-answer="1">
-                        <h4><span class="q-num">Q4.</span> Route <span class="inline-code">/users/:userId</span> receives a request for <span class="inline-code">/users/42</span>. Where is "42"?</h4>
-                        <button class="quiz-opt">req.query.userId</button>
-                        <button class="quiz-opt">req.params.userId</button>
-                        <button class="quiz-opt">req.body.userId</button>
-                        <div class="quiz-feedback">Named route segments (the <span class="inline-code">:userId</span> part) are captured into <strong>req.params</strong>. Query strings go to <span class="inline-code">req.query</span>; JSON bodies to <span class="inline-code">req.body</span>.</div>
+                        <h4><span class="q-num">Q3.</span> Route <span class="inline-code">/anime/:id</span> gets a request for <span class="inline-code">/anime/42</span>. Where's "42"?</h4>
+                        <button class="quiz-opt">req.query.id</button>
+                        <button class="quiz-opt">req.params.id</button>
+                        <button class="quiz-opt">req.body.id</button>
+                        <div class="quiz-feedback">Named segments (<span class="inline-code">:id</span>) land in <strong>req.params</strong>. Query strings → req.query, POST bodies → req.body.</div>
                     </div>
 
                     <div class="quiz-q" data-answer="2">
-                        <h4><span class="q-num">Q5.</span> To read a JSON request body from <span class="inline-code">req.body</span>, you must first…</h4>
-                        <button class="quiz-opt">Nothing — req.body is always populated</button>
-                        <button class="quiz-opt">Call res.json() in the handler</button>
-                        <button class="quiz-opt">Add the built-in middleware <span class="inline-code">app.use(express.json())</span></button>
-                        <div class="quiz-feedback">Without <span class="inline-code">express.json()</span> parsing the body, <span class="inline-code">req.body</span> is undefined. It's a built-in middleware you register once with <span class="inline-code">app.use()</span>.</div>
+                        <h4><span class="q-num">Q4.</span> To read a JSON POST body from <span class="inline-code">req.body</span>, you first need…</h4>
+                        <button class="quiz-opt">Nothing, it's always there</button>
+                        <button class="quiz-opt">To call res.json() first</button>
+                        <button class="quiz-opt"><span style="font-family:var(--font-mono); font-size:.85rem;">app.use(express.json())</span></button>
+                        <div class="quiz-feedback">Without <span class="inline-code">express.json()</span> parsing the body, <span class="inline-code">req.body</span> is undefined.</div>
                     </div>
 
                     <div class="quiz-q" data-answer="0">
-                        <h4><span class="q-num">Q6.</span> In REST, which verb <em>creates</em> a new resource?</h4>
+                        <h4><span class="q-num">Q5.</span> In REST, which verb <em>creates</em> a new resource?</h4>
                         <button class="quiz-opt">POST</button>
                         <button class="quiz-opt">GET</button>
                         <button class="quiz-opt">DELETE</button>
-                        <div class="quiz-feedback">GET reads, <strong>POST creates</strong>, PUT updates, DELETE removes. Same URL, different verb, different action.</div>
-                    </div>
-
-                    <div class="quiz-q" data-answer="1">
-                        <h4><span class="q-num">Q7.</span> What does <span class="inline-code">app.use(express.static('public'))</span> do?</h4>
-                        <button class="quiz-opt">Blocks access to the public folder for security</button>
-                        <button class="quiz-opt">Serves files in the public folder directly, with no route needed</button>
-                        <button class="quiz-opt">Renders Pug templates from the public folder</button>
-                        <div class="quiz-feedback"><span class="inline-code">express.static</span> is built-in middleware that serves static assets (HTML, CSS, images) straight from a folder — <span class="inline-code">public/style.css</span> becomes <span class="inline-code">/style.css</span>.</div>
+                        <div class="quiz-feedback">GET reads, <strong>POST creates</strong>, PUT updates, DELETE removes.</div>
                     </div>
 
                     <div class="quiz-q" data-answer="2">
-                        <h4><span class="q-num">Q8.</span> In Express + Pug MVC, which part is the <em>View</em>?</h4>
-                        <button class="quiz-opt">The array of data in app.js</button>
-                        <button class="quiz-opt">The app.get() route handler</button>
-                        <button class="quiz-opt">The .pug template that res.render() fills with data</button>
-                        <div class="quiz-feedback">Model = the data/array · Controller = the route handler that decides &amp; calls <span class="inline-code">res.render</span> · <strong>View = the Pug template</strong> that presents the data.</div>
+                        <h4><span class="q-num">Q6.</span> <span class="inline-code">res.render('index', data)</span> does what?</h4>
+                        <button class="quiz-opt">Sends the raw data as JSON</button>
+                        <button class="quiz-opt">Redirects the browser to /index</button>
+                        <button class="quiz-opt">Fills the Pug view with data and sends HTML</button>
+                        <div class="quiz-feedback">The template engine merges your data into the view (the V in MVC) and returns finished HTML.</div>
                     </div>
-                </section>
 
-                <!-- 16. READING -->
-                <section id="reading">
-                    <h2><span class="section-num">16</span> Reading &amp; practice</h2>
-                    <div class="callout def">
+                    <div class="callout def" style="margin-top: 26px;">
                         <i class="fas fa-book"></i>
-                        <p><strong>Zybooks — the Express.js sections</strong> for this module. Do the participation activities — they mirror this week's lab.</p>
-                    </div>
-                    <ul class="tight">
-                        <li><a href="https://expressjs.com/" target="_blank" rel="noopener">Express.js official docs</a> — installation, middleware, routing, best practices.</li>
-                        <li><a href="https://expressjs.com/en/guide/routing.html" target="_blank" rel="noopener">Express routing guide</a> — paths, params and route handlers in depth.</li>
-                        <li><a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Server-side/Express_Nodejs" target="_blank" rel="noopener">MDN — Express / Node introduction</a></li>
-                        <li><a href="https://pugjs.org/api/getting-started.html" target="_blank" rel="noopener">Pug documentation</a> · <a href="https://html-to-pug.com/" target="_blank" rel="noopener">html-to-pug converter</a></li>
-                    </ul>
-                    <div class="board-line"><i class="fas fa-dumbbell"></i>
-                        <span><span class="b">Challenge:</span> in the anime API, add a <span class="inline-code">PUT /anime/:id</span> route that updates an anime's studio from <span class="inline-code">req.body</span> — then test it in the REST tester.</span>
+                        <p><strong>Go deeper (optional):</strong>
+                        <a href="https://expressjs.com/" target="_blank" rel="noopener">Express docs</a> ·
+                        <a href="https://expressjs.com/en/guide/routing.html" target="_blank" rel="noopener">routing guide</a> ·
+                        <a href="https://pugjs.org/api/getting-started.html" target="_blank" rel="noopener">Pug docs</a> —
+                        plus the Zybooks Express sections for the lab.</p>
                     </div>
 
                     <div class="doc-pager">
@@ -1005,15 +490,13 @@ html
 
     <script>
         window.ALGO_TIPS = [
-            "Welcome to the Island of Routes 🚂 — Express.js territory! Click me for framework wisdom.",
-            "Every server here runs in an Express emulator. Hit it with the REST tester — GET, POST, PUT, DELETE!",
-            "Middleware is (req, res, next). Forget next() and the request hangs forever ⏳",
+            "Welcome to the Island of Routes 🚂 — let's build a REST API for fun!",
+            "Every 🚂 block is a real server. Run it, then poke it with the tester!",
+            "Middleware = (req, res, next). No next() = the request hangs. 😅",
             "app.METHOD(path, handler) — that's the whole routing story.",
-            ":userId in the path lands in req.params.userId. Query strings land in req.query.",
-            "express.json() is what fills req.body. No parser, no body!",
-            "Pug: indentation is nesting, #{name} interpolates, each loops. No closing tags 🎉",
-            "REST verbs: GET reads, POST creates, PUT updates, DELETE removes.",
-            "Done exploring? Quiz in section 15 — all eight or ride the rails again 🛤️"
+            ":id in the path → req.params.id. Easy money. 💰",
+            "The boss level: POST a new anime, then GET the list. Watch it appear! ⭐",
+            "Pug: no closing tags, #{name} fills in data. Play in the playground 🐶"
         ];
     </script>
     <script src="../../assets/js/mascot.js" defer></script>
