@@ -865,3 +865,25 @@
   color: #d6deeb; outline: none;
 }
 .pug-data-row input:focus { border-color: #d98cff; }
+
+/* Cheat-sheet poster (Week 11) */
+.poster-wrap {
+  display: grid; grid-template-columns: minmax(0, 1.5fr) 1fr; gap: 24px;
+  align-items: center; margin: 20px 0;
+}
+@media (max-width: 760px) { .poster-wrap { grid-template-columns: 1fr; } }
+.poster-frame {
+  border-radius: var(--radius-md); overflow: hidden;
+  border: 1px solid var(--glass-border); background: #050b14;
+  box-shadow: 0 16px 50px rgba(0, 0, 0, 0.45); transition: var(--transition-smooth);
+}
+.poster-frame:hover { transform: translateY(-4px); border-color: var(--primary-accent); box-shadow: 0 20px 60px rgba(0, 229, 255, 0.18); }
+.poster-frame img { width: 100%; display: block; }
+.poster-actions { display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+.poster-actions .run-btn, .poster-actions .clear-btn {
+  display: inline-flex; align-items: center; gap: 9px; text-decoration: none;
+}
+.poster-actions .run-btn { padding: 11px 22px; font-size: 0.9rem; }
+.poster-actions .clear-btn { padding: 10px 20px; font-size: 0.85rem; }
+.poster-note { font-size: 0.82rem; color: var(--text-secondary); margin: 4px 0 0 !important; line-height: 1.6; }
+.poster-note b { color: var(--text-primary); }

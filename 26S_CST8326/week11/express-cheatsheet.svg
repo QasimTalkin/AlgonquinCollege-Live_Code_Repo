@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 1100" width="820" height="1100" font-family="'Segoe UI', system-ui, sans-serif">
+  <defs>
+    <linearGradient id="grad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#00e5ff"/>
+      <stop offset="1" stop-color="#b400ff"/>
+    </linearGradient>
+    <style>
+      .code { font-family: 'Courier New', ui-monospace, monospace; font-size: 13.5px; fill: #d6deeb; }
+      .ct   { font-weight: 700; font-size: 15px; letter-spacing: .5px; }
+      .mut  { fill: #64748b; }
+      .cy { fill: #00e5ff; } .mg { fill: #d98cff; } .gr { fill: #34d399; }
+      .wn { fill: #fbbf24; } .rd { fill: #f87171; } .str { fill: #c3e88d; }
+      .card { fill: #0a1122; stroke: rgba(0,229,255,0.18); stroke-width: 1; }
+    </style>
+  </defs>
+
+  <!-- background -->
+  <rect x="0" y="0" width="820" height="1100" fill="#050b14"/>
+
+  <!-- header -->
+  <rect x="0" y="0" width="820" height="132" fill="#0a1122"/>
+  <rect x="0" y="131" width="820" height="3" fill="url(#grad)"/>
+  <text x="34" y="88" font-size="46">🚂</text>
+  <text x="102" y="72" font-size="44" font-weight="800" fill="url(#grad)">EXPRESS.JS</text>
+  <text x="104" y="99" font-size="19" font-weight="700" letter-spacing="7" fill="#94a3b8">CHEAT SHEET</text>
+  <text x="786" y="56" text-anchor="end" font-size="14" font-weight="600" fill="#94a3b8">CST8326 · WEB PROGRAMMING</text>
+  <text x="786" y="80" text-anchor="end" font-size="14" font-weight="600" fill="#00e5ff">The Web Archipelago 🦦</text>
+  <text x="786" y="103" text-anchor="end" font-size="13" fill="#64748b">print me &amp; pin me 📌</text>
+
+  <!-- ============ LEFT COLUMN ============ -->
+
+  <!-- L1 SETUP -->
+  <rect class="card" x="30" y="150" width="372" height="195" rx="14"/>
+  <text class="ct cy" x="48" y="182">⚙️  SETUP</text>
+  <text class="code" x="48" y="212"><tspan class="mut">$</tspan> npm i express</text>
+  <text class="code" x="48" y="240">const express = require(<tspan class="str">'express'</tspan>)</text>
+  <text class="code" x="48" y="268">const app = express()</text>
+  <text class="code" x="48" y="296">app.listen(<tspan class="wn">3000</tspan>)</text>
+  <text class="code mut" x="48" y="324">4 lines = a running server 🎉</text>
+
+  <!-- L2 ROUTING -->
+  <rect class="card" x="30" y="365" width="372" height="195" rx="14"/>
+  <text class="ct mg" x="48" y="397">🎯  ROUTING</text>
+  <text class="code" x="48" y="427">app.<tspan class="gr">get</tspan>(<tspan class="str">'/'</tspan>, handler)</text>
+  <text class="code" x="48" y="455">app.<tspan class="cy">post</tspan>(<tspan class="str">'/anime'</tspan>, handler)</text>
+  <text class="code" x="48" y="483">app.<tspan class="wn">put</tspan>(<tspan class="str">'/anime/:id'</tspan>, handler)</text>
+  <text class="code" x="48" y="511">app.<tspan class="rd">delete</tspan>(<tspan class="str">'/anime/:id'</tspan>, handler)</text>
+  <text class="code mut" x="48" y="539">// app.METHOD(path, callback)</text>
+
+  <!-- L3 MIDDLEWARE -->
+  <rect class="card" x="30" y="580" width="372" height="195" rx="14"/>
+  <text class="ct wn" x="48" y="612">🎢  MIDDLEWARE</text>
+  <text class="code" x="48" y="642">app.use((req, res, <tspan class="cy">next</tspan>) => {</text>
+  <text class="code mut" x="48" y="670">  /* inspect / change req &amp; res */</text>
+  <text class="code" x="48" y="698">  <tspan class="cy">next</tspan>()  <tspan class="wn">// ⚠ forget = it hangs!</tspan></text>
+  <text class="code" x="48" y="726">})</text>
+  <text class="code" x="48" y="754">app.use(<tspan class="cy">express.json</tspan>())  <tspan class="mut">// req.body</tspan></text>
+
+  <!-- L4 REST MAP -->
+  <rect class="card" x="30" y="795" width="372" height="195" rx="14"/>
+  <text class="ct gr" x="48" y="827">🗺️  REST QUICK MAP</text>
+  <text class="code" y="857"><tspan class="gr" x="48">GET</tspan><tspan x="150">/anime</tspan><tspan class="mut" x="290">read all</tspan></text>
+  <text class="code" y="885"><tspan class="gr" x="48">GET</tspan><tspan x="150">/anime/:id</tspan><tspan class="mut" x="290">read one</tspan></text>
+  <text class="code" y="913"><tspan class="cy" x="48">POST</tspan><tspan x="150">/anime</tspan><tspan class="mut" x="290">create</tspan></text>
+  <text class="code" y="941"><tspan class="wn" x="48">PUT</tspan><tspan x="150">/anime/:id</tspan><tspan class="mut" x="290">update</tspan></text>
+  <text class="code" y="969"><tspan class="rd" x="48">DELETE</tspan><tspan x="150">/anime/:id</tspan><tspan class="mut" x="290">remove</tspan></text>
+
+  <!-- ============ RIGHT COLUMN ============ -->
+
+  <!-- R1 READ REQUEST -->
+  <rect class="card" x="418" y="150" width="372" height="195" rx="14"/>
+  <text class="ct cy" x="436" y="182">📥  READ THE REQUEST</text>
+  <text class="code" y="212"><tspan x="436">req.params.id</tspan><tspan class="mut" x="600">// /anime/:id</tspan></text>
+  <text class="code" y="240"><tspan x="436">req.query.q</tspan><tspan class="mut" x="600">// ?q=titan</tspan></text>
+  <text class="code" y="268"><tspan x="436">req.body</tspan><tspan class="mut" x="600">// POST JSON*</tspan></text>
+  <text class="code" x="436" y="296">req.method · req.ip</text>
+  <text class="code wn" x="436" y="324">* needs app.use(express.json())</text>
+
+  <!-- R2 SEND RESPONSE -->
+  <rect class="card" x="418" y="365" width="372" height="195" rx="14"/>
+  <text class="ct mg" x="436" y="397">📤  SEND A RESPONSE</text>
+  <text class="code" x="436" y="427">res.<tspan class="cy">send</tspan>(<tspan class="str">'&lt;h1&gt;hi&lt;/h1&gt;'</tspan>)</text>
+  <text class="code" x="436" y="455">res.<tspan class="cy">json</tspan>({ ok: <tspan class="wn">true</tspan> })</text>
+  <text class="code" x="436" y="483">res.<tspan class="cy">status</tspan>(<tspan class="wn">201</tspan>).json(x)</text>
+  <text class="code" x="436" y="511">res.<tspan class="cy">redirect</tspan>(<tspan class="str">'/'</tspan>)</text>
+  <text class="code" x="436" y="539">res.<tspan class="cy">render</tspan>(<tspan class="str">'view'</tspan>, data)</text>
+
+  <!-- R3 PUG -->
+  <rect class="card" x="418" y="580" width="372" height="195" rx="14"/>
+  <text class="ct gr" x="436" y="612">🐶  PUG IN 10 SECONDS</text>
+  <text class="code" x="436" y="642">app.set(<tspan class="str">'view engine'</tspan>,<tspan class="str">'pug'</tspan>)</text>
+  <text class="code" x="436" y="670">res.render(<tspan class="str">'index'</tspan>, { name })</text>
+  <text class="code" x="436" y="698"><tspan class="mg">h1</tspan> Hi, <tspan class="wn">#{name}</tspan>!</text>
+  <text class="code" x="436" y="726"><tspan class="kw" fill="#c792ea">each</tspan> x <tspan class="kw" fill="#c792ea">in</tspan> xs</text>
+  <text class="code" x="436" y="754">  <tspan class="mg">li</tspan>= x</text>
+
+  <!-- R4 ALGO REMINDERS -->
+  <rect class="card" x="418" y="795" width="372" height="195" rx="14"/>
+  <text class="ct cy" x="436" y="827">🦦  ALGO'S REMINDERS</text>
+  <text class="code" x="436" y="857"><tspan class="gr">•</tspan> json() &amp; middleware</text>
+  <text class="code" x="436" y="879">   run BEFORE your routes</text>
+  <text class="code" x="436" y="907"><tspan class="gr">•</tspan> :params are strings →</text>
+  <text class="code" x="436" y="929">   Number(req.params.id)</text>
+  <text class="code" x="436" y="963"><tspan class="gr">•</tspan> 404 handler goes <tspan class="rd">LAST</tspan></text>
+
+  <!-- footer -->
+  <rect x="0" y="1000" width="820" height="100" fill="#0a1122"/>
+  <rect x="0" y="1000" width="820" height="2" fill="url(#grad)"/>
+  <text x="30" y="1044" font-size="15" font-weight="600" fill="#e2e8f0">🦦 Algo says: run it · break it · fix it</text>
+  <text x="30" y="1070" font-size="13" fill="#64748b">Example data: Death Note · Attack on Titan · Demon Slayer 🎬</text>
+  <text x="790" y="1044" text-anchor="end" font-size="15" font-weight="700" fill="#00e5ff">qasim.dev · CST8326</text>
+  <text x="790" y="1070" text-anchor="end" font-size="13" fill="#64748b">The Web Archipelago · Summer 2026 🚂</text>
+</svg>
