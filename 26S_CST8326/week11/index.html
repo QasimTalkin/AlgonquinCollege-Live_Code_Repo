@@ -76,6 +76,7 @@
                     <li><a href="#boss">5. Boss level: REST API ⭐</a></li>
                     <li><a href="#pug">6. Views with Pug 🐶</a></li>
                     <li><a href="#wrap">7. Wrap-up &amp; quiz</a></li>
+                    <li><a href="#tips">8. Tips, tricks &amp; fun facts 🎁</a></li>
                 </ol>
             </aside>
 
@@ -465,6 +466,62 @@ app.listen(3000);</code></pre>
                         <a href="https://expressjs.com/en/guide/routing.html" target="_blank" rel="noopener">routing guide</a> ·
                         <a href="https://pugjs.org/api/getting-started.html" target="_blank" rel="noopener">Pug docs</a> —
                         plus the Zybooks Express sections for the lab.</p>
+                    </div>
+                </section>
+
+                <!-- 8. TIPS, TRICKS & FUN FACTS -->
+                <section id="tips">
+                    <h2><span class="section-num">8</span> Tips, tricks &amp; fun facts 🎁</h2>
+                    <div class="board-line"><i class="fas fa-wand-sparkles"></i>
+                        <span>You beat the boss. Here's the loot — the stuff that turns "it works" into "it works <span class="b">well</span>." ✨</span>
+                    </div>
+
+                    <h3><i class="fas fa-bolt"></i> Pro tips (steal these)</h3>
+                    <ul class="tight">
+                        <li><b class="kw">Order is everything.</b> Middleware &amp; routes run top-to-bottom, first match wins. Put <span class="inline-code">express.json()</span> and loggers <em>before</em> your routes, and your 404 handler <em>last</em>.</li>
+                        <li><b class="kw">Route params are strings.</b> <span class="inline-code">req.params.id</span> is <span class="inline-code">"1"</span>, not <span class="inline-code">1</span> — wrap it in <span class="inline-code">Number()</span> before comparing (exactly what the anime API does).</li>
+                        <li><b class="kw">Chain your reply.</b> <span class="inline-code">res.status(201).json(data)</span> sets the code <em>and</em> the body in one clean line.</li>
+                        <li><b class="kw">Split big apps.</b> One <span class="inline-code">express.Router()</span> per feature (an <span class="inline-code">/anime</span> router, a <span class="inline-code">/users</span> router) keeps <span class="inline-code">app.js</span> tiny.</li>
+                        <li><b class="kw">Never restart by hand.</b> <span class="inline-code">nodemon app.js</span> (from Week 10) auto-reloads the server every time you save.</li>
+                        <li><b class="kw">Always catch the 404.</b> End with <span class="inline-code">app.use((req, res) =&gt; res.status(404).send('Not found'))</span> so stray URLs get a friendly answer.</li>
+                    </ul>
+
+                    <div class="callout warn">
+                        <i class="fas fa-triangle-exclamation"></i>
+                        <p><strong>Sneaky gotcha:</strong> a greedy <span class="inline-code">/anime/:id</span> placed <em>above</em>
+                        <span class="inline-code">/anime/new</span> will swallow the word "new" as an id. Specific routes first, wildcards last —
+                        Titans don't wait their turn, but your routes must. 🎯</p>
+                    </div>
+
+                    <h3><i class="fas fa-lightbulb"></i> Fun facts to flex</h3>
+                    <div class="features-grid">
+                        <div class="feature-card glass-panel">
+                            <div class="feature-icon"><i class="fas fa-cake-candles"></i></div>
+                            <h3>Older than most of the web you use</h3>
+                            <p>Express launched in <b class="kw">2010</b> (by TJ Holowaychuk) and is still one of the most-depended-on packages on npm. It's the <b class="kw">"E"</b> in the MERN &amp; MEAN stacks.</p>
+                        </div>
+                        <div class="feature-card glass-panel">
+                            <div class="feature-icon"><i class="fas fa-dog"></i></div>
+                            <h3>Pug used to be "Jade"</h3>
+                            <p>The template engine was <b class="kw">renamed in 2016</b> over a trademark clash. Old tutorials say <em>Jade</em> — it's the exact same thing, new name.</p>
+                        </div>
+                        <div class="feature-card glass-panel">
+                            <div class="feature-icon"><i class="fas fa-users"></i></div>
+                            <h3>One thread, thousands of fans</h3>
+                            <p>Thanks to Week 9's <b class="kw">event loop</b>, a single Express process serves thousands of visitors at once — no new thread per request. Saitama-level efficiency. 👊</p>
+                        </div>
+                        <div class="feature-card glass-panel">
+                            <div class="feature-icon"><i class="fas fa-masks-theater"></i></div>
+                            <h3><span style="font-family:var(--font-mono)">app.get</span> has a double life</h3>
+                            <p><span class="inline-code">app.get('/path', handler)</span> adds a <b class="kw">route</b>, but <span class="inline-code">app.get('view engine')</span> <b class="kw">reads a setting</b>. Same name, two totally different jobs.</p>
+                        </div>
+                    </div>
+
+                    <div class="callout tip">
+                        <i class="fas fa-trophy"></i>
+                        <p><strong>You made it! 🎉</strong> You built a real REST API, wired up middleware, and rendered a Pug view —
+                        all in your browser. Take these tricks into the lab and give your anime API a <span class="inline-code">PUT</span> route.
+                        See you on the next island. 🚂</p>
                     </div>
 
                     <div class="doc-pager">
