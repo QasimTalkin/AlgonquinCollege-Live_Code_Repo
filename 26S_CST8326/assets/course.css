@@ -878,7 +878,7 @@
   box-shadow: 0 16px 50px rgba(0, 0, 0, 0.45); transition: var(--transition-smooth);
 }
 .poster-frame:hover { transform: translateY(-4px); border-color: var(--primary-accent); box-shadow: 0 20px 60px rgba(0, 229, 255, 0.18); }
-.poster-frame img { width: 100%; display: block; }
+.poster-frame img { width: 100%; height: auto; display: block; }
 .poster-actions { display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
 .poster-actions .run-btn, .poster-actions .clear-btn {
   display: inline-flex; align-items: center; gap: 9px; text-decoration: none;
@@ -887,3 +887,20 @@
 .poster-actions .clear-btn { padding: 10px 20px; font-size: 0.85rem; }
 .poster-note { font-size: 0.82rem; color: var(--text-secondary); margin: 4px 0 0 !important; line-height: 1.6; }
 .poster-note b { color: var(--text-primary); }
+
+/* Two-up cheat-sheet poster grid (Week 11) */
+.poster-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 26px; margin: 22px 0;
+}
+@media (max-width: 760px) { .poster-grid { grid-template-columns: 1fr; } }
+.poster-card { display: flex; flex-direction: column; gap: 13px; }
+.pc-title {
+  display: flex; align-items: center; gap: 9px;
+  font-family: var(--font-heading); font-size: 1.02rem; font-weight: 700; color: var(--text-primary);
+}
+.pc-title .pc-emoji { font-size: 1.25rem; }
+.poster-actions-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.poster-actions-row .run-btn, .poster-actions-row .clear-btn {
+  display: inline-flex; align-items: center; gap: 8px; text-decoration: none;
+  padding: 9px 18px; font-size: 0.83rem;
+}

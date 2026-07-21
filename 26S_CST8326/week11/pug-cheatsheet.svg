@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 1100" width="820" height="1100" font-family="'Segoe UI', system-ui, sans-serif">
+  <defs>
+    <linearGradient id="grad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#00e5ff"/>
+      <stop offset="1" stop-color="#b400ff"/>
+    </linearGradient>
+    <style>
+      .code { font-family: 'Courier New', ui-monospace, monospace; font-size: 13.5px; fill: #d6deeb; }
+      .ct   { font-weight: 700; font-size: 15px; letter-spacing: .5px; }
+      .mut  { fill: #64748b; }
+      .cy { fill: #00e5ff; } .mg { fill: #d98cff; } .gr { fill: #34d399; }
+      .wn { fill: #fbbf24; } .rd { fill: #f87171; } .str { fill: #c3e88d; } .kw { fill: #c792ea; }
+      .card { fill: #0a1122; stroke: rgba(0,229,255,0.18); stroke-width: 1; }
+    </style>
+  </defs>
+
+  <!-- background -->
+  <rect x="0" y="0" width="820" height="1100" fill="#050b14"/>
+
+  <!-- header -->
+  <rect x="0" y="0" width="820" height="132" fill="#0a1122"/>
+  <rect x="0" y="131" width="820" height="3" fill="url(#grad)"/>
+  <text x="34" y="88" font-size="46">🐶</text>
+  <text x="102" y="72" font-size="44" font-weight="800" fill="url(#grad)">PUG</text>
+  <text x="104" y="99" font-size="18" font-weight="700" letter-spacing="5" fill="#94a3b8">TEMPLATE ENGINE · CHEAT SHEET</text>
+  <text x="786" y="56" text-anchor="end" font-size="14" font-weight="600" fill="#94a3b8">CST8326 · WEB PROGRAMMING</text>
+  <text x="786" y="80" text-anchor="end" font-size="14" font-weight="600" fill="#00e5ff">The Web Archipelago 🦦</text>
+  <text x="786" y="103" text-anchor="end" font-size="13" fill="#64748b">print me &amp; pin me 📌</text>
+
+  <!-- ============ LEFT COLUMN ============ -->
+
+  <!-- L1 SETUP -->
+  <rect class="card" x="30" y="150" width="372" height="195" rx="14"/>
+  <text class="ct cy" x="48" y="182">⚙️  SETUP (with Express)</text>
+  <text class="code" x="48" y="212"><tspan class="mut">$</tspan> npm i pug</text>
+  <text class="code" x="48" y="240">app.set(<tspan class="str">'view engine'</tspan>,<tspan class="str">'pug'</tspan>)</text>
+  <text class="code" x="48" y="268">app.set(<tspan class="str">'views'</tspan>,<tspan class="str">'./views'</tspan>)</text>
+  <text class="code" x="48" y="296">res.render(<tspan class="str">'index'</tspan>, { name })</text>
+  <text class="code mut" x="48" y="324">// renders views/index.pug ↓</text>
+
+  <!-- L2 TAGS & TEXT -->
+  <rect class="card" x="30" y="365" width="372" height="195" rx="14"/>
+  <text class="ct mg" x="48" y="397">🏷️  TAGS &amp; TEXT</text>
+  <text class="code" y="427"><tspan x="48">h1 Title</tspan><tspan class="mut" x="215">heading tag</tspan></text>
+  <text class="code" y="455"><tspan x="48">p Hi #{name}</tspan><tspan class="mut" x="215">interpolate</tspan></text>
+  <text class="code" y="483"><tspan x="48">  a Home</tspan><tspan class="mut" x="215">nest by indent</tspan></text>
+  <text class="code" y="511"><tspan x="48">| bare text</tspan><tspan class="mut" x="215">tagless text</tspan></text>
+  <text class="code" y="539"><tspan class="mut" x="48">//- secret</tspan><tspan class="mut" x="215">hidden comment</tspan></text>
+
+  <!-- L3 ATTRIBUTES -->
+  <rect class="card" x="30" y="580" width="372" height="195" rx="14"/>
+  <text class="ct wn" x="48" y="612">🔧  ATTRIBUTES</text>
+  <text class="code" x="48" y="642">a(<tspan class="cy">href</tspan>=<tspan class="str">'/'</tspan>) Home</text>
+  <text class="code" x="48" y="670">img(<tspan class="cy">src</tspan>=<tspan class="str">'c.png'</tspan> <tspan class="cy">alt</tspan>=<tspan class="str">'cat'</tspan>)</text>
+  <text class="code" x="48" y="698">input(<tspan class="cy">type</tspan>=<tspan class="str">'text'</tspan> <tspan class="cy">name</tspan>=<tspan class="str">'q'</tspan>)</text>
+  <text class="code" x="48" y="726">button(<tspan class="wn">disabled</tspan>) Go</text>
+  <text class="code mut" x="48" y="754">// space- or comma-separated</text>
+
+  <!-- L4 CLASSES & IDs -->
+  <rect class="card" x="30" y="795" width="372" height="195" rx="14"/>
+  <text class="ct gr" x="48" y="827">🎨  CLASSES &amp; IDs</text>
+  <text class="code" y="857"><tspan x="48">div.card</tspan><tspan class="mut" x="230">class="card"</tspan></text>
+  <text class="code" y="885"><tspan x="48">#main</tspan><tspan class="mut" x="230">id="main"</tspan></text>
+  <text class="code" y="913"><tspan x="48">a.btn.big</tspan><tspan class="mut" x="230">two classes</tspan></text>
+  <text class="code" y="941"><tspan x="48">.box</tspan><tspan class="mut" x="230">div is default</tspan></text>
+  <text class="code" y="969"><tspan x="48">p#lead.intro</tspan><tspan class="mut" x="230">id + class</tspan></text>
+
+  <!-- ============ RIGHT COLUMN ============ -->
+
+  <!-- R1 VARIABLES & CODE -->
+  <rect class="card" x="418" y="150" width="372" height="195" rx="14"/>
+  <text class="ct cy" x="436" y="182">💬  VARIABLES &amp; CODE</text>
+  <text class="code" y="212"><tspan x="436">p Hi, #{name}!</tspan><tspan class="mut" x="640">escaped</tspan></text>
+  <text class="code" y="240"><tspan x="436">li= item</tspan><tspan class="mut" x="640">buffered</tspan></text>
+  <text class="code" y="268"><tspan x="436">p!= rawHtml</tspan><tspan class="mut" x="640">unescaped</tspan></text>
+  <text class="code" y="296"><tspan x="436">- <tspan class="kw">var</tspan> n = 5</tspan><tspan class="mut" x="640">plain JS</tspan></text>
+  <text class="code" y="324"><tspan x="436">p= n * 2</tspan><tspan class="mut" x="640">expression</tspan></text>
+
+  <!-- R2 CONDITIONALS -->
+  <rect class="card" x="418" y="365" width="372" height="195" rx="14"/>
+  <text class="ct mg" x="436" y="397">🔀  CONDITIONALS</text>
+  <text class="code" x="436" y="427"><tspan class="kw">if</tspan> user</text>
+  <text class="code" x="436" y="455">  p Welcome #{user}</text>
+  <text class="code" x="436" y="483"><tspan class="kw">else if</tspan> guest</text>
+  <text class="code" x="436" y="511"><tspan class="kw">else</tspan></text>
+  <text class="code" x="436" y="539">  p Please log in</text>
+
+  <!-- R3 LOOPS -->
+  <rect class="card" x="418" y="580" width="372" height="195" rx="14"/>
+  <text class="ct wn" x="436" y="612">🔁  LOOPS</text>
+  <text class="code" x="436" y="642"><tspan class="kw">each</tspan> item <tspan class="kw">in</tspan> items</text>
+  <text class="code" x="436" y="670">  li= item</text>
+  <text class="code" x="436" y="698"><tspan class="kw">each</tspan> val, i <tspan class="kw">in</tspan> arr</text>
+  <text class="code" x="436" y="726">  li #{i}: #{val}</text>
+  <text class="code" x="436" y="754"><tspan class="kw">while</tspan> n &lt; 5</text>
+
+  <!-- R4 LAYOUTS & MIXINS -->
+  <rect class="card" x="418" y="795" width="372" height="195" rx="14"/>
+  <text class="ct gr" x="436" y="827">🧩  LAYOUTS &amp; MIXINS</text>
+  <text class="code" x="436" y="855"><tspan class="kw">extends</tspan> layout</text>
+  <text class="code" x="436" y="877"><tspan class="kw">block</tspan> content</text>
+  <text class="code" x="436" y="899">  h1 Home page</text>
+  <text class="code" x="436" y="921"><tspan class="kw">include</tspan> partials/nav</text>
+  <text class="code" x="436" y="943"><tspan class="kw">mixin</tspan> hi(n)</text>
+  <text class="code" x="436" y="965"><tspan class="gr">+</tspan>hi(<tspan class="str">'Class'</tspan>)  <tspan class="mut">// call it</tspan></text>
+
+  <!-- footer -->
+  <rect x="0" y="1000" width="820" height="100" fill="#0a1122"/>
+  <rect x="0" y="1000" width="820" height="2" fill="url(#grad)"/>
+  <text x="30" y="1044" font-size="15" font-weight="600" fill="#e2e8f0">🐶 Golden rule: indentation IS the syntax</text>
+  <text x="30" y="1070" font-size="13" fill="#64748b">// renders a comment  ·  //- stays hidden  ·  psst: Pug was once "Jade"</text>
+  <text x="790" y="1044" text-anchor="end" font-size="15" font-weight="700" fill="#00e5ff">qasim.dev · CST8326</text>
+  <text x="790" y="1070" text-anchor="end" font-size="13" fill="#64748b">The Web Archipelago · Summer 2026 🚂</text>
+</svg>
