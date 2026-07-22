@@ -1,0 +1,15 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title #{title} — Anime Collection
+    link(rel="stylesheet" href="/css/style.css")
+  body
+    header.site-header
+      a.brand(href="/") 🎬 Anime Collection
+      a.btn(href="/add") + Add anime
+    main.container
+      block content
+    footer.site-footer
+      p Built with Express + Pug · CST8326 · The Web Archipelago

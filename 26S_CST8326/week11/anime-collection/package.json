@@ -1,0 +1,14 @@
+{
+  "name": "anime-collection",
+  "version": "1.0.0",
+  "description": "A small MVC web app built with Express + Pug — CST8326 Week 11",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "pug": "^3.0.3"
+  }
+}

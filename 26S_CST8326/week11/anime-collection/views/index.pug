@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  h1= title
+  if anime.length === 0
+    p.empty No anime yet — add your first one!
+  else
+    ul.anime-list
+      each item in anime
+        li.anime-card
+          a.anime-title(href=`/anime/${item.id}`)= item.title
+          span.rating ★ #{item.rating}/10

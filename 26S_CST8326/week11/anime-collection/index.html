@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project · Anime Collection (MVC) | CST8326 Week 11</title>
+    <meta name="description"
+        content="A complete, guided MVC sample app built with Express and Pug — the Anime Collection. Play the finished app live in your browser, then build it file by file.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎬</text></svg>">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;600;800;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="../../../assets/css/styles.css">
+    <link rel="stylesheet" href="../../assets/course.css">
+
+    <style>
+        /* ---- mini-browser chrome ---- */
+        .app-window {
+            border-radius: var(--radius-md); overflow: hidden; margin: 6px 0 4px;
+            border: 1px solid var(--code-border); background: #0f1420;
+            box-shadow: 0 16px 50px rgba(0, 0, 0, 0.45);
+        }
+        .app-bar {
+            display: flex; align-items: center; gap: 10px; padding: 10px 14px; flex-wrap: wrap;
+            background: rgba(255, 255, 255, 0.03); border-bottom: 1px solid var(--glass-border);
+        }
+        .app-bar .dot { width: 11px; height: 11px; border-radius: 50%; }
+        .app-bar .dot.r { background: #ff5f57; } .app-bar .dot.y { background: #febc2e; } .app-bar .dot.g { background: #28c840; }
+        .app-nav {
+            font-family: var(--font-heading); font-size: 0.75rem; font-weight: 600; cursor: pointer;
+            padding: 5px 12px; border-radius: var(--radius-full); background: transparent;
+            border: 1px solid var(--glass-border); color: var(--text-secondary); transition: var(--transition-fast);
+        }
+        .app-nav:hover { color: var(--primary-accent); border-color: var(--primary-accent); }
+        .app-addr {
+            flex: 1; min-width: 140px; font-family: var(--font-mono); font-size: 0.78rem;
+            color: var(--text-secondary); background: rgba(0, 0, 0, 0.3);
+            padding: 5px 12px; border-radius: var(--radius-full); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .app-foot { padding: 8px 14px; border-top: 1px solid var(--glass-border); background: #0b0f18; }
+        .app-req { font-family: var(--font-mono); font-size: 0.74rem; }
+        .app-req.ok { color: var(--ok); } .app-req.bad { color: var(--err); }
+
+        /* ---- the live app screen (scoped copy of public/css/style.css) ---- */
+        .app-screen {
+            min-height: 320px; background: #0f1420; color: #e8ecf4;
+            font-family: system-ui, -apple-system, "Segoe UI", sans-serif; line-height: 1.6;
+        }
+        .app-screen .site-header {
+            display: flex; justify-content: space-between; align-items: center; gap: 10px;
+            padding: 14px 20px; background: #151b28; border-bottom: 2px solid #7c5cff; flex-wrap: wrap;
+        }
+        .app-screen .brand { font-weight: 800; font-size: 1.1rem; color: #e8ecf4; text-decoration: none; }
+        .app-screen .container { max-width: 620px; margin: 0 auto; padding: 24px 20px; }
+        .app-screen h1 { margin: 0 0 16px; color: #fff; font-size: 1.5rem; }
+        .app-screen .btn {
+            display: inline-block; background: #7c5cff; color: #fff; text-decoration: none;
+            padding: 8px 16px; border-radius: 8px; border: none; font: inherit; font-weight: 600; cursor: pointer;
+        }
+        .app-screen .btn:hover { filter: brightness(1.12); }
+        .app-screen .btn.danger { background: #e5484d; }
+        .app-screen .anime-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
+        .app-screen .anime-card {
+            display: flex; justify-content: space-between; align-items: center; gap: 12px; margin: 0;
+            background: #1a2130; padding: 15px 18px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: transform .15s, border-color .15s;
+        }
+        .app-screen .anime-card:hover { transform: translateY(-2px); border-color: #00e5ff; }
+        .app-screen .anime-title { color: #00e5ff; font-weight: 700; text-decoration: none; font-size: 1.02rem; }
+        .app-screen .anime-title:hover { text-decoration: underline; }
+        .app-screen .rating { color: #ffcf5c; font-weight: 600; white-space: nowrap; }
+        .app-screen .rating-big { color: #ffcf5c; font-size: 1.4rem; font-weight: 700; }
+        .app-screen .form { display: flex; flex-direction: column; gap: 6px; max-width: 340px; margin: 0; }
+        .app-screen .form label { color: #9aa6bd; font-size: 0.88rem; margin-top: 6px; }
+        .app-screen .form input {
+            padding: 10px 12px; border-radius: 8px; border: 1px solid #2a3346;
+            background: #0f1420; color: #e8ecf4; font: inherit;
+        }
+        .app-screen .form input:focus { outline: none; border-color: #00e5ff; }
+        .app-screen .form .btn { margin-top: 12px; align-self: flex-start; }
+        .app-screen .inline { margin: 12px 0; }
+        .app-screen .back { display: inline-block; margin-top: 16px; color: #9aa6bd; text-decoration: none; }
+        .app-screen .back:hover { color: #00e5ff; }
+        .app-screen .empty { color: #9aa6bd; }
+        .app-screen .site-footer { text-align: center; color: #9aa6bd; padding: 20px; font-size: 0.82rem; }
+
+        /* ---- file tree ---- */
+        .filetree {
+            font-family: var(--font-mono); font-size: 0.85rem; line-height: 1.9; color: var(--text-secondary);
+            background: var(--code-bg); border: 1px solid var(--code-border); border-radius: var(--radius-md);
+            padding: 18px 22px; margin: 18px 0; overflow-x: auto;
+        }
+        .filetree a { color: var(--primary-accent); text-decoration: none; }
+        .filetree a:hover { text-decoration: underline; }
+        .filetree .fdir { color: #fbbf24; }
+        .filetree .fnote { color: #64748b; }
+        .mvc-tag { color: var(--island-green); font-weight: 700; }
+    </style>
+</head>
+
+<body>
+    <div id="progress-bar" aria-hidden="true"></div>
+    <div class="bg-shape shape-1"></div>
+    <div class="bg-shape shape-2"></div>
+
+    <nav class="navbar scrolled">
+        <div class="container nav-container">
+            <a href="../../../index.html" class="logo">
+                <span class="logo-text">Qasim<span class="highlight">.dev</span></span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#play">Play it</a></li>
+                <li><a href="#build">Build it</a></li>
+                <li><a href="../index.html" class="btn-outline"><i class="fas fa-arrow-left"></i> Week 11</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container course-page">
+
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <a href="../../../index.html">Portal</a> <i class="fas fa-chevron-right"></i>
+            <a href="../../index.html">CST8326</a> <i class="fas fa-chevron-right"></i>
+            <a href="../index.html">Week 11 · Express</a> <i class="fas fa-chevron-right"></i>
+            <span class="crumb-here">Project · Anime Collection</span>
+        </nav>
+
+        <header class="course-hero" style="text-align:left; padding-top: 10px;">
+            <div class="course-code-chip"><i class="fas fa-film"></i> GUIDED PROJECT &middot; MVC</div>
+            <h1 class="hero-title" style="font-size: clamp(2rem, 5vw, 3.1rem);">
+                The <span class="gradient-text">Anime Collection</span> app
+            </h1>
+            <p class="hero-subtitle" style="margin: 0; max-width: 68ch;">
+                A complete little <b class="kw">MVC</b> web app — Express + Pug + forms + full CRUD. Play the finished
+                version below (it really works!), then build it yourself, one file at a time. 🎬
+            </p>
+            <div class="key-strip" style="margin-top: 18px;">
+                <span class="key-label">Uses</span>
+                <span class="key-chip">Express Router</span>
+                <span class="key-chip good">Pug views + layout</span>
+                <span class="key-chip warm">forms &amp; req.body</span>
+                <span class="key-chip">list · view · add · delete</span>
+            </div>
+        </header>
+
+        <!-- ============ PLAY IT ============ -->
+        <section id="play" style="margin-bottom: 40px;">
+            <h2 class="doc-content" style="font-family:var(--font-heading); font-size:1.6rem; margin:10px 0 6px;">
+                <i class="fas fa-gamepad" style="color:var(--primary-accent)"></i> Play the finished app
+            </h2>
+            <div class="board-line"><i class="fas fa-hand-pointer"></i>
+                <span>This is the real app running <span class="b">right here</span> — click a title, add one, delete one. The data lives in memory (Reset to restore).</span>
+            </div>
+            <div class="app-window">
+                <div class="app-bar">
+                    <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+                    <button id="app-home" class="app-nav">⌂ Home</button>
+                    <span class="app-addr">🔒 <span id="app-url">localhost:3000/</span></span>
+                    <button id="app-reset" class="app-nav">↻ Reset data</button>
+                </div>
+                <div id="app-screen" class="app-screen"></div>
+                <div class="app-foot"><span id="app-status" class="app-req ok"></span></div>
+            </div>
+            <p class="section-lede" style="margin-top:14px;">
+                Every click is a real request routed to a controller, which renders a Pug view — exactly the MVC flow you'll build below.
+            </p>
+        </section>
+
+        <div class="doc-content">
+
+            <!-- ============ MVC IDEA ============ -->
+            <section id="mvc-idea">
+                <h2><i class="fas fa-sitemap" style="color:var(--primary-accent)"></i> The MVC idea, in folders</h2>
+                <div class="board-line"><i class="fas fa-layer-group"></i>
+                    <span><span class="b">Model</span> = the data · <span class="b">View</span> = the Pug pages · <span class="b">Controller</span> = the functions that connect them.</span>
+                </div>
+                <p>MVC keeps things tidy by giving every piece one job. In this project each part is literally its own folder:</p>
+                <div class="filetree">
+anime-collection/
+├── <a href="app.js" download>app.js</a>                  <span class="fnote"># wiring &amp; config</span>
+├── <a href="package.json" download>package.json</a>
+│
+├── <span class="fdir">data/</span>
+│   └── <a href="data/anime.json" download>anime.json</a>        <span class="mvc-tag">← MODEL (the data)</span>
+│
+├── <span class="fdir">controllers/</span>
+│   └── <a href="controllers/animeController.js" download>animeController.js</a>  <span class="mvc-tag">← CONTROLLER</span>
+│
+├── <span class="fdir">routes/</span>
+│   └── <a href="routes/anime.js" download>anime.js</a>          <span class="fnote"># URL → controller</span>
+│
+├── <span class="fdir">views/</span>            <span class="mvc-tag">← VIEW (Pug templates)</span>
+│   ├── <a href="views/layout.pug" download>layout.pug</a>
+│   ├── <a href="views/index.pug" download>index.pug</a>
+│   ├── <a href="views/add.pug" download>add.pug</a>
+│   └── <a href="views/details.pug" download>details.pug</a>
+│
+└── <span class="fdir">public/</span>
+    └── <span class="fdir">css/</span>
+        └── <a href="public/css/style.css" download>style.css</a>
+                </div>
+                <div class="callout tip">
+                    <i class="fas fa-route"></i>
+                    <p><strong>The flow of one click:</strong> browser → <b class="kw">route</b> (which URL?) →
+                    <b class="kw">controller</b> (do the work) → <b class="kw">model</b> (get/change data) →
+                    <b class="kw">view</b> (render Pug) → HTML back to the browser.</p>
+                </div>
+            </section>
+
+            <!-- ============ BUILD IT ============ -->
+            <section id="build">
+                <h2><i class="fas fa-hammer" style="color:var(--primary-accent)"></i> Build it in stages</h2>
+                <p class="section-lede">Don't write everything at once. Follow the stages — each file is short.</p>
+
+                <h3><i class="fas fa-1"></i> Install the packages</h3>
+                <div class="code-block">
+                    <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">terminal</span></div>
+                    <pre><code>npm init -y
+npm install express pug</code></pre>
+                </div>
+                <p>That's all you need: <span class="inline-code">express</span> (the framework) and <span class="inline-code">pug</span> (the template engine).</p>
+
+                <h3><i class="fas fa-2"></i> Configure Express — <span class="inline-code">app.js</span></h3>
+                <div class="code-block">
+                    <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">app.js</span></div>
+                    <pre><code>const express = require("express");
+const path = require("path");
+const app = express();
+
+// Parse form data (so req.body works on POSTed forms)
+app.use(express.urlencoded({ extended: true }));
+
+// Tell Express to use Pug as the template engine
+app.set("view engine", "pug");
+
+// Tell Express where the templates (views) live
+app.set("views", path.join(__dirname, "views"));
+
+// Serve static files (CSS, images) from /public
+app.use(express.static(path.join(__dirname, "public")));
+
+// Mount the anime routes at the root path
+const animeRoutes = require("./routes/anime");
+app.use("/", animeRoutes);
+
+app.listen(3000, () => {
+    console.log("Server running on http://localhost:3000");
+});</code></pre>
+                </div>
+                <div class="callout def">
+                    <i class="fas fa-key"></i>
+                    <p>The two lines that make Pug work: <span class="inline-code">app.set("view engine", "pug")</span>
+                    ("my templates are Pug") and <span class="inline-code">app.set("views", ...)</span> ("they live in the views folder").
+                    <span class="inline-code">express.urlencoded()</span> is what fills <span class="inline-code">req.body</span> from a submitted form.</p>
+                </div>
+
+                <h3><i class="fas fa-3"></i> The MODEL — <span class="inline-code">data/anime.json</span></h3>
+                <div class="code-block">
+                    <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">data/anime.json</span></div>
+                    <pre><code>[
+    { "id": 1, "title": "Fullmetal Alchemist: Brotherhood", "rating": 10 },
+    { "id": 2, "title": "Attack on Titan", "rating": 9 },
+    { "id": 3, "title": "Frieren", "rating": 10 }
+]</code></pre>
+                </div>
+                <p>No database yet — just a JSON file. The controller reads it into memory when the server starts.</p>
+
+                <h3><i class="fas fa-4"></i> The CONTROLLER — <span class="inline-code">controllers/animeController.js</span></h3>
+                <p>The brains. Each function handles one job: read the list, show one, show the add form, create, delete.</p>
+                <div class="code-block">
+                    <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">controllers/animeController.js</span></div>
+                    <pre><code>const fs = require("fs");
+const path = require("path");
+
+const dataPath = path.join(__dirname, "..", "data", "anime.json");
+
+// MODEL: read the JSON file into memory once, when the server starts
+let animeList = JSON.parse(fs.readFileSync(dataPath, "utf8"));
+let nextId = Math.max(0, ...animeList.map(a => a.id)) + 1;
+
+// GET /  → show the whole collection
+exports.index = (req, res) => {
+    res.render("index", { title: "My Anime Collection", anime: animeList });
+};
+
+// GET /anime/:id  → show one anime's details
+exports.details = (req, res) => {
+    const anime = animeList.find(a => a.id === Number(req.params.id));
+    if (!anime) return res.status(404).render("index", { title: "Not found", anime: animeList });
+    res.render("details", { title: anime.title, anime });
+};
+
+// GET /add  → show the form
+exports.addForm = (req, res) => {
+    res.render("add", { title: "Add anime" });
+};
+
+// POST /add  → create, then go back to the list
+exports.create = (req, res) => {
+    const anime = { id: nextId++, title: req.body.title, rating: Number(req.body.rating) };
+    animeList.push(anime);
+    res.redirect("/");
+};
+
+// POST /anime/:id/delete  → remove, then go back
+exports.remove = (req, res) => {
+    animeList = animeList.filter(a => a.id !== Number(req.params.id));
+    res.redirect("/");
+};</code></pre>
+                </div>
+                <div class="callout tip">
+                    <i class="fas fa-floppy-disk"></i>
+                    <p><strong>Stretch goal:</strong> right now changes live in memory and reset when the server restarts. Add a
+                    <span class="inline-code">fs.writeFileSync(dataPath, JSON.stringify(animeList, null, 2))</span> after each change to
+                    save back to the file — real persistence!</p>
+                </div>
+
+                <h3><i class="fas fa-5"></i> The ROUTES — <span class="inline-code">routes/anime.js</span></h3>
+                <p>The router just maps a URL + method to a controller function. No logic here.</p>
+                <div class="code-block">
+                    <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">routes/anime.js</span></div>
+                    <pre><code>const express = require("express");
+const router = express.Router();
+const animeController = require("../controllers/animeController");
+
+router.get("/", animeController.index);                    // list all
+router.get("/add", animeController.addForm);               // show add form
+router.post("/add", animeController.create);               // handle add form
+router.get("/anime/:id", animeController.details);         // show one
+router.post("/anime/:id/delete", animeController.remove);  // delete one
+
+module.exports = router;</code></pre>
+                </div>
+
+                <h3><i class="fas fa-6"></i> The VIEWS — Pug templates</h3>
+                <p><span class="inline-code">layout.pug</span> is the shared shell; every page <span class="inline-code">extends</span> it and fills the <span class="inline-code">content</span> block.</p>
+                <div class="code-compare">
+                    <div>
+                        <div class="compare-label">views/layout.pug</div>
+                        <div class="code-block"><div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">layout.pug</span></div>
+                        <pre><code>doctype html
+html(lang="en")
+  head
+    title #{title} — Anime Collection
+    link(rel="stylesheet" href="/css/style.css")
+  body
+    header.site-header
+      a.brand(href="/") 🎬 Anime Collection
+      a.btn(href="/add") + Add anime
+    main.container
+      block content
+    footer.site-footer
+      p Built with Express + Pug</code></pre></div>
+                    </div>
+                    <div>
+                        <div class="compare-label good">views/index.pug</div>
+                        <div class="code-block"><div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">index.pug</span></div>
+                        <pre><code>extends layout
+
+block content
+  h1= title
+  if anime.length === 0
+    p.empty No anime yet!
+  else
+    ul.anime-list
+      each item in anime
+        li.anime-card
+          a.anime-title(href=`/anime/${item.id}`)= item.title
+          span.rating ★ #{item.rating}/10</code></pre></div>
+                    </div>
+                </div>
+                <div class="code-compare">
+                    <div>
+                        <div class="compare-label">views/add.pug</div>
+                        <div class="code-block"><div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">add.pug</span></div>
+                        <pre><code>extends layout
+
+block content
+  h1 Add a new anime
+  form.form(action="/add" method="POST")
+    label(for="title") Title
+    input(type="text" name="title" required)
+    label(for="rating") Rating (1–10)
+    input(type="number" name="rating" min="1" max="10" required)
+    button.btn(type="submit") Save
+  a.back(href="/") ← Cancel</code></pre></div>
+                    </div>
+                    <div>
+                        <div class="compare-label">views/details.pug</div>
+                        <div class="code-block"><div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">details.pug</span></div>
+                        <pre><code>extends layout
+
+block content
+  h1= anime.title
+  p.rating-big ★ #{anime.rating}/10
+  form(action=`/anime/${anime.id}/delete` method="POST")
+    button.btn.danger(type="submit") Delete
+  a.back(href="/") ← Back to list</code></pre></div>
+                    </div>
+                </div>
+
+                <h3><i class="fas fa-7"></i> The style — <span class="inline-code">public/css/style.css</span></h3>
+                <p>Because of <span class="inline-code">express.static("public")</span>, the file at
+                <span class="inline-code">public/css/style.css</span> is served at <span class="inline-code">/css/style.css</span> —
+                exactly what <span class="inline-code">layout.pug</span> links to. <a href="public/css/style.css" download>Download style.css</a> to see the full theme.</p>
+            </section>
+
+            <!-- ============ RUN IT ============ -->
+            <section id="run">
+                <h2><i class="fas fa-play" style="color:var(--primary-accent)"></i> Run it on your own machine</h2>
+                <div class="code-block">
+                    <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">terminal</span></div>
+                    <pre><code># 1. put the files together (or download them from the tree above)
+# 2. install the packages
+npm install
+# 3. start the server
+node app.js
+# 4. open http://localhost:3000 🎉</code></pre>
+                </div>
+                <div class="callout def">
+                    <i class="fas fa-download"></i>
+                    <p><strong>Grab the files:</strong> every filename in the <a href="#mvc-idea">folder tree above</a> is a
+                    download link. Recreate the structure, run the commands, and you've got the same app you just played with.</p>
+                </div>
+
+                <h3><i class="fas fa-wand-magic-sparkles"></i> Make it yours (challenges)</h3>
+                <ul class="tight">
+                    <li><b class="kw">Edit</b> — add an <span class="inline-code">edit.pug</span> + a <span class="inline-code">PUT</span>/POST route to change a rating.</li>
+                    <li><b class="kw">Persist</b> — write changes back to <span class="inline-code">anime.json</span> with <span class="inline-code">fs.writeFileSync</span>.</li>
+                    <li><b class="kw">Validate</b> — reject empty titles or ratings outside 1–10 in the controller.</li>
+                    <li><b class="kw">Sort</b> — show the list ordered by rating (highest first).</li>
+                    <li><b class="kw">Style</b> — add a poster image field and show it on the details page.</li>
+                </ul>
+
+                <div class="doc-pager">
+                    <a class="pager-link" href="../index.html">
+                        <span class="pager-dir"><i class="fas fa-arrow-left"></i> Back to</span>
+                        <span class="pager-title">Week 11 · Express.js</span>
+                    </a>
+                    <a class="pager-link next" href="#play">
+                        <span class="pager-dir">Play again <i class="fas fa-arrow-up"></i></span>
+                        <span class="pager-title">The live app</span>
+                    </a>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-bottom">
+            <p>CST8326 · Week 11 · Anime Collection (MVC sample app) · &copy; <span id="year"></span> Algonquin College</p>
+        </div>
+    </footer>
+
+    <script>
+        window.ALGO_TIPS = [
+            "This whole app runs in your browser — click a title, add one, delete one! 🎬",
+            "Model = data/anime.json · View = the Pug files · Controller = animeController.js",
+            "Every filename in the folder tree is a download link — grab them and run it locally.",
+            "The router just says WHICH controller runs for WHICH URL. Nice and tidy.",
+            "Stretch goal: make it save with fs.writeFileSync — real persistence! 💾"
+        ];
+    </script>
+    <script src="../../../assets/js/mascot.js" defer></script>
+    <script src="./app-demo.js" defer></script>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+        // progress bar
+        var bar = document.getElementById('progress-bar');
+        window.addEventListener('scroll', function () {
+            var h = document.documentElement;
+            bar.style.width = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100 + '%';
+        }, { passive: true });
+    </script>
+</body>
+
+</html>
