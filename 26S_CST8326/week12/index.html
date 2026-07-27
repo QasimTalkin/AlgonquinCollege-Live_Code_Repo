@@ -674,7 +674,7 @@ DELETE /anime/1    → 200  and { deletedCount: 1 }</code></pre>
                 <!-- 13. QUIZ -->
                 <section id="quiz">
                     <h2><span class="section-num">14</span> Self-check quiz</h2>
-                    <p class="section-lede">No grades, instant feedback. Can you get all seven?</p>
+                    <p class="section-lede">No grades, instant feedback. Twelve questions — the last five really dig into queries &amp; CRUD. Can you get them all?</p>
 
                     <div class="quiz-q" data-answer="1">
                         <h4><span class="q-num">Q1.</span> MongoDB is which kind of database?</h4>
@@ -731,9 +731,51 @@ DELETE /anime/1    → 200  and { deletedCount: 1 }</code></pre>
                         <button class="quiz-opt">Nothing — Express talks to MongoDB automatically</button>
                         <div class="quiz-feedback">The <strong>controller</strong> swaps the in-memory array for <span class="inline-code">await Anime.find()</span> etc. The routes and Pug views stay the same — only the data source changed.</div>
                     </div>
+
+                    <p class="section-lede" style="margin-top:28px;"><i class="fas fa-brain" style="color:var(--primary-accent)"></i> <strong>Deeper dive — queries &amp; CRUD:</strong></p>
+
+                    <div class="quiz-q" data-answer="0">
+                        <h4><span class="q-num">Q8.</span> What does <span class="inline-code">Anime.find({ studio: "Madhouse", year: { $lt: 2010 } })</span> match?</h4>
+                        <button class="quiz-opt">Only anime that are <strong>both</strong> from Madhouse <strong>and</strong> released before 2010</button>
+                        <button class="quiz-opt">Any anime that is from Madhouse <strong>or</strong> released before 2010</button>
+                        <button class="quiz-opt">All Madhouse anime — the second field is ignored</button>
+                        <div class="quiz-feedback">Multiple keys in one filter mean <strong>AND</strong> — every condition must match. So this returns only Madhouse shows from before 2010 (Death Note). To express OR you'd use <span class="inline-code">$or</span>.</div>
+                    </div>
+
+                    <div class="quiz-q" data-answer="2">
+                        <h4><span class="q-num">Q9.</span> Nothing matches: <span class="inline-code">const r = await Anime.find({ rating: 100 });</span> — what is <span class="inline-code">r</span>?</h4>
+                        <button class="quiz-opt"><span class="inline-code">null</span></button>
+                        <button class="quiz-opt"><span class="inline-code">undefined</span>, and <span class="inline-code">r.map(...)</span> would crash</button>
+                        <button class="quiz-opt">An empty array <span class="inline-code">[]</span> — safe to <span class="inline-code">.map()</span> or check <span class="inline-code">.length</span></button>
+                        <div class="quiz-feedback"><span class="inline-code">find()</span> <em>always</em> returns an <strong>array</strong> — empty when nothing matches. That's the key difference from <span class="inline-code">findOne()</span>, which returns <span class="inline-code">null</span> when there's no match. So check <span class="inline-code">r.length</span>, not <span class="inline-code">r === null</span>.</div>
+                    </div>
+
+                    <div class="quiz-q" data-answer="1">
+                        <h4><span class="q-num">Q10.</span> Give <strong>every</strong> anime rated below 9 a <strong>+1</strong> rating bump. Which is correct?</h4>
+                        <button class="quiz-opt"><span style="font-family:var(--font-mono); font-size:.8rem;">Anime.updateOne({ rating: { $lt: 9 } }, { $inc: { rating: 1 } })</span></button>
+                        <button class="quiz-opt"><span style="font-family:var(--font-mono); font-size:.8rem;">Anime.updateMany({ rating: { $lt: 9 } }, { $inc: { rating: 1 } })</span></button>
+                        <button class="quiz-opt"><span style="font-family:var(--font-mono); font-size:.8rem;">Anime.updateMany({ $inc: { rating: 1 } }, { rating: { $lt: 9 } })</span></button>
+                        <div class="quiz-feedback"><strong>updateMany</strong> changes all matches (updateOne stops at the first). Order matters: <strong>filter first</strong> (which docs), <strong>update second</strong> (<span class="inline-code">$inc</span> bumps a number). Swapping them updates nothing.</div>
+                    </div>
+
+                    <div class="quiz-q" data-answer="0">
+                        <h4><span class="q-num">Q11.</span> In a REST API, a <span class="inline-code">POST /anime</span> route (create a new anime) usually calls which Mongoose method?</h4>
+                        <button class="quiz-opt"><span class="inline-code">Anime.create({...})</span> (or <span class="inline-code">new Anime({...}).save()</span>)</button>
+                        <button class="quiz-opt"><span class="inline-code">Anime.find()</span></button>
+                        <button class="quiz-opt"><span class="inline-code">Anime.deleteOne({...})</span></button>
+                        <div class="quiz-feedback">The CRUD ↔ REST mapping: <strong>POST → create</strong>, GET → find/findById, PUT/PATCH → updateOne, DELETE → deleteOne. So a POST handler builds the document from <span class="inline-code">req.body</span> and calls <span class="inline-code">create()</span> (or <span class="inline-code">save()</span>).</div>
+                    </div>
+
+                    <div class="quiz-q" data-answer="1">
+                        <h4><span class="q-num">Q12.</span> You forget <span class="inline-code">await</span>: <span class="inline-code">const anime = Anime.find();</span> then <span class="inline-code">anime.map(...)</span>. What happens?</h4>
+                        <button class="quiz-opt">It works — Mongoose waits for you automatically</button>
+                        <button class="quiz-opt"><span class="inline-code">anime</span> is a <strong>Promise</strong>, not an array — <span class="inline-code">.map()</span> is undefined and it breaks</button>
+                        <button class="quiz-opt">MongoDB throws a "missing await" syntax error</button>
+                        <div class="quiz-feedback">Every query returns a <strong>Promise</strong>. Without <span class="inline-code">await</span> (inside an <span class="inline-code">async</span> function) — or a <span class="inline-code">.then()</span> — you're holding the Promise, not the documents. This is the #1 database bug: always await your queries.</div>
+                    </div>
                 </section>
 
-                <!-- 14. READING + CHEAT SHEET -->
+                <!-- 15. READING + CHEAT SHEET -->
                 <section id="reading">
                     <h2><span class="section-num">15</span> Reading &amp; cheat sheet</h2>
                     <div class="callout def">
