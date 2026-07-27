@@ -83,9 +83,10 @@
                     <li><a href="#update">9. Update documents</a></li>
                     <li><a href="#delete">10. Delete documents</a></li>
                     <li><a href="#express">11. Wire it into Express</a></li>
-                    <li><a href="#takeaways">12. Key takeaways</a></li>
-                    <li><a href="#quiz">13. Self-check quiz</a></li>
-                    <li><a href="#reading">14. Reading &amp; cheat sheet</a></li>
+                    <li><a href="#test">12. Test your API</a></li>
+                    <li><a href="#takeaways">13. Key takeaways</a></li>
+                    <li><a href="#quiz">14. Self-check quiz</a></li>
+                    <li><a href="#reading">15. Reading &amp; cheat sheet</a></li>
                 </ol>
             </aside>
 
@@ -232,6 +233,12 @@
                                 <tr><td>Field</td><td>Column</td></tr>
                             </tbody>
                         </table>
+                    </div>
+                    <div class="callout tip">
+                        <i class="fas fa-terminal"></i>
+                        <p><strong>Two ways to poke a MongoDB directly:</strong> the <b class="kw">mongo shell</b> (type commands in a terminal)
+                        and <b class="kw">Compass</b> — MongoDB's free <b class="kw">GUI</b> that lets you browse databases, collections and
+                        documents by clicking. Great for peeking at your data while you build.</p>
                     </div>
                 </section>
 
@@ -550,40 +557,109 @@ const animeSchema = new mongoose.Schema({
 module.exports = mongoose.model("Anime", animeSchema);</code></pre>
                     </div>
 
-                    <h3><i class="fas fa-signs-post"></i> Routers keep it tidy (Week 11 recap)</h3>
-                    <p>A <b class="kw">Router</b> groups a feature's routes in one file, exported and mounted in <span class="inline-code">app.js</span>:</p>
+                    <h3><i class="fas fa-signs-post"></i> Routers — split your routes into feature files</h3>
+                    <div class="callout def">
+                        <i class="fas fa-book"></i>
+                        <p><strong>A router</strong> lets you organize routes into <b class="kw">separate files</b>, each responsible for one
+                        part of the app. Instead of piling every route into one giant <span class="inline-code">app.js</span>, you split them
+                        into small, focused files (e.g. <span class="inline-code">routes/anime.js</span>, <span class="inline-code">routes/users.js</span>).</p>
+                    </div>
+                    <div class="board-line"><i class="fas fa-list-ol"></i>
+                        <span>Three steps: <span class="b">① create</span> a router file with <span class="b">express.Router()</span> · <span class="b">② export</span> it with <span class="b">module.exports</span> · <span class="b">③ attach</span> it in app.js with <span class="b">app.use()</span>.</span>
+                    </div>
                     <div class="code-compare">
                         <div>
-                            <div class="compare-label">routes/anime.js</div>
-                            <div class="code-block"><div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">router</span></div>
-                            <pre><code>const router = require("express").Router();
+                            <div class="compare-label">① + ② — routes/anime.js</div>
+                            <div class="code-block"><div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">the router file</span></div>
+                            <pre><code>const express = require("express");
+const router = express.Router();          // ① create
 const c = require("../controllers/animeController");
 
+// define this feature's routes on the router
 router.get("/", c.index);
+router.get("/:id", c.details);
 router.post("/add", c.create);
+router.post("/:id/delete", c.remove);
 
-module.exports = router;</code></pre></div>
+module.exports = router;                   // ② export</code></pre></div>
                         </div>
                         <div>
-                            <div class="compare-label good">app.js</div>
-                            <div class="code-block"><div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">mount it</span></div>
+                            <div class="compare-label good">③ — app.js</div>
+                            <div class="code-block"><div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">attach it</span></div>
                             <pre><code>const animeRoutes = require("./routes/anime");
 
-// everything in that router lives under /
-app.use("/", animeRoutes);</code></pre></div>
+// ③ attach: every route in that file is
+// now prefixed with /anime
+app.use("/anime", animeRoutes);
+
+// so router.get("/:id") answers
+//   GET /anime/42
+// and router.post("/add") answers
+//   POST /anime/add</code></pre></div>
                         </div>
                     </div>
-                    <div class="callout def">
-                        <i class="fas fa-eye"></i>
-                        <p><strong>Views are unchanged.</strong> <span class="inline-code">res.render("index", { anime })</span> still looks in
-                        <span class="inline-code">views/</span> for <span class="inline-code">index.pug</span>, injects the data, and sends HTML.
-                        The <em>only</em> difference is where the data came from — a database instead of an array.</p>
+                    <div class="callout tip">
+                        <i class="fas fa-lightbulb"></i>
+                        <p>The <b class="kw">mount path</b> in <span class="inline-code">app.use("/anime", ...)</span> is a prefix — the router's
+                        own paths are added onto it. Mount at <span class="inline-code">"/"</span> and the paths stay as written; mount at
+                        <span class="inline-code">"/anime"</span> and they all sit under <span class="inline-code">/anime</span>.</p>
+                    </div>
+
+                    <h3><i class="fas fa-eye"></i> Creating a view — <span class="inline-code">res.render</span></h3>
+                    <div class="board-line"><i class="fas fa-fill-drip"></i>
+                        <span><span class="b">res.render("index", { anime })</span> — the last step: turn data into a page.</span>
+                    </div>
+                    <p>When a controller calls <span class="inline-code">res.render("index", { anime })</span>, Express:</p>
+                    <ol class="tight">
+                        <li>looks in the <b class="kw">views/</b> folder for <span class="inline-code">index.pug</span>;</li>
+                        <li>compiles it into HTML;</li>
+                        <li>injects the data (<span class="inline-code">{ anime }</span>) into it;</li>
+                        <li>sends the finished HTML to the browser.</li>
+                    </ol>
+                    <p>The views are <b class="kw">unchanged</b> from Week 11 — only the data's <em>source</em> changed (a database, not an array).
+                    For user input, add a <b class="kw">form</b> and handle its submission in an Express route, exactly like the Add form in the
+                    <a href="../week11/anime-collection/index.html" style="color:var(--primary-accent)">Anime Collection app</a>.</p>
+                </section>
+
+                <!-- 12. TEST -->
+                <section id="test">
+                    <h2><span class="section-num">12</span> Test your API</h2>
+                    <div class="key-strip">
+                        <span class="key-label">Tools</span>
+                        <span class="key-chip good">browser (GET)</span>
+                        <span class="key-chip">Postman</span>
+                        <span class="key-chip">curl</span>
+                    </div>
+                    <div class="board-line"><i class="fas fa-vial"></i>
+                        <span>Once your routes are wired, <span class="b">test them</span> before building the UI — use a browser or Postman.</span>
+                    </div>
+                    <div class="table-wrap">
+                        <table class="doc-table">
+                            <thead><tr><th>To test…</th><th>Use</th></tr></thead>
+                            <tbody>
+                                <tr><td><b>GET</b> routes (read)</td><td>Just visit the URL in a <b class="kw">browser</b> — e.g. <span class="inline-code">http://localhost:3000/anime</span>.</td></tr>
+                                <tr><td><b>POST / PUT / DELETE</b></td><td><b class="kw">Postman</b> (or <span class="inline-code">curl</span>) — pick the method, set a JSON body, hit Send. Browsers can't easily send these by hand.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="callout tip">
+                        <i class="fas fa-flask"></i>
+                        <p><strong>You already have a Postman-lite!</strong> The <a href="../week11/index.html#boss" style="color:var(--primary-accent)">REST tester</a>
+                        from Week 11 does exactly this — pick GET/POST/PUT/DELETE, send a JSON body, read the response. Same idea Postman gives you,
+                        right in the browser.</p>
+                    </div>
+                    <div class="code-block">
+                        <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">what to check</span></div>
+                        <pre><code>GET  /anime        → 200  and a JSON array of documents
+GET  /anime/BADID  → 404  (your "not found" handler)
+POST /anime        → 201  and the new document (with its _id)
+DELETE /anime/1    → 200  and { deletedCount: 1 }</code></pre>
                     </div>
                 </section>
 
                 <!-- 12. TAKEAWAYS -->
                 <section id="takeaways">
-                    <h2><span class="section-num">12</span> Key takeaways</h2>
+                    <h2><span class="section-num">13</span> Key takeaways</h2>
                     <ol class="takeaways">
                         <li>A <b class="kw">DBMS</b> manages your data; <b class="kw">MongoDB</b> is a <b class="kw">NoSQL document</b> database — JSON-like, flexible, no rigid tables.</li>
                         <li>Hierarchy: <b class="kw">database → collection → document</b> (≈ database → table → row). Every document gets an <b class="kw">_id</b>.</li>
@@ -597,7 +673,7 @@ app.use("/", animeRoutes);</code></pre></div>
 
                 <!-- 13. QUIZ -->
                 <section id="quiz">
-                    <h2><span class="section-num">13</span> Self-check quiz</h2>
+                    <h2><span class="section-num">14</span> Self-check quiz</h2>
                     <p class="section-lede">No grades, instant feedback. Can you get all seven?</p>
 
                     <div class="quiz-q" data-answer="1">
@@ -659,7 +735,7 @@ app.use("/", animeRoutes);</code></pre></div>
 
                 <!-- 14. READING + CHEAT SHEET -->
                 <section id="reading">
-                    <h2><span class="section-num">14</span> Reading &amp; cheat sheet</h2>
+                    <h2><span class="section-num">15</span> Reading &amp; cheat sheet</h2>
                     <div class="callout def">
                         <i class="fas fa-book"></i>
                         <p><strong>Zybooks — Chapter 10 "node.js": sections <b class="kw">10.11 – 10.17</b>.</strong> Plus the MongoDB Atlas tutorial posted in Week 12.</p>
