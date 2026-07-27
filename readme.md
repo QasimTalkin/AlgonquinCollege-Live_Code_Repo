@@ -1,5 +1,5 @@
 
-🌐 **Live site:** [qasimtalkin.github.io/AlgonquinCollege-Live_Code_Repo](https://qasimtalkin.github.io/AlgonquinCollege-Live_Code_Repo/)
+🌐 **Live site:** [abulqasim.is-a.dev](https://abulqasim.is-a.dev) &nbsp;·&nbsp; also reachable at [qasim.is-a.dev](https://qasim.is-a.dev)
 
 # SUMMER-2026
 
