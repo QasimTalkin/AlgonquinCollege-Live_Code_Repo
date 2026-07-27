@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 1100" width="820" height="1100" font-family="'Segoe UI', system-ui, sans-serif">
+  <defs>
+    <linearGradient id="grad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#00e5ff"/>
+      <stop offset="1" stop-color="#b400ff"/>
+    </linearGradient>
+    <style>
+      .code { font-family: 'Courier New', ui-monospace, monospace; font-size: 13px; fill: #d6deeb; }
+      .ct   { font-weight: 700; font-size: 15px; letter-spacing: .5px; }
+      .mut  { fill: #64748b; }
+      .cy { fill: #00e5ff; } .mg { fill: #d98cff; } .gr { fill: #4ade80; }
+      .wn { fill: #fbbf24; } .rd { fill: #f87171; } .str { fill: #c3e88d; } .kw { fill: #c792ea; }
+      .card { fill: #0a1122; stroke: rgba(74,222,128,0.2); stroke-width: 1; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="820" height="1100" fill="#050b14"/>
+
+  <!-- header -->
+  <rect x="0" y="0" width="820" height="132" fill="#0a1122"/>
+  <rect x="0" y="131" width="820" height="3" fill="url(#grad)"/>
+  <text x="34" y="88" font-size="44">🍃</text>
+  <text x="100" y="72" font-size="42" font-weight="800" fill="url(#grad)">MONGOOSE</text>
+  <text x="102" y="99" font-size="17" font-weight="700" letter-spacing="4" fill="#94a3b8">MONGODB CRUD · CHEAT SHEET</text>
+  <text x="786" y="56" text-anchor="end" font-size="14" font-weight="600" fill="#94a3b8">CST8326 · WEB PROGRAMMING</text>
+  <text x="786" y="80" text-anchor="end" font-size="14" font-weight="600" fill="#00e5ff">The Web Archipelago 🦦</text>
+  <text x="786" y="103" text-anchor="end" font-size="13" fill="#64748b">print me &amp; pin me 📌</text>
+
+  <!-- ============ LEFT COLUMN ============ -->
+
+  <!-- L1 CONNECT -->
+  <rect class="card" x="30" y="150" width="372" height="195" rx="14"/>
+  <text class="ct gr" x="48" y="182">🔌  CONNECT</text>
+  <text class="code" x="48" y="212"><tspan class="mut">$</tspan> npm i mongoose</text>
+  <text class="code" x="48" y="240">const m = require(<tspan class="str">"mongoose"</tspan>)</text>
+  <text class="code" x="48" y="268">m.connect(uri)</text>
+  <text class="code" x="48" y="296">  .then(() =&gt; log(<tspan class="str">"Connected"</tspan>))</text>
+  <text class="code" x="48" y="324">  .catch(err =&gt; log(err))</text>
+
+  <!-- L2 SCHEMA -->
+  <rect class="card" x="30" y="365" width="372" height="195" rx="14"/>
+  <text class="ct mg" x="48" y="397">📐  SCHEMA</text>
+  <text class="code" x="48" y="427">const s = <tspan class="kw">new</tspan> m.Schema({</text>
+  <text class="code" x="48" y="455">  title: { type: <tspan class="cy">String</tspan>,</text>
+  <text class="code" x="48" y="483">          required: <tspan class="wn">true</tspan> },</text>
+  <text class="code" x="48" y="511">  rating: <tspan class="cy">Number</tspan></text>
+  <text class="code" x="48" y="539">})</text>
+
+  <!-- L3 MODEL -->
+  <rect class="card" x="30" y="580" width="372" height="195" rx="14"/>
+  <text class="ct wn" x="48" y="612">🧩  MODEL</text>
+  <text class="code" x="48" y="642">const Anime =</text>
+  <text class="code" x="48" y="670">  m.model(<tspan class="str">"Anime"</tspan>, s)</text>
+  <text class="code mut" x="48" y="702">// → collection "animes"</text>
+  <text class="code mut" x="48" y="730">// (name is auto-pluralized)</text>
+  <text class="code mut" x="48" y="758">// your handle to the data</text>
+
+  <!-- L4 CREATE -->
+  <rect class="card" x="30" y="795" width="372" height="195" rx="14"/>
+  <text class="ct gr" x="48" y="827">➕  CREATE</text>
+  <text class="code" x="48" y="857"><tspan class="kw">await</tspan> Anime.<tspan class="gr">create</tspan>({</text>
+  <text class="code" x="48" y="885">  title: <tspan class="str">"Frieren"</tspan>, rating: <tspan class="wn">10</tspan> })</text>
+  <text class="code mut" x="48" y="913">// — or the two-step way —</text>
+  <text class="code" x="48" y="941">const a = <tspan class="kw">new</tspan> Anime({ ... })</text>
+  <text class="code" x="48" y="969"><tspan class="kw">await</tspan> a.<tspan class="gr">save</tspan>()</text>
+
+  <!-- ============ RIGHT COLUMN ============ -->
+
+  <!-- R1 READ -->
+  <rect class="card" x="418" y="150" width="372" height="195" rx="14"/>
+  <text class="ct cy" x="436" y="182">🔎  READ</text>
+  <text class="code" y="212"><tspan x="436">Anime.<tspan class="cy">find</tspan>(f)</tspan><tspan class="mut" x="640">all → array</tspan></text>
+  <text class="code" y="240"><tspan x="436">Anime.<tspan class="cy">findOne</tspan>(f)</tspan><tspan class="mut" x="640">first / null</tspan></text>
+  <text class="code" y="268"><tspan x="436">Anime.<tspan class="cy">findById</tspan>(id)</tspan><tspan class="mut" x="640">by _id</tspan></text>
+  <text class="code" y="296"><tspan x="436">Anime.<tspan class="cy">countDocuments</tspan>(f)</tspan></text>
+  <text class="code wn" x="436" y="324">every call returns a Promise → await</text>
+
+  <!-- R2 OPERATORS -->
+  <rect class="card" x="418" y="365" width="372" height="195" rx="14"/>
+  <text class="ct mg" x="436" y="397">🎛️  QUERY OPERATORS</text>
+  <text class="code" y="427"><tspan x="436">{ rating: { <tspan class="gr">$gte</tspan>: 9 } }</tspan><tspan class="mut" x="690">&gt;=</tspan></text>
+  <text class="code" y="455"><tspan x="436"><tspan class="gr">$gt $lt $lte $ne</tspan></tspan><tspan class="mut" x="640">compare</tspan></text>
+  <text class="code" y="483"><tspan x="436">{ s: { <tspan class="gr">$in</tspan>: [a, b] } }</tspan><tspan class="mut" x="690">in list</tspan></text>
+  <text class="code" x="436" y="511">{ title: { <tspan class="gr">$regex</tspan>: <tspan class="str">"man"</tspan>,</text>
+  <text class="code" x="436" y="539">           <tspan class="gr">$options</tspan>: <tspan class="str">"i"</tspan> } }</text>
+
+  <!-- R3 UPDATE -->
+  <rect class="card" x="418" y="580" width="372" height="195" rx="14"/>
+  <text class="ct wn" x="436" y="612">✏️  UPDATE</text>
+  <text class="code" x="436" y="642">Anime.<tspan class="wn">updateOne</tspan>(filter, upd)</text>
+  <text class="code" x="436" y="670">Anime.<tspan class="wn">updateMany</tspan>(filter, upd)</text>
+  <text class="code" y="700"><tspan x="436">{ <tspan class="gr">$set</tspan>: { rating: 10 } }</tspan><tspan class="mut" x="700">set</tspan></text>
+  <text class="code" y="728"><tspan x="436">{ <tspan class="gr">$inc</tspan>: { rating: 1 } }</tspan><tspan class="mut" x="700">+1</tspan></text>
+  <text class="code mut" x="436" y="756">→ { matchedCount, modifiedCount }</text>
+
+  <!-- R4 DELETE -->
+  <rect class="card" x="418" y="795" width="372" height="195" rx="14"/>
+  <text class="ct rd" x="436" y="827">🗑️  DELETE</text>
+  <text class="code" y="857"><tspan x="436">Anime.<tspan class="rd">deleteOne</tspan>(f)</tspan><tspan class="mut" x="672">first</tspan></text>
+  <text class="code" y="885"><tspan x="436">Anime.<tspan class="rd">deleteMany</tspan>(f)</tspan><tspan class="mut" x="690">all</tspan></text>
+  <text class="code mut" x="436" y="913">→ { deletedCount }</text>
+  <text class="code" x="436" y="949"><tspan class="rd">⚠ deleteMany({})</tspan> matches</text>
+  <text class="code" x="436" y="972">   EVERYTHING — wipes the collection!</text>
+
+  <!-- footer -->
+  <rect x="0" y="1000" width="820" height="100" fill="#0a1122"/>
+  <rect x="0" y="1000" width="820" height="2" fill="url(#grad)"/>
+  <text x="30" y="1044" font-size="15" font-weight="600" fill="#e2e8f0">🗄️ database → collection → document  (≈ db → table → row)</text>
+  <text x="30" y="1070" font-size="13" fill="#64748b">Every document gets an _id · queries return Promises → await</text>
+  <text x="790" y="1044" text-anchor="end" font-size="15" font-weight="700" fill="#00e5ff">qasim.dev · CST8326</text>
+  <text x="790" y="1070" text-anchor="end" font-size="13" fill="#64748b">The Web Archipelago · Summer 2026 🚂</text>
+</svg>

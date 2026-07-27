@@ -904,3 +904,95 @@
   display: inline-flex; align-items: center; gap: 8px; text-decoration: none;
   padding: 9px 18px; font-size: 0.83rem;
 }
+
+/* ============ Week 12: MongoDB / Mongoose island widgets ============ */
+
+/* Mongoose emulator badge in code headers (Mongo green) */
+.mongoose-badge {
+  font-family: var(--font-mono); font-size: 0.66rem; font-weight: 600;
+  margin-left: 10px; padding: 2px 10px; border-radius: var(--radius-full);
+  background: rgba(0, 237, 100, 0.1); border: 1px solid rgba(0, 237, 100, 0.4);
+  color: #4ade80; white-space: nowrap;
+}
+
+/* Relational vs Document toggle */
+.rvd { padding: 16px; border-radius: var(--radius-md); margin: 20px 0; }
+.rvd-tabs { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+.rvd-tab {
+  font-family: var(--font-heading); font-size: 0.82rem; font-weight: 600;
+  padding: 8px 18px; border-radius: var(--radius-full); cursor: pointer;
+  background: transparent; color: var(--text-secondary);
+  border: 1px solid var(--glass-border); transition: var(--transition-fast);
+}
+.rvd-tab i { margin-right: 6px; }
+.rvd-tab:hover { color: var(--text-primary); border-color: var(--text-secondary); }
+.rvd-tab.active { background: rgba(0, 237, 100, 0.1); border-color: #4ade80; color: #4ade80; }
+.rvd-pane.hidden { display: none; }
+.rvd-note { font-size: 0.88rem; color: var(--text-secondary); margin: 14px 0 0; }
+
+.rvd-table-wrap { overflow-x: auto; border-radius: var(--radius-md); border: 1px solid var(--glass-border); }
+.rvd-table { width: 100%; border-collapse: collapse; font-family: var(--font-mono); font-size: 0.82rem; min-width: 460px; }
+.rvd-table th { background: rgba(255,255,255,0.04); color: var(--text-secondary); padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--glass-border); }
+.rvd-table td { padding: 10px 14px; border-bottom: 1px solid var(--glass-border); color: var(--text-primary); }
+.rvd-table tr:last-child td { border-bottom: none; }
+.rvd-null { color: var(--err); font-style: italic; background: rgba(248,113,113,0.08); border-radius: 4px; padding: 1px 8px; }
+
+.rvd-docs { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 14px; }
+
+/* MongoDB hierarchy anatomy */
+.mongo-hier { padding: 22px; border-radius: var(--radius-md); margin: 20px 0; }
+.mh-layer {
+  border-radius: var(--radius-md); padding: 14px 16px; margin: 0; cursor: pointer;
+  border: 1px solid var(--glass-border); background: var(--glass-bg); transition: var(--transition-fast);
+}
+.mh-db { border-color: rgba(0,237,100,0.35); }
+.mh-coll { border-color: rgba(0,229,255,0.3); margin: 12px 0 0; }
+.mh-doc { border-color: rgba(180,0,255,0.3); margin: 12px 0 0; }
+.mh-layer:hover { background: var(--glass-hover); }
+.mh-layer.active { box-shadow: 0 0 16px rgba(0,229,255,0.2); }
+.mh-label { font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; display: flex; align-items: center; gap: 8px; }
+.mh-label .mh-sub { font-family: var(--font-body); font-weight: 400; font-size: 0.75rem; color: var(--text-secondary); margin-left: auto; }
+.mh-db > .mh-label { color: #4ade80; } .mh-coll > .mh-label { color: var(--primary-accent); } .mh-doc > .mh-label { color: #d98cff; }
+.mh-info { margin-top: 14px; padding: 12px 16px; min-height: 52px; border-radius: var(--radius-md); border: 1px dashed var(--glass-border); color: var(--text-secondary); font-size: 0.88rem; }
+.mh-info b { color: var(--text-primary); }
+
+/* Document / JSON card display (shared by widgets + query playground) */
+.doc-json {
+  font-family: var(--font-mono); font-size: 0.8rem; line-height: 1.6; white-space: pre-wrap; word-break: break-word;
+  background: var(--code-bg); border: 1px solid var(--code-border); border-radius: var(--radius-md);
+  padding: 12px 14px; margin: 0; color: #d6deeb; overflow-x: auto;
+}
+.doc-json .jk { color: #82aaff; }       /* key */
+.doc-json .js { color: #c3e88d; }       /* string */
+.doc-json .jn { color: #f78c6c; }       /* number */
+.doc-json .jb { color: #c792ea; }       /* boolean/null */
+.doc-json .jid { color: #64748b; }      /* _id */
+
+/* Query playground */
+.query-lab { padding: 20px; border-radius: var(--radius-md); margin: 20px 0; }
+.query-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 12px; }
+.query-row .q-method {
+  font-family: var(--font-mono); font-size: 0.82rem; font-weight: 700; padding: 9px 12px; border-radius: var(--radius-sm);
+  background: rgba(0,237,100,0.1); border: 1px solid rgba(0,237,100,0.35); color: #4ade80; cursor: pointer; outline: none;
+}
+.query-row .q-input {
+  flex: 1; min-width: 200px; font-family: var(--font-mono); font-size: 0.84rem; padding: 9px 13px; border-radius: var(--radius-sm);
+  background: #050d18; border: 1px solid var(--glass-border); color: #d6deeb; outline: none;
+}
+.query-row .q-input:focus { border-color: #4ade80; }
+.query-run {
+  font-family: var(--font-heading); font-size: 0.82rem; font-weight: 600; padding: 9px 20px; border-radius: var(--radius-full);
+  background: #4ade80; color: #04121a; border: none; cursor: pointer; transition: var(--transition-fast);
+}
+.query-run:hover { box-shadow: 0 0 16px rgba(74,222,128,0.5); }
+.q-chips { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 14px; }
+.q-chip {
+  font-family: var(--font-mono); font-size: 0.72rem; padding: 4px 12px; border-radius: var(--radius-full); cursor: pointer;
+  background: rgba(0,229,255,0.06); border: 1px solid rgba(0,229,255,0.25); color: var(--primary-accent); transition: var(--transition-fast);
+}
+.q-chip:hover { background: rgba(0,229,255,0.15); }
+.q-count { font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 10px; }
+.q-count b { color: #4ade80; }
+.q-results { display: flex; flex-direction: column; gap: 10px; }
+.q-results .doc-json { animation: log-in 0.25s ease; }
+.q-error { color: var(--err); font-family: var(--font-mono); font-size: 0.82rem; }

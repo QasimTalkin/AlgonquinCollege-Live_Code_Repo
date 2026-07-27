@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 12 · Databases with Express (MongoDB + Mongoose) | CST8326</title>
+    <meta name="description"
+        content="CST8326 Week 12 — integrating databases with Express.js: NoSQL &amp; MongoDB, documents vs tables, MongoDB Atlas, Mongoose schemas &amp; models, and full CRUD (find, create, update, delete). With a live in-browser Mongoose emulator and a query playground.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🗄️</text></svg>">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;600;800;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+    <link rel="stylesheet" href="../assets/course.css">
+</head>
+
+<body>
+    <div id="progress-bar" aria-hidden="true"></div>
+    <div class="bg-shape shape-1"></div>
+    <div class="bg-shape shape-2"></div>
+
+    <nav class="navbar scrolled">
+        <div class="container nav-container">
+            <a href="../../index.html" class="logo">
+                <span class="logo-text">Qasim<span class="highlight">.dev</span></span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#playground">Query playground</a></li>
+                <li><a href="#quiz">Self-Check</a></li>
+                <li><a href="../index.html#weeks" class="btn-outline"><i class="fas fa-map"></i> All Weeks</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container course-page">
+
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <a href="../../index.html">Portal</a> <i class="fas fa-chevron-right"></i>
+            <a href="../index.html">CST8326 · Summer 2026</a> <i class="fas fa-chevron-right"></i>
+            <span class="crumb-here">Week 12 · Databases with Express</span>
+        </nav>
+
+        <header class="course-hero" style="text-align:left; padding-top: 10px;">
+            <div class="course-code-chip"><i class="fas fa-database"></i> WEEK 12 &middot; ISLAND OF MEMORY</div>
+            <h1 class="hero-title" style="font-size: clamp(2rem, 5vw, 3.2rem);">
+                Databases with <span class="gradient-text">Express</span>
+            </h1>
+            <p class="hero-subtitle" style="margin: 0; max-width: 72ch;">
+                Last week your anime lived in a JSON file — <b class="kw">wiped on every restart</b>. This week they move into a
+                real database with <b class="kw">MongoDB</b> + <b class="kw">Mongoose</b>, and finally <em>remember</em>. Run real
+                queries in the emulator below. 🗄️
+            </p>
+            <div class="key-strip" style="margin-top: 18px;">
+                <span class="key-label">This week</span>
+                <span class="key-chip">NoSQL</span>
+                <span class="key-chip good">MongoDB</span>
+                <span class="key-chip">documents</span>
+                <span class="key-chip warm">Mongoose (ODM)</span>
+                <span class="key-chip">Schema &amp; Model</span>
+                <span class="key-chip">CRUD</span>
+            </div>
+        </header>
+
+        <div class="doc-layout">
+
+            <!-- ============ TOC ============ -->
+            <aside class="doc-toc" aria-label="On this page">
+                <h4><i class="fas fa-map-signs"></i> On this island</h4>
+                <ol>
+                    <li><a href="#overview">0. Week at a glance</a></li>
+                    <li><a href="#dbms">1. Databases &amp; DBMS</a></li>
+                    <li><a href="#nosql">2. Why NoSQL?</a></li>
+                    <li><a href="#mongo">3. MongoDB structure</a></li>
+                    <li><a href="#atlas">4. Local vs cloud (Atlas)</a></li>
+                    <li><a href="#mongoose">5. Meet Mongoose</a></li>
+                    <li><a href="#schema">6. Schemas &amp; Models</a></li>
+                    <li><a href="#read">7. Read: find &amp; friends</a></li>
+                    <li><a href="#playground">8. Query playground</a></li>
+                    <li><a href="#update">9. Update documents</a></li>
+                    <li><a href="#delete">10. Delete documents</a></li>
+                    <li><a href="#express">11. Wire it into Express</a></li>
+                    <li><a href="#takeaways">12. Key takeaways</a></li>
+                    <li><a href="#quiz">13. Self-check quiz</a></li>
+                    <li><a href="#reading">14. Reading &amp; cheat sheet</a></li>
+                </ol>
+            </aside>
+
+            <!-- ============ CONTENT ============ -->
+            <div class="doc-content">
+
+                <!-- 0. OVERVIEW -->
+                <section id="overview">
+                    <h2><span class="section-num">0</span> Week at a glance</h2>
+                    <div class="board-line"><i class="fas fa-route"></i>
+                        <span>array in memory <span class="b">→</span> real database. Your data survives restarts, scales, and lives on its own.</span>
+                    </div>
+                    <ul class="tight">
+                        <li><b class="kw">DBMS</b> — software that stores, retrieves and updates data (MongoDB, MySQL, PostgreSQL…).</li>
+                        <li><b class="kw">MongoDB</b> — a <b class="kw">NoSQL, document</b> database: your data looks like JSON objects, not rigid tables.</li>
+                        <li><b class="kw">Mongoose</b> — the <b class="kw">ODM</b> that lets Node talk to MongoDB with tidy <b class="kw">Schemas</b> and <b class="kw">Models</b>.</li>
+                        <li><b class="kw">CRUD</b> — <span class="inline-code">create</span> · <span class="inline-code">find</span> · <span class="inline-code">updateOne</span> · <span class="inline-code">deleteOne</span> — the four things every app does to data.</li>
+                    </ul>
+                    <div class="callout tip">
+                        <i class="fas fa-leaf"></i>
+                        <p><strong>New this week: the Mongoose emulator.</strong> Every <b class="kw">🍃 mongoose emulator</b> block runs a
+                        tiny MongoDB in your browser — real <span class="inline-code">find</span>, <span class="inline-code">create</span>,
+                        <span class="inline-code">updateOne</span>, <span class="inline-code">deleteMany</span> with operators like
+                        <span class="inline-code">$gte</span> and <span class="inline-code">$regex</span>. It comes pre-loaded with
+                        <b class="kw">5 anime</b>, and each <strong>Run</strong> resets to those 5, so examples are independent.</p>
+                    </div>
+                </section>
+
+                <!-- 1. DBMS -->
+                <section id="dbms">
+                    <h2><span class="section-num">1</span> Databases &amp; the DBMS</h2>
+                    <div class="key-strip">
+                        <span class="key-label">Key terms</span>
+                        <span class="key-chip">database</span>
+                        <span class="key-chip good">DBMS</span>
+                        <span class="key-chip">SQL vs NoSQL</span>
+                    </div>
+                    <ul class="tight">
+                        <li>A <b class="kw">database (DB)</b> is an organized collection of data.</li>
+                        <li>A <b class="kw">DBMS</b> (Database Management System) is the software that handles <b class="kw">storing, retrieving and updating</b> it.</li>
+                        <li>When people say "the database," they usually mean the data <em>plus</em> the DBMS managing it.</li>
+                    </ul>
+                    <div class="board-line"><i class="fas fa-layer-group"></i>
+                        <span>Two big families: <span class="b">relational</span> (SQL — tables, e.g. MySQL, PostgreSQL) and <span class="b">document</span> (NoSQL — e.g. MongoDB).</span>
+                    </div>
+                </section>
+
+                <!-- 2. NOSQL -->
+                <section id="nosql">
+                    <h2><span class="section-num">2</span> Why NoSQL?</h2>
+                    <div class="key-strip">
+                        <span class="key-label">NoSQL means</span>
+                        <span class="key-chip">no tables</span>
+                        <span class="key-chip">flexible shape</span>
+                        <span class="key-chip good">looks like your code</span>
+                        <span class="key-chip">stored as JSON</span>
+                    </div>
+                    <div class="board-line"><i class="fas fa-shapes"></i>
+                        <span>Relational forces every row into the <span class="b">same columns</span> (hello, empty <span class="b">NULL</span>s). Documents just store <span class="b">what each item has</span>.</span>
+                    </div>
+
+                    <p>Same two people, two ways to store them — flip between the views:</p>
+                    <div class="rvd glass-panel">
+                        <div class="rvd-tabs">
+                            <button class="rvd-tab active" data-pane="rel"><i class="fas fa-table-cells"></i> Relational (table)</button>
+                            <button class="rvd-tab" data-pane="doc"><i class="fas fa-file-code"></i> Document (MongoDB)</button>
+                        </div>
+                        <div class="rvd-pane" data-pane="rel">
+                            <div class="rvd-table-wrap">
+                                <table class="rvd-table">
+                                    <thead><tr><th>name</th><th>school</th><th>employer</th><th>occupation</th></tr></thead>
+                                    <tbody>
+                                        <tr><td>Lori</td><td><span class="rvd-null">NULL</span></td><td>Self</td><td>Entrepreneur</td></tr>
+                                        <tr><td>Malia</td><td>Harvard</td><td><span class="rvd-null">NULL</span></td><td><span class="rvd-null">NULL</span></td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <p class="rvd-note">Every row must have <em>every</em> column, even when it doesn't apply — so you get <span class="rvd-null">NULL</span> filler. Add a new field later and you alter the whole table.</p>
+                        </div>
+                        <div class="rvd-pane hidden" data-pane="doc">
+                            <div class="rvd-docs">
+                                <pre class="doc-json">{
+  "name": "Lori",
+  "employer": "Self",
+  "occupation": "Entrepreneur"
+}</pre>
+                                <pre class="doc-json">{
+  "name": "Malia",
+  "school": "Harvard"
+}</pre>
+                            </div>
+                            <p class="rvd-note">Each <b>document</b> stores only the fields it needs — no NULL filler, no rigid schema. Different documents in the same collection can have different shapes.</p>
+                        </div>
+                    </div>
+                    <div class="callout tip">
+                        <i class="fas fa-lightbulb"></i>
+                        <p><strong>Why devs love it:</strong> the data looks like the objects you already use in JavaScript, it's stored as JSON,
+                        it handles big/unstructured data, and it's easy to evolve. That's the whole NoSQL pitch.</p>
+                    </div>
+                </section>
+
+                <!-- 3. MONGO STRUCTURE -->
+                <section id="mongo">
+                    <h2><span class="section-num">3</span> How MongoDB is organized</h2>
+                    <div class="key-strip">
+                        <span class="key-label">The hierarchy</span>
+                        <span class="key-chip good">database</span>
+                        <span class="key-chip">collection</span>
+                        <span class="key-chip">document</span>
+                        <span class="key-chip warm">_id</span>
+                    </div>
+                    <div class="board-line"><i class="fas fa-sitemap"></i>
+                        <span>A <span class="b">database</span> holds <span class="b">collections</span>; a collection holds <span class="b">documents</span>. Click each layer 👇</span>
+                    </div>
+
+                    <div class="mongo-hier glass-panel">
+                        <div class="mh-layer mh-db" data-name="Database"
+                             data-desc="A container for collections — usually one database per app. Ours might be called <code>animeApp</code>.">
+                            <div class="mh-label">🗄️ Database <span class="mh-sub">animeApp</span></div>
+                            <div class="mh-layer mh-coll" data-name="Collection"
+                                 data-desc="A group of related documents — the equivalent of a TABLE in a relational database. Mongoose auto-names it by pluralizing your model: model 'Anime' → collection 'animes'.">
+                                <div class="mh-label">📚 Collection <span class="mh-sub">animes</span></div>
+                                <div class="mh-layer mh-doc" data-name="Document"
+                                     data-desc="One JSON-like record — the equivalent of a ROW. Every document gets a unique <code>_id</code> automatically. Documents in the same collection can even have different fields.">
+                                    <div class="mh-label">📄 Document <span class="mh-sub">one anime</span></div>
+                                    <pre class="doc-json" style="margin-top:10px;">{
+  "_id": "665f1e...c296",
+  "title": "Death Note",
+  "studio": "Madhouse",
+  "rating": 9
+}</pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mh-info" id="mh-info">☝️ Click a layer to learn what it maps to in a relational database.</div>
+                    </div>
+                    <div class="table-wrap">
+                        <table class="doc-table">
+                            <thead><tr><th>MongoDB</th><th>Relational equivalent</th></tr></thead>
+                            <tbody>
+                                <tr><td>Database</td><td>Database</td></tr>
+                                <tr><td>Collection</td><td>Table</td></tr>
+                                <tr><td>Document</td><td>Row</td></tr>
+                                <tr><td>Field</td><td>Column</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- 4. ATLAS -->
+                <section id="atlas">
+                    <h2><span class="section-num">4</span> Local vs cloud — MongoDB Atlas</h2>
+                    <div class="board-line"><i class="fas fa-cloud"></i>
+                        <span>You can run MongoDB <span class="b">on your machine</span> — or let <span class="b">Atlas</span> host it in the cloud for you.</span>
+                    </div>
+                    <div class="table-wrap">
+                        <table class="doc-table">
+                            <thead><tr><th>Local MongoDB</th><th>MongoDB Atlas (cloud)</th></tr></thead>
+                            <tbody>
+                                <tr><td>Full control, works offline</td><td>Managed: backups, patching, monitoring done for you</td></tr>
+                                <tr><td>No ongoing cost, low latency on the same machine</td><td>Easy scaling with a few clicks</td></tr>
+                                <tr><td>Better for sensitive data that can't leave</td><td>Built-in redundancy &amp; global clusters</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="callout def">
+                        <i class="fas fa-cloud"></i>
+                        <p><strong>MongoDB Atlas</strong> is a fully-managed cloud database from MongoDB, Inc. — host your DB in the cloud with no
+                        complex setup. <b class="kw">Free tier: 512&nbsp;MB.</b> For this course, follow the Atlas tutorial posted in Week 12
+                        (or the linked video) to create your account and get a <b class="kw">connection string</b>.</p>
+                    </div>
+                </section>
+
+                <!-- 5. MONGOOSE -->
+                <section id="mongoose">
+                    <h2><span class="section-num">5</span> Meet Mongoose 🍃</h2>
+                    <div class="key-strip">
+                        <span class="key-label">Key terms</span>
+                        <span class="key-chip">ODM</span>
+                        <span class="key-chip good">mongoose.connect</span>
+                        <span class="key-chip">connection string</span>
+                    </div>
+                    <div class="callout def">
+                        <i class="fas fa-book"></i>
+                        <p><strong>Mongoose</strong> is an <b class="kw">ODM</b> (Object Data Modeling) library for MongoDB and Node.js. It's the
+                        friendly translator between your JavaScript objects and MongoDB documents — schemas, validation, and clean CRUD methods.</p>
+                    </div>
+                    <div class="code-block">
+                        <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">install</span></div>
+                        <pre><code>npm install mongoose</code></pre>
+                    </div>
+                    <div class="board-line"><i class="fas fa-plug"></i>
+                        <span><span class="b">connect</span> returns a Promise (Week 9 pays off!) — <span class="b">.then()</span> on success, <span class="b">.catch()</span> on failure.</span>
+                    </div>
+                    <p>Run it. Then break it: change the string to something without <span class="inline-code">mongodb</span> and watch <span class="inline-code">.catch()</span> fire.</p>
+                    <div class="code-block runner">
+                        <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">connect.js</span></div>
+                        <pre><code>const mongoose = require("mongoose");
+
+mongoose.connect("mongodb+srv://me:pass@cluster0.mongodb.net/animeApp")
+  .then(() =&gt; console.log("✅ MongoDB Connected"))
+  .catch((err) =&gt; console.log("❌ " + err.message));</code></pre>
+                        <div class="code-actions"><button class="run-btn"><i class="fas fa-play"></i> Run</button><button class="clear-btn">Clear</button></div>
+                        <div class="run-out" aria-live="polite"></div>
+                    </div>
+                    <div class="callout warn">
+                        <i class="fas fa-triangle-exclamation"></i>
+                        <p><strong>Never hard-code real credentials.</strong> In a real project the connection string lives in an
+                        <span class="inline-code">.env</span> file (read with <span class="inline-code">process.env</span>), never committed to git.</p>
+                    </div>
+                </section>
+
+                <!-- 6. SCHEMA & MODEL -->
+                <section id="schema">
+                    <h2><span class="section-num">6</span> Schemas &amp; Models</h2>
+                    <div class="key-strip">
+                        <span class="key-label">Three steps</span>
+                        <span class="key-chip">new Schema({...})</span>
+                        <span class="key-chip good">mongoose.model()</span>
+                        <span class="key-chip">use the model</span>
+                    </div>
+                    <ul class="tight">
+                        <li>A <b class="kw">Schema</b> describes the <em>shape</em> of a document — field names, types, and rules like <span class="inline-code">required</span>.</li>
+                        <li>A <b class="kw">Model</b> is your <em>handle</em> to a collection — you call <span class="inline-code">find</span>, <span class="inline-code">create</span>, etc. on it.</li>
+                        <li>Mongoose <b class="kw">auto-pluralizes</b> the model name for the collection: model <span class="inline-code">"Anime"</span> → collection <span class="inline-code">animes</span>.</li>
+                    </ul>
+                    <div class="board-line"><i class="fas fa-hand-point-right"></i>
+                        <span>Run it — define a schema, make a model, <span class="b">create</span> a document, and count the collection.</span>
+                    </div>
+                    <div class="code-block runner">
+                        <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">model.js</span></div>
+                        <pre><code>const mongoose = require("mongoose");
+
+// STEP 1 — a Schema: the shape + rules of a document
+const animeSchema = new mongoose.Schema({
+  title:  { type: String, required: true },
+  studio: String,
+  rating: Number,
+  year:   Number
+});
+
+// STEP 2 — a Model from the schema (→ collection "animes")
+const Anime = mongoose.model("Anime", animeSchema);
+
+// STEP 3 — use it. create() inserts a new document.
+const jjk = await Anime.create({ title: "Jujutsu Kaisen", studio: "MAPPA", rating: 9, year: 2020 });
+console.log("Inserted (note the auto _id):", jjk);
+
+console.log("The animes collection now holds:", await Anime.countDocuments());</code></pre>
+                        <div class="code-actions"><button class="run-btn"><i class="fas fa-play"></i> Run</button><button class="clear-btn">Clear</button></div>
+                        <div class="run-out" aria-live="polite"></div>
+                    </div>
+                    <div class="callout warn">
+                        <i class="fas fa-shield-halved"></i>
+                        <p><strong>Validation is free.</strong> Because <span class="inline-code">title</span> is <span class="inline-code">required</span>,
+                        try deleting the title from the <span class="inline-code">create(...)</span> call and Run — Mongoose throws a
+                        <span class="inline-code">ValidationError</span> before anything is saved.</p>
+                    </div>
+                </section>
+
+                <!-- 7. READ -->
+                <section id="read">
+                    <h2><span class="section-num">7</span> Read — <span class="inline-code">find</span> &amp; friends</h2>
+                    <div class="key-strip">
+                        <span class="key-label">Read methods</span>
+                        <span class="key-chip good">find()</span>
+                        <span class="key-chip">findOne()</span>
+                        <span class="key-chip">findById()</span>
+                        <span class="key-chip warm">$gte · $lt · $in · $regex</span>
+                    </div>
+                    <div class="table-wrap">
+                        <table class="doc-table">
+                            <thead><tr><th>Method</th><th>Returns</th></tr></thead>
+                            <tbody>
+                                <tr><td><span class="inline-code">Model.find(filter)</span></td><td><b>All</b> documents that match — an <b>array</b> (empty if none).</td></tr>
+                                <tr><td><span class="inline-code">Model.findOne(filter)</span></td><td>The <b>first</b> match — or <span class="inline-code">null</span>.</td></tr>
+                                <tr><td><span class="inline-code">Model.findById(id)</span></td><td>The document with that <span class="inline-code">_id</span> — or <span class="inline-code">null</span>.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="board-line"><i class="fas fa-filter"></i>
+                        <span>A filter is just an object. <span class="b">{ rating: 9 }</span> is equality; <span class="b">{ rating: { $gte: 9 } }</span> uses an operator.</span>
+                    </div>
+                    <div class="code-block runner">
+                        <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">read.js</span></div>
+                        <pre><code>const mongoose = require("mongoose");
+const Anime = mongoose.model("Anime", new mongoose.Schema({
+  title: String, studio: String, rating: Number, year: Number
+}));
+
+// find ALL matching → array. $gte = "greater than or equal"
+const great = await Anime.find({ rating: { $gte: 9 } });
+console.log("Rated 9+:", great.map(a =&gt; a.title));
+
+// findOne → the FIRST match (or null)
+const one = await Anime.findOne({ studio: "Madhouse" });
+console.log("A Madhouse show:", one.title);
+
+// operators: $lt (less than) and $regex (pattern match)
+const older = await Anime.find({ year: { $lt: 2010 } });
+console.log("Before 2010:", older.map(a =&gt; a.title));
+
+const man = await Anime.find({ title: { $regex: "Man", $options: "i" } });
+console.log("Title has 'man':", man.map(a =&gt; a.title));
+
+// findById needs a real _id — grab one first
+const first = await Anime.findOne();
+console.log("Found by _id:", (await Anime.findById(first._id)).title);</code></pre>
+                        <div class="code-actions"><button class="run-btn"><i class="fas fa-play"></i> Run</button><button class="clear-btn">Clear</button></div>
+                        <div class="run-out" aria-live="polite"></div>
+                    </div>
+                </section>
+
+                <!-- 8. PLAYGROUND -->
+                <section id="playground">
+                    <h2><span class="section-num">8</span> Query playground 🎮</h2>
+                    <div class="board-line"><i class="fas fa-wand-magic-sparkles"></i>
+                        <span>Type a filter, pick a method, and query a live collection of 5 anime. Click a chip to try one.</span>
+                    </div>
+                    <div class="query-lab glass-panel">
+                        <div class="query-row">
+                            <select id="q-method" class="q-method" aria-label="query method">
+                                <option value="find">Anime.find</option>
+                                <option value="findOne">Anime.findOne</option>
+                                <option value="countDocuments">countDocuments</option>
+                            </select>
+                            <input id="q-input" class="q-input" spellcheck="false" value="{ rating: { $gte: 9 } }" aria-label="filter">
+                            <button id="q-run" class="query-run">Run query</button>
+                        </div>
+                        <div class="q-chips">
+                            <span class="q-chip" data-filter="{}">everything</span>
+                            <span class="q-chip" data-filter="{ studio: &quot;Madhouse&quot; }">studio = Madhouse</span>
+                            <span class="q-chip" data-filter="{ rating: { $gte: 9 } }">rating ≥ 9</span>
+                            <span class="q-chip" data-filter="{ year: { $lt: 2010 } }">before 2010</span>
+                            <span class="q-chip" data-filter="{ title: { $regex: &quot;man&quot;, $options: &quot;i&quot; } }">title ~ &quot;man&quot;</span>
+                            <span class="q-chip" data-filter="{ episodes: { $lte: 26 } }">≤ 26 episodes</span>
+                            <span class="q-chip" data-filter="{ studio: &quot;Madhouse&quot;, rating: { $gte: 9 } }">Madhouse &amp; 9+</span>
+                        </div>
+                        <div class="q-count" id="q-count"></div>
+                        <div class="q-results" id="q-results"></div>
+                    </div>
+                    <div class="callout tip">
+                        <i class="fas fa-lightbulb"></i>
+                        <p>Notice: multiple keys in one filter means <b class="kw">AND</b> (all must match). Operators like
+                        <span class="inline-code">$gte</span>, <span class="inline-code">$lte</span>, <span class="inline-code">$lt</span>,
+                        <span class="inline-code">$in</span> and <span class="inline-code">$regex</span> go <em>inside</em> a field's object.</p>
+                    </div>
+                </section>
+
+                <!-- 9. UPDATE -->
+                <section id="update">
+                    <h2><span class="section-num">9</span> Update documents</h2>
+                    <div class="key-strip">
+                        <span class="key-label">Update methods</span>
+                        <span class="key-chip good">updateOne(filter, update)</span>
+                        <span class="key-chip">updateMany</span>
+                        <span class="key-chip warm">$set · $inc</span>
+                    </div>
+                    <div class="board-line"><i class="fas fa-pen"></i>
+                        <span>Two arguments: <span class="b">which</span> documents (the filter) and <span class="b">what</span> to change (the update). Result tells you how many changed.</span>
+                    </div>
+                    <div class="code-block runner">
+                        <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">update.js</span></div>
+                        <pre><code>const mongoose = require("mongoose");
+const Anime = mongoose.model("Anime", new mongoose.Schema({
+  title: String, studio: String, rating: Number
+}));
+
+// updateOne(filter, update) → change the FIRST match
+const r1 = await Anime.updateOne({ title: "One Punch Man" }, { rating: 9 });
+console.log("matched:", r1.matchedCount, "· modified:", r1.modifiedCount);
+
+// $inc bumps a number; updateMany changes EVERY match
+const r2 = await Anime.updateMany({ rating: { $lt: 10 } }, { $inc: { rating: 1 } });
+console.log("bumped", r2.modifiedCount, "ratings by 1");
+
+const all = await Anime.find();
+console.log(all.map(a =&gt; a.title + " → " + a.rating));</code></pre>
+                        <div class="code-actions"><button class="run-btn"><i class="fas fa-play"></i> Run</button><button class="clear-btn">Clear</button></div>
+                        <div class="run-out" aria-live="polite"></div>
+                    </div>
+                </section>
+
+                <!-- 10. DELETE -->
+                <section id="delete">
+                    <h2><span class="section-num">10</span> Delete documents</h2>
+                    <div class="key-strip">
+                        <span class="key-label">Delete methods</span>
+                        <span class="key-chip good">deleteOne(filter)</span>
+                        <span class="key-chip bad">deleteMany(filter)</span>
+                        <span class="key-chip warn">deleteMany({}) wipes all!</span>
+                    </div>
+                    <div class="code-block runner">
+                        <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">delete.js</span></div>
+                        <pre><code>const mongoose = require("mongoose");
+const Anime = mongoose.model("Anime", new mongoose.Schema({ title: String, rating: Number }));
+
+console.log("before:", await Anime.countDocuments());
+
+// deleteOne → first match only
+const d1 = await Anime.deleteOne({ title: "Death Note" });
+console.log("deleted:", d1.deletedCount);
+
+// deleteMany → every match
+const d2 = await Anime.deleteMany({ rating: { $lt: 9 } });
+console.log("deleted", d2.deletedCount, "low-rated shows");
+
+console.log("after:", await Anime.countDocuments());
+console.log("remaining:", (await Anime.find()).map(a =&gt; a.title));</code></pre>
+                        <div class="code-actions"><button class="run-btn"><i class="fas fa-play"></i> Run</button><button class="clear-btn">Clear</button></div>
+                        <div class="run-out" aria-live="polite"></div>
+                    </div>
+                    <div class="callout warn">
+                        <i class="fas fa-triangle-exclamation"></i>
+                        <p><strong>Danger:</strong> <span class="inline-code">deleteMany({})</span> with an empty filter matches
+                        <em>everything</em> — it empties the whole collection. Always double-check your filter!</p>
+                    </div>
+                </section>
+
+                <!-- 11. EXPRESS -->
+                <section id="express">
+                    <h2><span class="section-num">11</span> Wire it into Express (upgrade Week 11)</h2>
+                    <div class="board-line"><i class="fas fa-arrows-turn-to-dots"></i>
+                        <span>Remember the <a href="../week11/anime-collection/index.html" style="color:var(--primary-accent)">Anime Collection app</a>? Swap the JSON file for Mongoose and it's a real database app.</span>
+                    </div>
+                    <p>The controller barely changes — the methods just become <span class="inline-code">async</span> and read from the model:</p>
+                    <div class="code-compare">
+                        <div>
+                            <div class="compare-label">Week 11 — array from a JSON file</div>
+                            <div class="code-block"><div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">before</span></div>
+                            <pre><code>let animeList = JSON.parse(
+  fs.readFileSync(dataPath)
+);
+
+exports.index = (req, res) =&gt; {
+  res.render("index", { anime: animeList });
+};</code></pre></div>
+                        </div>
+                        <div>
+                            <div class="compare-label good">Week 12 — real database</div>
+                            <div class="code-block"><div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">after</span></div>
+                            <pre><code>const Anime = require("../models/Anime");
+
+exports.index = async (req, res) =&gt; {
+  const anime = await Anime.find();  // from DB
+  res.render("index", { anime });
+};</code></pre></div>
+                        </div>
+                    </div>
+
+                    <h3><i class="fas fa-cube"></i> The model lives in its own file</h3>
+                    <div class="code-block">
+                        <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">models/Anime.js</span></div>
+                        <pre><code>const mongoose = require("mongoose");
+
+const animeSchema = new mongoose.Schema({
+  title:  { type: String, required: true },
+  studio: String,
+  rating: Number
+});
+
+module.exports = mongoose.model("Anime", animeSchema);</code></pre>
+                    </div>
+
+                    <h3><i class="fas fa-signs-post"></i> Routers keep it tidy (Week 11 recap)</h3>
+                    <p>A <b class="kw">Router</b> groups a feature's routes in one file, exported and mounted in <span class="inline-code">app.js</span>:</p>
+                    <div class="code-compare">
+                        <div>
+                            <div class="compare-label">routes/anime.js</div>
+                            <div class="code-block"><div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">router</span></div>
+                            <pre><code>const router = require("express").Router();
+const c = require("../controllers/animeController");
+
+router.get("/", c.index);
+router.post("/add", c.create);
+
+module.exports = router;</code></pre></div>
+                        </div>
+                        <div>
+                            <div class="compare-label good">app.js</div>
+                            <div class="code-block"><div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">mount it</span></div>
+                            <pre><code>const animeRoutes = require("./routes/anime");
+
+// everything in that router lives under /
+app.use("/", animeRoutes);</code></pre></div>
+                        </div>
+                    </div>
+                    <div class="callout def">
+                        <i class="fas fa-eye"></i>
+                        <p><strong>Views are unchanged.</strong> <span class="inline-code">res.render("index", { anime })</span> still looks in
+                        <span class="inline-code">views/</span> for <span class="inline-code">index.pug</span>, injects the data, and sends HTML.
+                        The <em>only</em> difference is where the data came from — a database instead of an array.</p>
+                    </div>
+                </section>
+
+                <!-- 12. TAKEAWAYS -->
+                <section id="takeaways">
+                    <h2><span class="section-num">12</span> Key takeaways</h2>
+                    <ol class="takeaways">
+                        <li>A <b class="kw">DBMS</b> manages your data; <b class="kw">MongoDB</b> is a <b class="kw">NoSQL document</b> database — JSON-like, flexible, no rigid tables.</li>
+                        <li>Hierarchy: <b class="kw">database → collection → document</b> (≈ database → table → row). Every document gets an <b class="kw">_id</b>.</li>
+                        <li><b class="kw">Atlas</b> hosts MongoDB in the cloud (free 512&nbsp;MB) and hands you a <b class="kw">connection string</b>.</li>
+                        <li><b class="kw">Mongoose</b> (an <b class="kw">ODM</b>) connects with <span class="inline-code">mongoose.connect()</span> and models data with a <b class="kw">Schema</b> → <b class="kw">Model</b>.</li>
+                        <li><b class="kw">CRUD</b>: <span class="inline-code">create</span>/<span class="inline-code">save</span> · <span class="inline-code">find</span>/<span class="inline-code">findOne</span>/<span class="inline-code">findById</span> · <span class="inline-code">updateOne</span>/<span class="inline-code">updateMany</span> · <span class="inline-code">deleteOne</span>/<span class="inline-code">deleteMany</span>.</li>
+                        <li>Filters are objects; operators (<b class="kw">$gte, $lt, $in, $regex, $inc</b>) go inside a field. Every method returns a <b class="kw">Promise</b> — so <span class="inline-code">await</span> it.</li>
+                        <li>In Express, keep a <b class="kw">model</b> file, read/write it from <b class="kw">async controllers</b>, and render the same Pug views. Data source changes; everything else stays.</li>
+                    </ol>
+                </section>
+
+                <!-- 13. QUIZ -->
+                <section id="quiz">
+                    <h2><span class="section-num">13</span> Self-check quiz</h2>
+                    <p class="section-lede">No grades, instant feedback. Can you get all seven?</p>
+
+                    <div class="quiz-q" data-answer="1">
+                        <h4><span class="q-num">Q1.</span> MongoDB is which kind of database?</h4>
+                        <button class="quiz-opt">A relational (SQL) database with tables and rows</button>
+                        <button class="quiz-opt">A NoSQL, document database storing JSON-like documents</button>
+                        <button class="quiz-opt">A spreadsheet stored in the browser</button>
+                        <div class="quiz-feedback">MongoDB is <strong>NoSQL, document-oriented</strong> — flexible JSON-like documents, no fixed tables or NULL filler.</div>
+                    </div>
+
+                    <div class="quiz-q" data-answer="2">
+                        <h4><span class="q-num">Q2.</span> In MongoDB, a <em>collection</em> is like a relational…</h4>
+                        <button class="quiz-opt">Row</button>
+                        <button class="quiz-opt">Database</button>
+                        <button class="quiz-opt">Table</button>
+                        <div class="quiz-feedback">Database → Collection → Document maps to Database → <strong>Table</strong> → Row. A document is the row.</div>
+                    </div>
+
+                    <div class="quiz-q" data-answer="0">
+                        <h4><span class="q-num">Q3.</span> What is Mongoose?</h4>
+                        <button class="quiz-opt">An ODM library that models MongoDB data for Node.js</button>
+                        <button class="quiz-opt">A separate database that replaces MongoDB</button>
+                        <button class="quiz-opt">A CSS framework for forms</button>
+                        <div class="quiz-feedback">Mongoose is an <strong>Object Data Modeling</strong> library — schemas, validation and CRUD methods on top of MongoDB.</div>
+                    </div>
+
+                    <div class="quiz-q" data-answer="2">
+                        <h4><span class="q-num">Q4.</span> Which finds <em>all</em> anime with rating 9 or higher?</h4>
+                        <button class="quiz-opt"><span style="font-family:var(--font-mono); font-size:.82rem;">Anime.find({ rating: 9+ })</span></button>
+                        <button class="quiz-opt"><span style="font-family:var(--font-mono); font-size:.82rem;">Anime.findOne({ rating &gt;= 9 })</span></button>
+                        <button class="quiz-opt"><span style="font-family:var(--font-mono); font-size:.82rem;">Anime.find({ rating: { $gte: 9 } })</span></button>
+                        <div class="quiz-feedback"><span class="inline-code">$gte</span> means "greater than or equal," and it goes <em>inside</em> the field's object. <span class="inline-code">find</span> returns all matches; <span class="inline-code">findOne</span> only the first.</div>
+                    </div>
+
+                    <div class="quiz-q" data-answer="1">
+                        <h4><span class="q-num">Q5.</span> <span class="inline-code">Model.find()</span> returns…</h4>
+                        <button class="quiz-opt">The data immediately, synchronously</button>
+                        <button class="quiz-opt">A Promise — you <span class="inline-code">await</span> it (or use .then)</button>
+                        <button class="quiz-opt">The number of matching documents</button>
+                        <div class="quiz-feedback">Database calls are asynchronous. Every Mongoose query returns a <strong>Promise</strong> — <span class="inline-code">await</span> it inside an <span class="inline-code">async</span> function.</div>
+                    </div>
+
+                    <div class="quiz-q" data-answer="0">
+                        <h4><span class="q-num">Q6.</span> <span class="inline-code">Anime.deleteMany({})</span> — empty filter — does what?</h4>
+                        <button class="quiz-opt">Deletes EVERY document in the collection 😱</button>
+                        <button class="quiz-opt">Deletes nothing — an empty filter matches nothing</button>
+                        <button class="quiz-opt">Throws an error asking for a filter</button>
+                        <div class="quiz-feedback">An empty filter matches <strong>everything</strong>, so <span class="inline-code">deleteMany({})</span> wipes the whole collection. Handle with care!</div>
+                    </div>
+
+                    <div class="quiz-q" data-answer="1">
+                        <h4><span class="q-num">Q7.</span> Moving Week 11's app to a database, what has to change in the controller?</h4>
+                        <button class="quiz-opt">The Pug views must be rewritten for MongoDB</button>
+                        <button class="quiz-opt">Handlers become <span class="inline-code">async</span> and <span class="inline-code">await</span> model methods instead of reading an array</button>
+                        <button class="quiz-opt">Nothing — Express talks to MongoDB automatically</button>
+                        <div class="quiz-feedback">The <strong>controller</strong> swaps the in-memory array for <span class="inline-code">await Anime.find()</span> etc. The routes and Pug views stay the same — only the data source changed.</div>
+                    </div>
+                </section>
+
+                <!-- 14. READING + CHEAT SHEET -->
+                <section id="reading">
+                    <h2><span class="section-num">14</span> Reading &amp; cheat sheet</h2>
+                    <div class="callout def">
+                        <i class="fas fa-book"></i>
+                        <p><strong>Zybooks — Chapter 10 "node.js": sections <b class="kw">10.11 – 10.17</b>.</strong> Plus the MongoDB Atlas tutorial posted in Week 12.</p>
+                    </div>
+
+                    <h3><i class="fas fa-file-arrow-down"></i> Grab the Mongoose cheat sheet</h3>
+                    <div class="poster-grid" style="grid-template-columns: 1fr;">
+                        <div class="poster-card" style="max-width: 520px;">
+                            <div class="pc-title"><span class="pc-emoji">🍃</span> Mongoose &amp; MongoDB CRUD</div>
+                            <div class="poster-frame">
+                                <img src="mongoose-cheatsheet.svg" alt="Mongoose and MongoDB one-page cheat sheet: connect, schema, model, create, read, update, delete and operators"
+                                     loading="lazy" width="820" height="1100">
+                            </div>
+                            <div class="poster-actions-row">
+                                <a class="run-btn" href="mongoose-cheatsheet.svg" download="mongoose-cheatsheet.svg"><i class="fas fa-download"></i> Download</a>
+                                <a class="clear-btn" href="mongoose-cheatsheet.svg" target="_blank" rel="noopener"><i class="fas fa-up-right-from-square"></i> Open / print</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <ul class="tight">
+                        <li><a href="https://mongoosejs.com/docs/" target="_blank" rel="noopener">Mongoose documentation</a></li>
+                        <li><a href="https://www.mongodb.com/docs/atlas/getting-started/" target="_blank" rel="noopener">MongoDB Atlas — getting started</a></li>
+                        <li><a href="https://www.mongodb.com/docs/manual/tutorial/query-documents/" target="_blank" rel="noopener">MongoDB — query documents (operators)</a></li>
+                    </ul>
+                    <div class="board-line"><i class="fas fa-dumbbell"></i>
+                        <span><span class="b">Challenge:</span> take the Week 11 Anime Collection app and swap the JSON file for a Mongoose model — list, add and delete straight from a real database.</span>
+                    </div>
+
+                    <div class="doc-pager">
+                        <a class="pager-link" href="../week11/index.html">
+                            <span class="pager-dir"><i class="fas fa-arrow-left"></i> Previous island</span>
+                            <span class="pager-title">Week 11 · Express.js</span>
+                        </a>
+                        <a class="pager-link next" href="../index.html#weeks">
+                            <span class="pager-dir">Next island <i class="fas fa-arrow-right"></i></span>
+                            <span class="pager-title">Week 13 · charting soon</span>
+                        </a>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-bottom">
+            <p>CST8326 · Week 12 · Databases with Express — adapted from the official course slides · &copy; <span id="year"></span> Algonquin College</p>
+        </div>
+    </footer>
+
+    <script>
+        window.ALGO_TIPS = [
+            "Welcome to the Island of Memory 🗄️ — where your data finally survives a restart!",
+            "Every 🍃 block runs a real mini-MongoDB. Query it, change it, delete from it!",
+            "database → collection → document ≈ database → table → row. Every doc gets an _id.",
+            "Filters are objects. { rating: { $gte: 9 } } — operators go inside the field.",
+            "Mongoose methods return Promises — await them inside async functions (Week 9!).",
+            "deleteMany({}) empties the WHOLE collection. Respect the empty filter 😱",
+            "Play the query playground — click the chips and watch documents match live!"
+        ];
+    </script>
+    <script src="../../assets/js/mascot.js" defer></script>
+    <script src="./week12.js" defer></script>
+    <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+
+</html>
