@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 13 · Sessions, Authentication &amp; Deployment | CST8326</title>
+    <meta name="description"
+        content="CST8326 Week 13 — the final island. Why HTTP is stateless, user authentication (Basic, Session, Token), cookies vs sessions, express-session, password hashing with bcrypt, JSON Web Tokens (JWT), and deploying a full-stack app with GitHub + Render. With a live session lab, a JWT builder and a deploy simulator.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔐</text></svg>">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;600;800;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+    <link rel="stylesheet" href="../assets/course.css">
+</head>
+
+<body>
+    <div id="progress-bar" aria-hidden="true"></div>
+    <div class="bg-shape shape-1"></div>
+    <div class="bg-shape shape-2"></div>
+
+    <nav class="navbar scrolled">
+        <div class="container nav-container">
+            <a href="../../index.html" class="logo">
+                <span class="logo-text">Qasim<span class="highlight">.dev</span></span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#session-lab">Session lab</a></li>
+                <li><a href="#jwt">JWT builder</a></li>
+                <li><a href="#quiz">Self-Check</a></li>
+                <li><a href="../index.html#weeks" class="btn-outline"><i class="fas fa-map"></i> All Weeks</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container course-page">
+
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <a href="../../index.html">Portal</a> <i class="fas fa-chevron-right"></i>
+            <a href="../index.html">CST8326 · Summer 2026</a> <i class="fas fa-chevron-right"></i>
+            <span class="crumb-here">Week 13 · Sessions, Auth &amp; Deployment</span>
+        </nav>
+
+        <header class="course-hero" style="text-align:left; padding-top: 10px;">
+            <div class="course-code-chip"><i class="fas fa-key"></i> WEEK 13 &middot; JOURNEY'S END</div>
+            <h1 class="hero-title" style="font-size: clamp(2rem, 5vw, 3.2rem);">
+                Sessions, Auth &amp; <span class="gradient-text">Going Live</span>
+            </h1>
+            <p class="hero-subtitle" style="margin: 0; max-width: 74ch;">
+                The final island. HTTP is <b class="kw">forgetful</b> — so how does an app know <em>who you are</em> between clicks?
+                This week: <b class="kw">authentication</b>, <b class="kw">sessions &amp; cookies</b>, password <b class="kw">hashing</b>,
+                <b class="kw">JSON Web Tokens</b>, and finally — <b class="kw">deploying</b> your app so the whole world can visit. 🔐🚀
+            </p>
+            <div class="key-strip" style="margin-top: 18px;">
+                <span class="key-label">This week</span>
+                <span class="key-chip">stateless HTTP</span>
+                <span class="key-chip good">authentication</span>
+                <span class="key-chip">cookies &amp; sessions</span>
+                <span class="key-chip warm">bcrypt</span>
+                <span class="key-chip">JWT</span>
+                <span class="key-chip good">deploy 🚀</span>
+            </div>
+        </header>
+
+        <div class="doc-layout">
+
+            <!-- ============ TOC ============ -->
+            <aside class="doc-toc" aria-label="On this page">
+                <h4><i class="fas fa-map-signs"></i> On this island</h4>
+                <ol>
+                    <li><a href="#overview">0. Week at a glance</a></li>
+                    <li><a href="#stateless">1. HTTP forgets everything</a></li>
+                    <li><a href="#auth">2. Authentication — who are you?</a></li>
+                    <li><a href="#basic">3. Basic authentication</a></li>
+                    <li><a href="#session-auth">4. Session authentication</a></li>
+                    <li><a href="#cookies-vs">5. Cookies vs sessions</a></li>
+                    <li><a href="#sessionid">6. The session identifier</a></li>
+                    <li><a href="#express-session">7. Sessions in Express</a></li>
+                    <li><a href="#session-lab">8. Live session lab</a></li>
+                    <li><a href="#hashing">9. Hashing passwords</a></li>
+                    <li><a href="#token">10. Token authentication</a></li>
+                    <li><a href="#jwt">11. JSON Web Tokens</a></li>
+                    <li><a href="#deploy-github">12. Deploy with GitHub</a></li>
+                    <li><a href="#deploy-render">13. Deploy with Render</a></li>
+                    <li><a href="#takeaways">14. Key takeaways</a></li>
+                    <li><a href="#quiz">15. Self-check quiz</a></li>
+                    <li><a href="#reading">16. Reading &amp; cheat sheet</a></li>
+                </ol>
+            </aside>
+
+            <!-- ============ CONTENT ============ -->
+            <div class="doc-content">
+
+                <!-- 0. OVERVIEW -->
+                <section id="overview">
+                    <h2><span class="section-num">0</span> Week at a glance</h2>
+                    <div class="board-line"><i class="fas fa-flag-checkered"></i>
+                        <span>The last leg: teach your app to <span class="b">remember who you are</span>, keep it <span class="b">secure</span>, and put it <span class="b">online</span>.</span>
+                    </div>
+                    <ul class="tight">
+                        <li><b class="kw">Stateless HTTP</b> — the server forgets you the instant a request ends. Sessions &amp; tokens fix that.</li>
+                        <li><b class="kw">Authentication</b> — proving <em>who you are</em>. Three flavours: <b class="kw">Basic</b>, <b class="kw">Session</b>, <b class="kw">Token</b>.</li>
+                        <li><b class="kw">Sessions &amp; cookies</b> — the server keeps your data; the browser carries a tiny <b class="kw">session id</b> cookie.</li>
+                        <li><b class="kw">Hashing</b> — never store raw passwords; store a one-way <b class="kw">bcrypt</b> hash.</li>
+                        <li><b class="kw">JWT</b> — a signed <span class="inline-code">header.payload.signature</span> token the client carries instead of a session.</li>
+                        <li><b class="kw">Deploy</b> — push to <b class="kw">GitHub</b>, host on <b class="kw">Render</b>, get a live URL. 🎉</li>
+                    </ul>
+                    <div class="callout tip">
+                        <i class="fas fa-gamepad"></i>
+                        <p><strong>Everything here is playable.</strong> Toggle the <b class="kw">stateless server</b>, run the <b class="kw">session handshake</b>,
+                        log in and out in the <a href="#session-lab" style="color:var(--primary-accent)">live session lab</a>, forge and break a
+                        <a href="#jwt" style="color:var(--primary-accent)">JWT</a>, and <a href="#deploy-render" style="color:var(--primary-accent)">deploy to Render</a>
+                        — all in your browser, no setup.</p>
+                    </div>
+                </section>
+
+                <!-- 1. STATELESS -->
+                <section id="stateless">
+                    <h2><span class="section-num">1</span> HTTP forgets everything 🐟</h2>
+                    <div class="key-strip">
+                        <span class="key-label">Key idea</span>
+                        <span class="key-chip">stateless</span>
+                        <span class="key-chip">request → response</span>
+                        <span class="key-chip bad">no memory</span>
+                    </div>
+                    <div class="board-line"><i class="fas fa-fish"></i>
+                        <span>Every request runs the app <span class="b">from scratch</span>. It doesn't remember the last request — or even <span class="b">who</span> sent it.</span>
+                    </div>
+                    <ul class="tight">
+                        <li>An interaction is a <b class="kw">sequence of requests and responses</b>.</li>
+                        <li>For each request, the app <b class="kw">starts over</b> — no data is kept between consecutive requests.</li>
+                        <li>It can't tell whether two requests came from the <b class="kw">same user</b> or different users.</li>
+                        <li>So we must <b class="kw">transfer data</b> from one request to the next — that's what sessions and tokens do.</li>
+                    </ul>
+                    <p>Flip the switch and send a few requests. Without a session the server is a goldfish; with one, it remembers you.</p>
+                    <div class="state-lab glass-panel" id="state-lab">
+                        <div class="state-head">
+                            <label class="state-mode"><input type="checkbox" id="state-mode"><span>give the server a <b>session</b></span></label>
+                            <button id="state-visit" class="run-btn"><i class="fas fa-paper-plane"></i> Send a request</button>
+                            <button id="state-reset" class="clear-btn">Reset</button>
+                        </div>
+                        <div class="state-server">
+                            <div class="ss-title"><i class="fas fa-server"></i> What the server remembers about you</div>
+                            <div class="ss-mem" id="state-mem">—</div>
+                        </div>
+                        <div class="w13-log" id="state-log"></div>
+                    </div>
+                </section>
+
+                <!-- 2. AUTHENTICATION -->
+                <section id="auth">
+                    <h2><span class="section-num">2</span> Authentication — who are you?</h2>
+                    <div class="callout def">
+                        <i class="fas fa-fingerprint"></i>
+                        <p><strong>Authentication</strong> is the process of <b class="kw">verifying a user's identity</b> — making sure users are who
+                        they claim to be. (Different from <em>authorization</em>, which is what they're <em>allowed</em> to do.)</p>
+                    </div>
+                    <div class="board-line"><i class="fas fa-key"></i>
+                        <span>Three ways to prove identity across stateless requests:</span>
+                    </div>
+                    <div class="table-wrap">
+                        <table class="doc-table">
+                            <thead><tr><th>Method</th><th>How it works</th><th>Verdict</th></tr></thead>
+                            <tbody>
+                                <tr><td>Basic</td><td>Send username + password with <b>every</b> request</td><td><span class="kw" style="color:var(--err)">very insecure</span></td></tr>
+                                <tr><td>Session</td><td>Log in once → server stores a session, browser holds a session-id cookie</td><td>common in server-rendered apps</td></tr>
+                                <tr><td>Token</td><td>Log in once → get a signed token, send it on each request</td><td>great for APIs &amp; SPAs</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- 3. BASIC -->
+                <section id="basic">
+                    <h2><span class="section-num">3</span> Basic authentication</h2>
+                    <div class="key-strip">
+                        <span class="key-label">Basic auth</span>
+                        <span class="key-chip">creds every request</span>
+                        <span class="key-chip bad">no login/logout</span>
+                        <span class="key-chip bad">insecure</span>
+                    </div>
+                    <ul class="tight">
+                        <li>The browser sends the <b class="kw">username &amp; password with every single request</b>.</li>
+                        <li>There's <b class="kw">no login or logout</b> system — nothing to start or end.</li>
+                        <li>It's <b class="kw">very insecure</b>: credentials fly across the wire constantly.</li>
+                        <li><b class="kw">Not used</b> in modern apps because of the security risk.</li>
+                    </ul>
+                    <div class="callout warn">
+                        <i class="fas fa-triangle-exclamation"></i>
+                        <p>Basic auth is the "shout your password at the guard every time you walk past" approach. We show it so you recognise it — then
+                        we use <b class="kw">sessions</b> or <b class="kw">tokens</b> instead.</p>
+                    </div>
+                </section>
+
+                <!-- 4. SESSION AUTH -->
+                <section id="session-auth">
+                    <h2><span class="section-num">4</span> Session authentication</h2>
+                    <div class="key-strip">
+                        <span class="key-label">The handshake</span>
+                        <span class="key-chip good">log in once</span>
+                        <span class="key-chip">server makes a session id</span>
+                        <span class="key-chip warm">stored in a cookie</span>
+                        <span class="key-chip">sent every request</span>
+                    </div>
+                    <ol class="tight">
+                        <li>The user logs in with a <b class="kw">username &amp; password</b>.</li>
+                        <li>If login succeeds, the server creates a <b class="kw">session id</b> linked to that user.</li>
+                        <li>The session id is sent back to the browser and <b class="kw">stored in a cookie</b>.</li>
+                        <li>On the next request, the browser <b class="kw">automatically sends</b> the session id — so the server knows it's you.</li>
+                    </ol>
+                    <p>Press play and watch the session id travel:</p>
+                    <div class="handshake glass-panel" id="handshake">
+                        <div class="hs-lanes">
+                            <div class="hs-step" data-actor="browser" data-say="The user types their <b>username &amp; password</b> and submits the login form.">
+                                <span class="hs-num">1</span><span class="hs-actor">browser</span>
+                                <span class="hs-text">POST <code>/login</code> with username + password</span>
+                            </div>
+                            <div class="hs-step" data-actor="server" data-say="The server checks the credentials. If they're valid, it creates a <b>session</b> and a unique <b>session id</b>.">
+                                <span class="hs-num">2</span><span class="hs-actor">server</span>
+                                <span class="hs-text">verify creds → create session <code>{ user: "Light" }</code></span>
+                            </div>
+                            <div class="hs-step" data-actor="server" data-say="The server replies and asks the browser to store the session id in a cookie: <code>Set-Cookie: connect.sid=…</code>">
+                                <span class="hs-num">3</span><span class="hs-actor">server</span>
+                                <span class="hs-text"><code>Set-Cookie: connect.sid=abc123</code></span>
+                            </div>
+                            <div class="hs-step" data-actor="browser" data-say="The browser saves that cookie. It will now attach it to every future request to this site — automatically.">
+                                <span class="hs-num">4</span><span class="hs-actor">browser</span>
+                                <span class="hs-text">stores the cookie 🍪</span>
+                            </div>
+                            <div class="hs-step" data-actor="browser" data-say="Next request, the cookie rides along. The server looks up the session id and instantly knows <b>who you are</b>.">
+                                <span class="hs-num">5</span><span class="hs-actor">browser</span>
+                                <span class="hs-text">GET <code>/profile</code> &nbsp;(cookie: connect.sid=abc123)</span>
+                            </div>
+                        </div>
+                        <button id="hs-play" class="run-btn" style="margin-top:16px;"><i class="fas fa-play"></i> Play the handshake</button>
+                        <div class="hs-narrate" id="hs-narrate">🍪 Press play to watch a login turn into a session cookie.</div>
+                    </div>
+                </section>
+
+                <!-- 5. COOKIES VS SESSIONS -->
+                <section id="cookies-vs">
+                    <h2><span class="section-num">5</span> Cookies vs sessions</h2>
+                    <div class="board-line"><i class="fas fa-cookie-bite"></i>
+                        <span>A <span class="b">cookie</span> lives in the browser; a <span class="b">session</span> lives on the server. The cookie usually just carries the session's <span class="b">id</span>.</span>
+                    </div>
+                    <div class="table-wrap">
+                        <table class="doc-table">
+                            <thead><tr><th>🍪 Cookies</th><th>🗄️ Sessions</th></tr></thead>
+                            <tbody>
+                                <tr><td>Stored <b>client-side</b> (in the browser)</td><td>Store user data <b>server-side</b></td></tr>
+                                <tr><td>Limited in size by the browser (~4&nbsp;KB)</td><td>Limited only by <b>server</b> space</td></tr>
+                                <tr><td>The user <b>can read &amp; change</b> them</td><td><b>Cannot</b> be modified by users</td></tr>
+                                <tr><td>Can be <b>disabled</b> by the user</td><td>Expire when the browser is closed</td></tr>
+                                <tr><td>You send data itself</td><td>Identified by a <b>session id</b> — often a small cookie</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="callout def">
+                        <i class="fas fa-list-check"></i>
+                        <p><strong>What are sessions good for?</strong> <b class="kw">Authentication</b> (is this user logged in?),
+                        <b class="kw">shopping carts</b> (hold items as the user browses), and <b class="kw">user preferences</b> (theme, language).</p>
+                    </div>
+                </section>
+
+                <!-- 6. SESSION ID -->
+                <section id="sessionid">
+                    <h2><span class="section-num">6</span> The session identifier</h2>
+                    <div class="key-strip">
+                        <span class="key-label">The session id…</span>
+                        <span class="key-chip">made by the server</span>
+                        <span class="key-chip">held by the browser</span>
+                        <span class="key-chip">sent every request</span>
+                        <span class="key-chip warm">forgotten on close</span>
+                    </div>
+                    <ul class="tight">
+                        <li>Is <b class="kw">generated by the server</b> when a session starts.</li>
+                        <li>Is <b class="kw">remembered by the browser</b> (kept in a cookie).</li>
+                        <li>Is <b class="kw">sent with every further HTTP request</b> to that server.</li>
+                        <li>Is <b class="kw">forgotten</b> when the session ends or the browser is closed.</li>
+                    </ul>
+                    <div class="callout warn">
+                        <i class="fas fa-database"></i>
+                        <p>Session variables store information only <b class="kw">temporarily</b>. For data that must survive — accounts, orders, anime
+                        collections — you still need a <b class="kw">database</b> (hello, Week 12 🗄️).</p>
+                    </div>
+                </section>
+
+                <!-- 7. EXPRESS SESSION -->
+                <section id="express-session">
+                    <h2><span class="section-num">7</span> Sessions in Express.js</h2>
+                    <div class="key-strip">
+                        <span class="key-label">Steps</span>
+                        <span class="key-chip">install</span>
+                        <span class="key-chip good">app.use(session(...))</span>
+                        <span class="key-chip">req.session.x = …</span>
+                        <span class="key-chip warm">req.session.destroy()</span>
+                    </div>
+                    <div class="code-block">
+                        <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">install</span></div>
+                        <pre><code>npm install express-session bcryptjs</code></pre>
+                    </div>
+
+                    <h3><i class="fas fa-gear"></i> Set up the session middleware</h3>
+                    <div class="code-block">
+                        <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">app.js</span></div>
+                        <pre><code>const express = require("express");
+const session = require("express-session");
+const app = express();
+
+app.use(session({
+  secret: "your-secret-key",   // signs the session-id cookie
+  resave: false,               // don't re-save if nothing changed
+  saveUninitialized: true,     // save new, empty sessions too
+  cookie: { secure: false }    // true only over HTTPS
+}));</code></pre>
+                    </div>
+                    <ul class="tight">
+                        <li><span class="inline-code">secret</span> — a random string used to <b class="kw">sign</b> the session-id cookie so it can't be forged.</li>
+                        <li><span class="inline-code">resave</span> — whether to re-save the session on every request even if it didn't change.</li>
+                        <li><span class="inline-code">saveUninitialized</span> — whether to store new but empty sessions.</li>
+                        <li><span class="inline-code">cookie</span> — configures the cookie (expiry, <span class="inline-code">secure</span>, etc.).</li>
+                    </ul>
+
+                    <h3><i class="fas fa-route"></i> Use the session in your routes</h3>
+                    <div class="board-line"><i class="fas fa-box-archive"></i>
+                        <span><span class="b">req.session</span> is just an object that survives between requests. Write to it in one route, read it in another.</span>
+                    </div>
+                    <div class="code-block">
+                        <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">routes</span></div>
+                        <pre><code>app.get("/login", (req, res) =&gt; {
+  req.session.username = "Light";        // store data in the session
+  res.send("Logged in!");
+});
+
+app.get("/profile", (req, res) =&gt; {
+  const user = req.session.username;      // read it back next request
+  res.send(`Welcome, ${user || "Guest"}`);
+});
+
+app.get("/logout", (req, res) =&gt; {
+  req.session.destroy();                  // end the session
+  res.send("Logged out.");
+});</code></pre>
+                    </div>
+                </section>
+
+                <!-- 8. SESSION LAB -->
+                <section id="session-lab">
+                    <h2><span class="section-num">8</span> Live session lab 🧪</h2>
+                    <div class="board-line"><i class="fas fa-flask"></i>
+                        <span>Click the routes and watch the <span class="b">🍪 browser cookie</span> and the <span class="b">🗄️ server session store</span> react in real time.</span>
+                    </div>
+                    <div class="sess-lab glass-panel" id="sess-lab">
+                        <div class="sess-nav">
+                            <button data-route="/profile">GET /profile</button>
+                            <button data-route="/login">GET /login</button>
+                            <button data-route="/logout">GET /logout</button>
+                        </div>
+                        <div class="sess-resp" id="sess-resp"></div>
+                        <div class="sess-split">
+                            <div class="sess-col"><h6>🍪 Browser cookie</h6><pre class="sess-pre" id="sess-cookie">—</pre></div>
+                            <div class="sess-col"><h6>🗄️ Server session store</h6><pre class="sess-pre" id="sess-store">{ }</pre></div>
+                        </div>
+                    </div>
+                    <div class="callout tip">
+                        <i class="fas fa-lightbulb"></i>
+                        <p>Try <b class="kw">/profile</b> first — you're a Guest because there's no cookie. Then <b class="kw">/login</b> (a session appears on both
+                        sides), <b class="kw">/profile</b> again (recognised!), and <b class="kw">/logout</b> — the store empties and the cookie is cleared.</p>
+                    </div>
+                </section>
+
+                <!-- 9. HASHING -->
+                <section id="hashing">
+                    <h2><span class="section-num">9</span> Never store raw passwords — hash them</h2>
+                    <div class="key-strip">
+                        <span class="key-label">Hashing</span>
+                        <span class="key-chip good">one-way</span>
+                        <span class="key-chip">deterministic</span>
+                        <span class="key-chip warm">bcrypt + salt</span>
+                    </div>
+                    <div class="callout def">
+                        <i class="fas fa-hashtag"></i>
+                        <p>A <strong>cryptographic hash function</strong> turns any input into a fixed-length string that is <b class="kw">one-way</b> —
+                        you can't reverse it back to the original. Store the <em>hash</em> of a password, never the password itself.</p>
+                    </div>
+                    <p>Type a password and watch its hash. Change one letter — the whole hash changes (the <em>avalanche</em> effect):</p>
+                    <div class="hash-lab glass-panel" id="hash-lab">
+                        <div class="hash-row">
+                            <label>password</label>
+                            <input id="hash-in" value="anime123" spellcheck="false" aria-label="password to hash">
+                        </div>
+                        <div class="hash-out">
+                            <span class="ho-label">hash</span>
+                            <code id="hash-out"></code>
+                        </div>
+                        <div class="hash-notes" id="hash-notes"></div>
+                    </div>
+                    <div class="board-line"><i class="fas fa-shield-halved"></i>
+                        <span><span class="b">bcrypt</span> adds a random <span class="b">salt</span>, so two identical passwords hash <span class="b">differently</span> — and it's deliberately slow to resist guessing.</span>
+                    </div>
+                    <p>That's why we install <span class="inline-code">bcryptjs</span>. You <b class="kw">hash</b> on registration and <b class="kw">compare</b> on login — never decrypt:</p>
+                    <div class="code-block runner">
+                        <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">hash.js</span></div>
+                        <pre><code>const bcrypt = require("bcryptjs");
+
+// REGISTER — hash the password before saving it
+const hash = bcrypt.hashSync("anime123", 10);   // 10 = salt rounds
+console.log("stored hash:", hash);
+
+// note: hashing the SAME password again gives a DIFFERENT hash (salt!)
+console.log("again:      ", bcrypt.hashSync("anime123", 10));
+
+// LOGIN — compare the typed password against the stored hash
+console.log("correct pw →", bcrypt.compareSync("anime123", hash));
+console.log("wrong   pw →", bcrypt.compareSync("password", hash));</code></pre>
+                        <div class="code-actions"><button class="run-btn"><i class="fas fa-play"></i> Run</button><button class="clear-btn">Clear</button></div>
+                        <div class="run-out" aria-live="polite"></div>
+                    </div>
+                    <div class="callout warn">
+                        <i class="fas fa-flask-vial"></i>
+                        <p><strong>Teaching emulator.</strong> This page uses a simplified hash so it runs in your browser. Real <span class="inline-code">bcryptjs</span>
+                        uses the Blowfish-based bcrypt algorithm — same idea (salted, one-way, slow), stronger maths.</p>
+                    </div>
+                </section>
+
+                <!-- 10. TOKEN -->
+                <section id="token">
+                    <h2><span class="section-num">10</span> Token authentication</h2>
+                    <div class="key-strip">
+                        <span class="key-label">A token is…</span>
+                        <span class="key-chip">encrypted</span>
+                        <span class="key-chip">compact</span>
+                        <span class="key-chip warm">short-lived</span>
+                    </div>
+                    <div class="callout def">
+                        <i class="fas fa-ticket"></i>
+                        <p>A <strong>token</strong> is a digital credential that proves your identity to a system — <b class="kw">encrypted</b>,
+                        <b class="kw">compact</b>, and <b class="kw">short-lived</b>. Think of it as a festival wristband: flash it, don't re-buy your ticket.</p>
+                    </div>
+                    <ol class="tight">
+                        <li><b class="kw">Login</b> — the user signs in with credentials <em>once</em>.</li>
+                        <li><b class="kw">Receive token</b> — on success, the server issues an auth token.</li>
+                        <li><b class="kw">Authenticate</b> — the token is sent on subsequent requests; no password re-entry.</li>
+                        <li><b class="kw">Expiration</b> — tokens are time-sensitive and expire after a set period.</li>
+                    </ol>
+                    <h3><i class="fas fa-scale-balanced"></i> Session vs token</h3>
+                    <div class="table-wrap">
+                        <table class="doc-table">
+                            <thead><tr><th></th><th>Session auth</th><th>Token auth</th></tr></thead>
+                            <tbody>
+                                <tr><td>State kept on</td><td>the <b>server</b> (a session store)</td><td><b>nowhere</b> — the token itself carries it (stateless)</td></tr>
+                                <tr><td>Client stores</td><td>a session-id cookie</td><td>the whole token (header/localStorage)</td></tr>
+                                <tr><td>Scales to many servers</td><td>needs shared session storage</td><td>easy — any server can verify the signature</td></tr>
+                                <tr><td>Great for</td><td>server-rendered sites</td><td>APIs, mobile apps, SPAs</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="callout tip">
+                        <i class="fas fa-lock"></i>
+                        <p><strong>Why tokens are considered secure:</strong> they're <b class="kw">encrypted/signed</b>, they have a <b class="kw">limited lifespan</b>,
+                        and the server does <b class="kw">not store your password</b> to check them.</p>
+                    </div>
+                </section>
+
+                <!-- 11. JWT -->
+                <section id="jwt">
+                    <h2><span class="section-num">11</span> JSON Web Tokens (JWT)</h2>
+                    <div class="key-strip">
+                        <span class="key-label">JWT structure</span>
+                        <span class="key-chip bad">header</span>
+                        <span class="key-chip" style="color:#c792ea;border-color:rgba(199,146,234,.4);background:rgba(199,146,234,.08)">payload (claims)</span>
+                        <span class="key-chip good">signature</span>
+                    </div>
+                    <div class="callout def">
+                        <i class="fas fa-passport"></i>
+                        <p>A <strong>JSON Web Token</strong> (pronounced "jot") is a string the server produces that <b class="kw">encodes JSON data</b>. It has three
+                        dot-separated parts: <span class="inline-code">header</span>.<span class="inline-code">payload</span>.<span class="inline-code">signature</span>.
+                        The payload holds <b class="kw">claims</b> (like your username); the signature proves it wasn't tampered with.</p>
+                    </div>
+                    <p>Forge a token, decode its parts, then <b class="kw">tamper</b> with the payload and hit <b class="kw">Verify</b> — the signature check catches it:</p>
+                    <div class="jwt-lab glass-panel" id="jwt-lab">
+                        <div class="jwt-controls">
+                            <label for="jwt-payload">payload (claims) — valid JSON</label>
+                            <textarea id="jwt-payload" spellcheck="false">{ "username": "Light", "role": "admin" }</textarea>
+                            <div class="jwt-inline">
+                                <label for="jwt-secret" style="margin:0">secret</label>
+                                <input id="jwt-secret" value="supersecret" spellcheck="false">
+                                <button id="jwt-do-sign" class="run-btn"><i class="fas fa-signature"></i> Sign</button>
+                            </div>
+                        </div>
+                        <div class="jwt-token" id="jwt-token"></div>
+                        <div class="jwt-decoded">
+                            <div class="jwt-part head"><div class="jpt">header</div><pre id="jwt-head"></pre></div>
+                            <div class="jwt-part payl"><div class="jpt">payload</div><pre id="jwt-body"></pre></div>
+                            <div class="jwt-part sign"><div class="jpt">signature</div><pre id="jwt-sign-out"></pre></div>
+                        </div>
+                        <div class="jwt-verify-row">
+                            <button id="jwt-do-verify" class="run-btn"><i class="fas fa-check-double"></i> Verify</button>
+                            <button id="jwt-do-tamper" class="clear-btn"><i class="fas fa-user-ninja"></i> Tamper with payload</button>
+                            <span class="jwt-result" id="jwt-result"></span>
+                        </div>
+                    </div>
+
+                    <h3><i class="fas fa-code"></i> The <span class="inline-code">jsonwebtoken</span> module</h3>
+                    <div class="code-block">
+                        <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">install</span></div>
+                        <pre><code>npm install jsonwebtoken</code></pre>
+                    </div>
+                    <p>Run it — sign a token, then verify it. Then change the secret in <span class="inline-code">verify</span> and watch it reject the token:</p>
+                    <div class="code-block runner">
+                        <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">jwt.js</span></div>
+                        <pre><code>const jwt = require("jsonwebtoken");
+
+const secret  = "supersecret";
+const payload = { username: "Light" };
+
+// sign → the string handed to the client after login
+const token = jwt.sign(payload, secret, { algorithm: "HS256" });
+console.log("Token:", token);
+
+// verify → checks the signature, returns the decoded claims
+const decoded = jwt.verify(token, secret, { algorithms: ["HS256"] });
+console.log("Decoded username:", decoded.username);
+
+// tamper check — a wrong secret fails verification
+try {
+  jwt.verify(token, "WRONG-secret");
+} catch (e) {
+  console.log("Rejected:", e.message);
+}</code></pre>
+                        <div class="code-actions"><button class="run-btn"><i class="fas fa-play"></i> Run</button><button class="clear-btn">Clear</button></div>
+                        <div class="run-out" aria-live="polite"></div>
+                    </div>
+                    <div class="callout warn">
+                        <i class="fas fa-eye"></i>
+                        <p><strong>Signed, not secret.</strong> A JWT's header &amp; payload are only <b class="kw">base64-encoded</b> — anyone can read them.
+                        The signature stops <em>tampering</em>, not <em>reading</em>. Never put passwords or secrets in a JWT payload.</p>
+                    </div>
+                </section>
+
+                <!-- 12. DEPLOY GITHUB -->
+                <section id="deploy-github">
+                    <h2><span class="section-num">12</span> Deploying with GitHub</h2>
+                    <div class="board-line"><i class="fab fa-github"></i>
+                        <span>Your code goes <span class="b">online</span> on GitHub first — that's what deployment platforms connect to.</span>
+                    </div>
+                    <ul class="tight">
+                        <li><b class="kw">Store</b> your project online and <b class="kw">track changes</b> with version control.</li>
+                        <li><b class="kw">Connect easily</b> to deployment platforms (like Render).</li>
+                    </ul>
+                    <p>Before you push, tick the pre-flight checklist (click each item):</p>
+                    <ul class="deploy-check" id="deploy-check">
+                        <li><span class="dc-box"></span><span>Add a <code>.gitignore</code> that excludes <code>node_modules</code><small>Dependencies are re-installed by the host — don't commit them.</small></span></li>
+                        <li><span class="dc-box"></span><span>Never commit secrets — keep them in <code>.env</code><small>Connection strings, JWT secrets and API keys stay out of git.</small></span></li>
+                        <li><span class="dc-box"></span><span>Read the port dynamically: <code>process.env.PORT || 3000</code><small>The host assigns a port; hard-coding 3000 breaks deploys.</small></span></li>
+                        <li><span class="dc-box"></span><span>Use a cloud database — <b>MongoDB Atlas</b> is online<small>A local DB isn't reachable from Render.</small></span></li>
+                        <li><span class="dc-box"></span><span>Make sure the project <b>runs locally</b> before pushing<small>If it doesn't start on your machine, it won't start on theirs.</small></span></li>
+                    </ul>
+                    <div class="dc-status" id="dc-status"></div>
+                </section>
+
+                <!-- 13. DEPLOY RENDER -->
+                <section id="deploy-render">
+                    <h2><span class="section-num">13</span> Deploying with Render 🚀</h2>
+                    <div class="key-strip">
+                        <span class="key-label">Render steps</span>
+                        <span class="key-chip">New → Web Service</span>
+                        <span class="key-chip">connect repo</span>
+                        <span class="key-chip good">npm install</span>
+                        <span class="key-chip good">node app.js</span>
+                    </div>
+                    <ol class="tight">
+                        <li>Go to <a href="https://render.com/" target="_blank" rel="noopener">render.com</a> and create an account.</li>
+                        <li>Click <b class="kw">New → Web Service</b>.</li>
+                        <li><b class="kw">Connect your GitHub repository</b>.</li>
+                        <li>Configure the commands: build <span class="inline-code">npm install</span>, start <span class="inline-code">node app.js</span>.</li>
+                        <li>Make sure your <b class="kw">MongoDB is online</b> (Atlas) and the <b class="kw">port is dynamic</b>.</li>
+                    </ol>
+                    <div class="code-block">
+                        <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">app.js — the one line that matters for deploy</span></div>
+                        <pre><code>const PORT = process.env.PORT || 3000;   // Render sets PORT for you
+app.listen(PORT, () =&gt; console.log("Live on port " + PORT));</code></pre>
+                    </div>
+                    <p>Hit deploy and watch Render build your app — it ends with a <b class="kw">live URL</b> anyone can visit:</p>
+                    <div class="render-lab glass-panel" id="render-lab">
+                        <div class="term">
+                            <div class="term-head"><span class="dot" style="background:#ff5f57"></span><span class="dot" style="background:#febc2e"></span><span class="dot" style="background:#28c840"></span><span style="margin-left:6px">render.com · deploy log</span></div>
+                            <div id="render-body"></div>
+                        </div>
+                        <div class="render-actions"><button id="render-deploy" class="run-btn"><i class="fas fa-rocket"></i> Deploy to Render</button></div>
+                    </div>
+                    <div class="callout tip">
+                        <i class="fas fa-circle-check"></i>
+                        <p><strong>After deployment</strong> Render gives you a live URL like <span class="inline-code">https://anime-collection.onrender.com</span>
+                        — your full-stack app, running for the world. That's the finish line. 🏁</p>
+                    </div>
+                </section>
+
+                <!-- 14. TAKEAWAYS -->
+                <section id="takeaways">
+                    <h2><span class="section-num">14</span> Key takeaways</h2>
+                    <ol class="takeaways">
+                        <li><b class="kw">HTTP is stateless</b> — each request starts fresh, so we transfer identity with <b class="kw">sessions</b> or <b class="kw">tokens</b>.</li>
+                        <li><b class="kw">Authentication</b> verifies who you are. <b class="kw">Basic</b> (creds every request) is insecure; use <b class="kw">Session</b> or <b class="kw">Token</b>.</li>
+                        <li><b class="kw">Session auth</b>: log in once → the server stores a session and the browser holds a <b class="kw">session-id cookie</b> it sends every request.</li>
+                        <li><b class="kw">Cookies</b> live in the browser (small, user-editable, can be disabled); <b class="kw">sessions</b> live on the server (bigger, safe, expire on close).</li>
+                        <li>In Express: <span class="inline-code">app.use(session(...))</span>, then read/write <span class="inline-code">req.session</span>; end it with <span class="inline-code">req.session.destroy()</span>.</li>
+                        <li>Never store raw passwords — <b class="kw">hash</b> them with <b class="kw">bcrypt</b> (salted, one-way): <span class="inline-code">hashSync</span> to register, <span class="inline-code">compareSync</span> to log in.</li>
+                        <li>A <b class="kw">JWT</b> is a signed <span class="inline-code">header.payload.signature</span>. <span class="inline-code">jwt.sign()</span> issues it; <span class="inline-code">jwt.verify()</span> checks the signature — tampering is rejected.</li>
+                        <li><b class="kw">Deploy</b>: push clean code to <b class="kw">GitHub</b> (.gitignore, no secrets, dynamic PORT, cloud DB), connect it on <b class="kw">Render</b>, get a live URL. 🚀</li>
+                    </ol>
+                </section>
+
+                <!-- 15. QUIZ -->
+                <section id="quiz">
+                    <h2><span class="section-num">15</span> Self-check quiz</h2>
+                    <p class="section-lede">No grades, instant feedback. Ten questions across the whole finale — sessions, hashing, JWT and deployment.</p>
+
+                    <div class="quiz-q" data-answer="1">
+                        <h4><span class="q-num">Q1.</span> Why does a web app need sessions or tokens at all?</h4>
+                        <button class="quiz-opt">Because JavaScript can't do maths across requests</button>
+                        <button class="quiz-opt">Because HTTP is stateless — the server forgets everything between requests</button>
+                        <button class="quiz-opt">Because databases are too slow to use directly</button>
+                        <div class="quiz-feedback">Each request runs the app <strong>from scratch</strong> with no memory of the last one — it can't even tell if two requests came from the same user. Sessions/tokens carry identity across that gap.</div>
+                    </div>
+
+                    <div class="quiz-q" data-answer="2">
+                        <h4><span class="q-num">Q2.</span> Which authentication method sends the username &amp; password on <em>every</em> request and is considered very insecure?</h4>
+                        <button class="quiz-opt">Session authentication</button>
+                        <button class="quiz-opt">Token authentication</button>
+                        <button class="quiz-opt">Basic authentication</button>
+                        <div class="quiz-feedback"><strong>Basic auth</strong> attaches credentials to every request and has no login/logout — modern apps avoid it in favour of sessions or tokens.</div>
+                    </div>
+
+                    <div class="quiz-q" data-answer="0">
+                        <h4><span class="q-num">Q3.</span> In session authentication, where is the session <em>data</em> kept, and what does the browser hold?</h4>
+                        <button class="quiz-opt">Data on the server; the browser holds a session-id cookie</button>
+                        <button class="quiz-opt">All the data in the cookie; the server holds nothing</button>
+                        <button class="quiz-opt">Data in the URL; the browser holds a token</button>
+                        <div class="quiz-feedback">The <strong>server</strong> stores the session; the browser only carries the <strong>session id</strong> in a cookie and sends it back with every request.</div>
+                    </div>
+
+                    <div class="quiz-q" data-answer="1">
+                        <h4><span class="q-num">Q4.</span> Which statement about <em>cookies</em> vs <em>sessions</em> is correct?</h4>
+                        <button class="quiz-opt">Sessions live in the browser and are limited to ~4&nbsp;KB</button>
+                        <button class="quiz-opt">Cookies live client-side and can be disabled; sessions live server-side and users can't modify them</button>
+                        <button class="quiz-opt">Cookies can't be read by the user; sessions can</button>
+                        <div class="quiz-feedback">Cookies are <strong>client-side</strong> (small, user-editable, can be turned off). Sessions are <strong>server-side</strong> (limited by server space, safe from user tampering, expire when the browser closes).</div>
+                    </div>
+
+                    <div class="quiz-q" data-answer="2">
+                        <h4><span class="q-num">Q5.</span> Which line ends a user's session in Express?</h4>
+                        <button class="quiz-opt"><span class="inline-code">req.session = null</span></button>
+                        <button class="quiz-opt"><span class="inline-code">res.end()</span></button>
+                        <button class="quiz-opt"><span class="inline-code">req.session.destroy()</span></button>
+                        <div class="quiz-feedback"><span class="inline-code">req.session.destroy()</span> clears the server-side session — the standard way to log a user out.</div>
+                    </div>
+
+                    <div class="quiz-q" data-answer="0">
+                        <h4><span class="q-num">Q6.</span> Why do we store a <em>hash</em> of a password instead of the password itself?</h4>
+                        <button class="quiz-opt">Hashing is one-way — even if the database leaks, the real passwords aren't exposed</button>
+                        <button class="quiz-opt">Hashes are shorter so they save disk space</button>
+                        <button class="quiz-opt">So we can email the password back to the user later</button>
+                        <div class="quiz-feedback">A cryptographic hash is <strong>one-way</strong> — you can't reverse it. On login you <span class="inline-code">compare</span> the typed password's hash to the stored one; you never decrypt anything.</div>
+                    </div>
+
+                    <div class="quiz-q" data-answer="1">
+                        <h4><span class="q-num">Q7.</span> What is the correct order of a JWT's three parts?</h4>
+                        <button class="quiz-opt">signature . payload . header</button>
+                        <button class="quiz-opt">header . payload . signature</button>
+                        <button class="quiz-opt">payload . signature . header</button>
+                        <div class="quiz-feedback">A JWT is <span class="inline-code">header.payload.signature</span> — three base64url parts joined by dots. The payload carries the claims; the signature proves integrity.</div>
+                    </div>
+
+                    <div class="quiz-q" data-answer="2">
+                        <h4><span class="q-num">Q8.</span> A JWT arrives with its payload edited but the original signature. <span class="inline-code">jwt.verify()</span> will…</h4>
+                        <button class="quiz-opt">Accept it — the payload is what matters</button>
+                        <button class="quiz-opt">Silently fix the signature</button>
+                        <button class="quiz-opt">Reject it — the signature no longer matches the payload</button>
+                        <div class="quiz-feedback">The signature is computed over <span class="inline-code">header.payload</span> with the secret. Change the payload and the recomputed signature won't match — <span class="inline-code">verify</span> throws. That's the whole point.</div>
+                    </div>
+
+                    <div class="quiz-q" data-answer="0">
+                        <h4><span class="q-num">Q9.</span> Which of these should you set so your app works after deploying to Render?</h4>
+                        <button class="quiz-opt"><span class="inline-code">const PORT = process.env.PORT || 3000;</span></button>
+                        <button class="quiz-opt"><span class="inline-code">const PORT = 3000; // always</span></button>
+                        <button class="quiz-opt"><span class="inline-code">const PORT = "localhost";</span></button>
+                        <div class="quiz-feedback">The host assigns a port at runtime via <span class="inline-code">process.env.PORT</span>. Read it dynamically (falling back to 3000 locally) or the deploy won't bind correctly.</div>
+                    </div>
+
+                    <div class="quiz-q" data-answer="1">
+                        <h4><span class="q-num">Q10.</span> Before pushing to GitHub for deployment, which is a must-do?</h4>
+                        <button class="quiz-opt">Commit <span class="inline-code">node_modules</span> so the host doesn't reinstall</button>
+                        <button class="quiz-opt">Add a <span class="inline-code">.gitignore</span> and keep secrets out of the repo (use <span class="inline-code">.env</span>)</button>
+                        <button class="quiz-opt">Hard-code your MongoDB password in <span class="inline-code">app.js</span></button>
+                        <div class="quiz-feedback">Exclude <span class="inline-code">node_modules</span> with <span class="inline-code">.gitignore</span> (the host reinstalls it) and <strong>never</strong> commit secrets — connection strings and JWT secrets live in <span class="inline-code">.env</span>.</div>
+                    </div>
+                </section>
+
+                <!-- 16. READING + CHEAT SHEET -->
+                <section id="reading">
+                    <h2><span class="section-num">16</span> Reading &amp; cheat sheet</h2>
+                    <div class="callout def">
+                        <i class="fas fa-graduation-cap"></i>
+                        <p><strong>Brightspace — Week 13.</strong> A complete step-by-step <b class="kw">token-based authentication &amp; full-stack deployment</b>
+                        tutorial, plus all the files zipped, are posted under Week 13.</p>
+                    </div>
+
+                    <h3><i class="fas fa-file-arrow-down"></i> Grab the Auth &amp; Deploy cheat sheet</h3>
+                    <div class="poster-grid" style="grid-template-columns: 1fr;">
+                        <div class="poster-card" style="max-width: 520px;">
+                            <div class="pc-title"><span class="pc-emoji">🔐</span> Sessions, JWT &amp; Deploy</div>
+                            <div class="poster-frame">
+                                <img src="auth-cheatsheet.svg" alt="Week 13 one-page cheat sheet: stateless HTTP, session auth flow, express-session setup, bcrypt hashing, JWT sign and verify, cookies vs sessions, deploy checklist and Render steps"
+                                     loading="lazy" width="820" height="1100">
+                            </div>
+                            <div class="poster-actions-row">
+                                <a class="run-btn" href="auth-cheatsheet.svg" download="auth-cheatsheet.svg"><i class="fas fa-download"></i> Download</a>
+                                <a class="clear-btn" href="auth-cheatsheet.svg" target="_blank" rel="noopener"><i class="fas fa-up-right-from-square"></i> Open / print</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <ul class="tight">
+                        <li><a href="https://www.npmjs.com/package/express-session" target="_blank" rel="noopener">express-session — docs</a></li>
+                        <li><a href="https://www.npmjs.com/package/jsonwebtoken" target="_blank" rel="noopener">jsonwebtoken — docs</a> · <a href="https://jwt.io/" target="_blank" rel="noopener">jwt.io</a> (decode real tokens)</li>
+                        <li><a href="https://www.npmjs.com/package/bcryptjs" target="_blank" rel="noopener">bcryptjs — docs</a></li>
+                        <li><a href="https://render.com/docs/deploy-node-express-app" target="_blank" rel="noopener">Render — deploy a Node/Express app</a></li>
+                    </ul>
+                    <div class="board-line"><i class="fas fa-trophy"></i>
+                        <span><span class="b">Capstone:</span> add login/logout to your <a href="../week11/anime-collection/index.html" style="color:var(--primary-accent)">Anime Collection app</a>, store users in MongoDB with hashed passwords, then deploy it to Render.</span>
+                    </div>
+
+                    <div class="doc-pager">
+                        <a class="pager-link" href="../week12/index.html">
+                            <span class="pager-dir"><i class="fas fa-arrow-left"></i> Previous island</span>
+                            <span class="pager-title">Week 12 · Databases</span>
+                        </a>
+                        <a class="pager-link next finale" href="../index.html#weeks">
+                            <span class="pager-dir">Journey complete <i class="fas fa-flag-checkered"></i></span>
+                            <span class="pager-title">Back to the Archipelago 🏝️</span>
+                        </a>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-bottom">
+            <p>CST8326 · Week 13 · Sessions, Authentication &amp; Deployment — adapted from the official course slides · &copy; <span id="year"></span> Algonquin College</p>
+        </div>
+    </footer>
+
+    <script>
+        window.ALGO_TIPS = [
+            "Journey's End 🔐 — the final island! Auth, sessions, JWT and going live.",
+            "HTTP forgets you every request. Toggle the goldfish server up top to feel it 🐟",
+            "Session = data on the server, a tiny id in a cookie. Play the handshake!",
+            "Never store raw passwords — hash them with bcrypt. Type in the hash lab 👇",
+            "A JWT is header.payload.signature. Forge one, then tamper with it and verify 😈",
+            "Deploy checklist: .gitignore, no secrets, dynamic PORT, cloud DB. Then Render 🚀",
+            "You made it across every island. Go build something and deploy it! 🏝️"
+        ];
+    </script>
+    <script src="../../assets/js/mascot.js" defer></script>
+    <script src="./week13.js" defer></script>
+    <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+
+</html>

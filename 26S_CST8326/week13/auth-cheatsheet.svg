@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 1100" width="820" height="1100" font-family="'Segoe UI', system-ui, sans-serif">
+  <defs>
+    <linearGradient id="grad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#00e5ff"/>
+      <stop offset="1" stop-color="#b400ff"/>
+    </linearGradient>
+    <style>
+      .code { font-family: 'Courier New', ui-monospace, monospace; font-size: 13px; fill: #d6deeb; }
+      .ct   { font-weight: 700; font-size: 15px; letter-spacing: .5px; }
+      .mut  { fill: #64748b; }
+      .cy { fill: #00e5ff; } .mg { fill: #d98cff; } .gr { fill: #4ade80; }
+      .am { fill: #fbbf24; } .rd { fill: #f87171; } .str { fill: #c3e88d; } .kw { fill: #c792ea; }
+      .card { fill: #0a1122; stroke: rgba(251,191,36,0.22); stroke-width: 1; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="820" height="1100" fill="#050b14"/>
+
+  <!-- header -->
+  <rect x="0" y="0" width="820" height="132" fill="#0a1122"/>
+  <rect x="0" y="131" width="820" height="3" fill="url(#grad)"/>
+  <text x="34" y="88" font-size="44">🔐</text>
+  <text x="100" y="72" font-size="40" font-weight="800" fill="url(#grad)">AUTH &amp; DEPLOY</text>
+  <text x="102" y="99" font-size="16" font-weight="700" letter-spacing="3" fill="#94a3b8">SESSIONS · JWT · GOING LIVE · CHEAT SHEET</text>
+  <text x="786" y="56" text-anchor="end" font-size="14" font-weight="600" fill="#94a3b8">CST8326 · WEEK 13</text>
+  <text x="786" y="80" text-anchor="end" font-size="14" font-weight="600" fill="#fbbf24">Journey's End 🏁</text>
+  <text x="786" y="103" text-anchor="end" font-size="13" fill="#64748b">print me &amp; pin me 📌</text>
+
+  <!-- ============ LEFT COLUMN ============ -->
+
+  <!-- L1 STATELESS -->
+  <rect class="card" x="30" y="150" width="372" height="195" rx="14"/>
+  <text class="ct am" x="48" y="182">🐟  STATELESS HTTP</text>
+  <text class="code mut" x="48" y="214">// HTTP has no memory</text>
+  <text class="code" x="48" y="242">each request = a fresh start</text>
+  <text class="code" x="48" y="270">can't tell WHO sent it</text>
+  <text class="code am" x="48" y="306">fix → sessions or tokens</text>
+  <text class="code mut" x="48" y="334">carry identity across requests</text>
+
+  <!-- L2 SESSION AUTH -->
+  <rect class="card" x="30" y="365" width="372" height="195" rx="14"/>
+  <text class="ct cy" x="48" y="397">🔑  SESSION AUTH FLOW</text>
+  <text class="code" x="48" y="427"><tspan class="am">1.</tspan> POST /login (user + pass)</text>
+  <text class="code" x="48" y="455"><tspan class="am">2.</tspan> server makes a session id</text>
+  <text class="code" x="48" y="483"><tspan class="am">3.</tspan> Set-Cookie: connect.sid</text>
+  <text class="code" x="48" y="511"><tspan class="am">4.</tspan> browser sends it back</text>
+  <text class="code mut" x="48" y="539">every request → "it's you"</text>
+
+  <!-- L3 EXPRESS-SESSION -->
+  <rect class="card" x="30" y="580" width="372" height="195" rx="14"/>
+  <text class="ct mg" x="48" y="612">⚙️  EXPRESS-SESSION</text>
+  <text class="code" x="48" y="642"><tspan class="mut">$</tspan> npm i express-session</text>
+  <text class="code" x="48" y="670">app.use(session({ <tspan class="am">secret</tspan>,</text>
+  <text class="code" x="48" y="698">   resave:<tspan class="am">false</tspan> }))</text>
+  <text class="code" x="48" y="726">req.session.user = <tspan class="str">"Light"</tspan></text>
+  <text class="code" x="48" y="758">req.session.<tspan class="rd">destroy</tspan>() <tspan class="mut">// logout</tspan></text>
+
+  <!-- L4 BCRYPT -->
+  <rect class="card" x="30" y="795" width="372" height="195" rx="14"/>
+  <text class="ct gr" x="48" y="827">🧂  BCRYPT · hash passwords</text>
+  <text class="code" x="48" y="857"><tspan class="mut">$</tspan> npm i bcryptjs</text>
+  <text class="code" x="48" y="885">h = bcrypt.<tspan class="gr">hashSync</tspan>(pw, 10)</text>
+  <text class="code" x="48" y="913">bcrypt.<tspan class="gr">compareSync</tspan>(pw, h)</text>
+  <text class="code mut" x="48" y="941">one-way · salted · slow</text>
+  <text class="code rd" x="48" y="969">never store raw passwords</text>
+
+  <!-- ============ RIGHT COLUMN ============ -->
+
+  <!-- R1 COOKIES vs SESSIONS -->
+  <rect class="card" x="418" y="150" width="372" height="195" rx="14"/>
+  <text class="ct am" x="436" y="182">🍪  COOKIES vs SESSIONS</text>
+  <text class="code cy" x="436" y="214">Cookies — client-side</text>
+  <text class="code" x="436" y="242">~4KB · editable · disable-able</text>
+  <text class="code mg" x="436" y="278">Sessions — server-side</text>
+  <text class="code" x="436" y="306">safe · big · die on close</text>
+  <text class="code mut" x="436" y="334">cookie usually holds the id</text>
+
+  <!-- R2 JWT STRUCTURE -->
+  <rect class="card" x="418" y="365" width="372" height="195" rx="14"/>
+  <text class="ct cy" x="436" y="397">🎫  JWT STRUCTURE</text>
+  <text class="code" x="436" y="427"><tspan class="rd">header</tspan> . <tspan class="kw">payload</tspan> . <tspan class="cy">signature</tspan></text>
+  <text class="code" x="436" y="459"><tspan class="rd">header</tspan> → alg / typ</text>
+  <text class="code" x="436" y="487"><tspan class="kw">payload</tspan> → claims (username)</text>
+  <text class="code" x="436" y="515"><tspan class="cy">signature</tspan> → proves integrity</text>
+  <text class="code mut" x="436" y="543">base64 = readable, just signed</text>
+
+  <!-- R3 JSONWEBTOKEN -->
+  <rect class="card" x="418" y="580" width="372" height="195" rx="14"/>
+  <text class="ct mg" x="436" y="612">🔏  JSONWEBTOKEN</text>
+  <text class="code" x="436" y="642"><tspan class="mut">$</tspan> npm i jsonwebtoken</text>
+  <text class="code" x="436" y="674">t = jwt.<tspan class="gr">sign</tspan>(payload, secret)</text>
+  <text class="code" x="436" y="702">jwt.<tspan class="gr">verify</tspan>(t, secret)</text>
+  <text class="code mut" x="436" y="734">→ returns the decoded claims</text>
+  <text class="code rd" x="436" y="762">wrong secret / edit → throws</text>
+
+  <!-- R4 DEPLOY -->
+  <rect class="card" x="418" y="795" width="372" height="195" rx="14"/>
+  <text class="ct gr" x="436" y="827">🚀  DEPLOY · GitHub → Render</text>
+  <text class="code" x="436" y="857">.gitignore → <tspan class="am">node_modules</tspan></text>
+  <text class="code" x="436" y="885">secrets in <tspan class="am">.env</tspan> (never commit)</text>
+  <text class="code" x="436" y="913">PORT = process.env.PORT||3000</text>
+  <text class="code" x="436" y="941">DB online → <tspan class="gr">Atlas</tspan></text>
+  <text class="code" x="436" y="969">Render: New → Web Service</text>
+
+  <!-- footer -->
+  <rect x="0" y="1000" width="820" height="100" fill="#0a1122"/>
+  <rect x="0" y="1000" width="820" height="2" fill="url(#grad)"/>
+  <text x="30" y="1044" font-size="15" font-weight="600" fill="#e2e8f0">🔐 sign in once → carry a cookie or a token → the server knows it's you</text>
+  <text x="30" y="1070" font-size="13" fill="#64748b">Never store raw passwords · sessions expire · JWTs are signed, not secret · ship it 🚀</text>
+  <text x="790" y="1044" text-anchor="end" font-size="15" font-weight="700" fill="#fbbf24">qasim.dev · CST8326</text>
+  <text x="790" y="1070" text-anchor="end" font-size="13" fill="#64748b">The Web Archipelago · Journey's End 🏁</text>
+</svg>
