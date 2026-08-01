@@ -1,0 +1,16 @@
+{
+  "name": "anime-collection-auth",
+  "version": "1.0.0",
+  "description": "The Week 11 Anime Collection MVC app + a simple session login/logout — CST8326 Week 13",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "pug": "^3.0.3",
+    "express-session": "^1.18.1",
+    "bcryptjs": "^2.4.3"
+  }
+}

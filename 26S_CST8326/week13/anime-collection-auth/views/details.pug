@@ -1,0 +1,11 @@
+extends layout
+
+block content
+  h1= anime.title
+  p.rating-big ★ #{anime.rating}/10
+  if user
+    form.inline(action=`/anime/${anime.id}/delete` method="POST")
+      button.btn.danger(type="submit") Delete
+  else
+    p.hint 🔒 Log in to delete anime.
+  a.back(href="/") ← Back to list

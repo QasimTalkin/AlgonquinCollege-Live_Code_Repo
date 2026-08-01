@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project · Anime Collection + Login (MVC) | CST8326 Week 13</title>
+    <meta name="description"
+        content="The Week 11 Anime Collection MVC app, upgraded with a simple session login/logout using express-session and bcrypt. Play it live in your browser, then build the auth flow file by file.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔑</text></svg>">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;600;800;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="../../../assets/css/styles.css">
+    <link rel="stylesheet" href="../../assets/course.css">
+
+    <style>
+        /* ---- mini-browser chrome ---- */
+        .app-window {
+            border-radius: var(--radius-md); overflow: hidden; margin: 6px 0 4px;
+            border: 1px solid var(--code-border); background: #0f1420;
+            box-shadow: 0 16px 50px rgba(0, 0, 0, 0.45);
+        }
+        .app-bar {
+            display: flex; align-items: center; gap: 10px; padding: 10px 14px; flex-wrap: wrap;
+            background: rgba(255, 255, 255, 0.03); border-bottom: 1px solid var(--glass-border);
+        }
+        .app-bar .dot { width: 11px; height: 11px; border-radius: 50%; }
+        .app-bar .dot.r { background: #ff5f57; } .app-bar .dot.y { background: #febc2e; } .app-bar .dot.g { background: #28c840; }
+        .app-nav {
+            font-family: var(--font-heading); font-size: 0.75rem; font-weight: 600; cursor: pointer;
+            padding: 5px 12px; border-radius: var(--radius-full); background: transparent;
+            border: 1px solid var(--glass-border); color: var(--text-secondary); transition: var(--transition-fast);
+        }
+        .app-nav:hover { color: var(--primary-accent); border-color: var(--primary-accent); }
+        .app-addr {
+            flex: 1; min-width: 140px; font-family: var(--font-mono); font-size: 0.78rem;
+            color: var(--text-secondary); background: rgba(0, 0, 0, 0.3);
+            padding: 5px 12px; border-radius: var(--radius-full); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .app-foot { padding: 8px 14px; border-top: 1px solid var(--glass-border); background: #0b0f18; }
+        .app-req { font-family: var(--font-mono); font-size: 0.74rem; }
+        .app-req.ok { color: var(--ok); } .app-req.bad { color: var(--err); }
+
+        /* ---- the live app screen (scoped copy of public/css/style.css) ---- */
+        .app-screen {
+            min-height: 340px; background: #0f1420; color: #e8ecf4;
+            font-family: system-ui, -apple-system, "Segoe UI", sans-serif; line-height: 1.6;
+        }
+        .app-screen .site-header {
+            display: flex; justify-content: space-between; align-items: center; gap: 12px;
+            padding: 14px 20px; background: #151b28; border-bottom: 2px solid #7c5cff; flex-wrap: wrap;
+        }
+        .app-screen .brand { font-weight: 800; font-size: 1.1rem; color: #e8ecf4; text-decoration: none; }
+        .app-screen .nav-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+        .app-screen .user-badge { color: #00e5ff; font-weight: 600; font-size: 0.9rem; }
+        .app-screen .loginlink { color: #9aa6bd; text-decoration: none; font-weight: 600; }
+        .app-screen .loginlink:hover { color: #00e5ff; }
+        .app-screen .logout-form { margin: 0; }
+        .app-screen .linkbtn {
+            background: transparent; border: 1px solid #2a3346; color: #9aa6bd;
+            padding: 6px 13px; border-radius: 8px; font: inherit; font-weight: 600; cursor: pointer;
+        }
+        .app-screen .linkbtn:hover { color: #e8ecf4; border-color: #9aa6bd; }
+        .app-screen .container { max-width: 620px; margin: 0 auto; padding: 24px 20px; }
+        .app-screen h1 { margin: 0 0 16px; color: #fff; font-size: 1.5rem; }
+        .app-screen .btn {
+            display: inline-block; background: #7c5cff; color: #fff; text-decoration: none;
+            padding: 8px 16px; border-radius: 8px; border: none; font: inherit; font-weight: 600; cursor: pointer;
+        }
+        .app-screen .btn:hover { filter: brightness(1.12); }
+        .app-screen .btn.danger { background: #e5484d; }
+        .app-screen .anime-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
+        .app-screen .anime-card {
+            display: flex; justify-content: space-between; align-items: center; gap: 12px; margin: 0;
+            background: #1a2130; padding: 15px 18px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: transform .15s, border-color .15s;
+        }
+        .app-screen .anime-card:hover { transform: translateY(-2px); border-color: #00e5ff; }
+        .app-screen .anime-title { color: #00e5ff; font-weight: 700; text-decoration: none; font-size: 1.02rem; }
+        .app-screen .anime-title:hover { text-decoration: underline; }
+        .app-screen .rating { color: #ffcf5c; font-weight: 600; white-space: nowrap; }
+        .app-screen .rating-big { color: #ffcf5c; font-size: 1.4rem; font-weight: 700; }
+        .app-screen .form { display: flex; flex-direction: column; gap: 6px; max-width: 340px; margin: 0; }
+        .app-screen .form label { color: #9aa6bd; font-size: 0.88rem; margin-top: 6px; }
+        .app-screen .form input {
+            padding: 10px 12px; border-radius: 8px; border: 1px solid #2a3346;
+            background: #0f1420; color: #e8ecf4; font: inherit;
+        }
+        .app-screen .form input:focus { outline: none; border-color: #00e5ff; }
+        .app-screen .form .btn { margin-top: 12px; align-self: flex-start; }
+        .app-screen .inline { margin: 12px 0; }
+        .app-screen .error {
+            background: rgba(229, 72, 77, 0.12); border: 1px solid rgba(229, 72, 77, 0.5);
+            color: #ff9ba0; padding: 10px 14px; border-radius: 8px; max-width: 340px;
+        }
+        .app-screen .hint { color: #9aa6bd; font-size: 0.86rem; }
+        .app-screen .back { display: inline-block; margin-top: 16px; color: #9aa6bd; text-decoration: none; }
+        .app-screen .back:hover { color: #00e5ff; }
+        .app-screen .empty { color: #9aa6bd; }
+        .app-screen .site-footer { text-align: center; color: #9aa6bd; padding: 20px; font-size: 0.82rem; }
+
+        /* ---- file tree ---- */
+        .filetree {
+            font-family: var(--font-mono); font-size: 0.85rem; line-height: 1.9; color: var(--text-secondary);
+            background: var(--code-bg); border: 1px solid var(--code-border); border-radius: var(--radius-md);
+            padding: 18px 22px; margin: 18px 0; overflow-x: auto;
+        }
+        .filetree a { color: var(--primary-accent); text-decoration: none; }
+        .filetree a:hover { text-decoration: underline; }
+        .filetree .fdir { color: #fbbf24; }
+        .filetree .fnote { color: #64748b; }
+        .filetree .fnew { color: #34d399; font-weight: 700; }
+        .mvc-tag { color: var(--island-green); font-weight: 700; }
+        .auth-tag { color: #fbbf24; font-weight: 700; }
+    </style>
+</head>
+
+<body>
+    <div id="progress-bar" aria-hidden="true"></div>
+    <div class="bg-shape shape-1"></div>
+    <div class="bg-shape shape-2"></div>
+
+    <nav class="navbar scrolled">
+        <div class="container nav-container">
+            <a href="../../../index.html" class="logo">
+                <span class="logo-text">Qasim<span class="highlight">.dev</span></span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#play">Play it</a></li>
+                <li><a href="#build">Build the login</a></li>
+                <li><a href="../index.html" class="btn-outline"><i class="fas fa-arrow-left"></i> Week 13</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container course-page">
+
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <a href="../../../index.html">Portal</a> <i class="fas fa-chevron-right"></i>
+            <a href="../../index.html">CST8326</a> <i class="fas fa-chevron-right"></i>
+            <a href="../index.html">Week 13 · Auth &amp; Deploy</a> <i class="fas fa-chevron-right"></i>
+            <span class="crumb-here">Project · Anime Collection + Login</span>
+        </nav>
+
+        <header class="course-hero" style="text-align:left; padding-top: 10px;">
+            <div class="course-code-chip"><i class="fas fa-key"></i> GUIDED PROJECT &middot; MVC + AUTH</div>
+            <h1 class="hero-title" style="font-size: clamp(2rem, 5vw, 3.1rem);">
+                Anime Collection <span class="gradient-text">+ Login</span>
+            </h1>
+            <p class="hero-subtitle" style="margin: 0; max-width: 70ch;">
+                It's the same <b class="kw">MVC</b> app from Week 11 — but now it knows <em>who you are</em>. Browsing is open
+                to everyone; <b class="kw">adding</b> and <b class="kw">deleting</b> require a <b class="kw">login</b>. Sessions +
+                bcrypt, added in a handful of small files. Play it, then build the auth. 🔑
+            </p>
+            <div class="key-strip" style="margin-top: 18px;">
+                <span class="key-label">Adds</span>
+                <span class="key-chip good">express-session</span>
+                <span class="key-chip warm">bcryptjs</span>
+                <span class="key-chip">requireLogin guard</span>
+                <span class="key-chip">login · logout</span>
+            </div>
+        </header>
+
+        <!-- ============ PLAY IT ============ -->
+        <section id="play" style="margin-bottom: 40px;">
+            <h2 class="doc-content" style="font-family:var(--font-heading); font-size:1.6rem; margin:10px 0 6px;">
+                <i class="fas fa-gamepad" style="color:var(--primary-accent)"></i> Play the finished app
+            </h2>
+            <div class="board-line"><i class="fas fa-hand-pointer"></i>
+                <span>Try it as a <span class="b">guest</span> first — click <span class="b">+ Add anime</span> and you'll be bounced to the login. Then log in and everything unlocks.</span>
+            </div>
+            <div class="app-window">
+                <div class="app-bar">
+                    <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+                    <button id="app-home" class="app-nav">⌂ Home</button>
+                    <span class="app-addr">🔒 <span id="app-url">localhost:3000/</span></span>
+                    <button id="app-reset" class="app-nav">↻ Reset &amp; log out</button>
+                </div>
+                <div id="app-screen" class="app-screen"></div>
+                <div class="app-foot"><span id="app-status" class="app-req ok"></span></div>
+            </div>
+            <div class="callout tip" style="margin-top:14px;">
+                <i class="fas fa-list-check"></i>
+                <p><strong>Guided tour:</strong> ① click a title to view it (public) · ② click <b class="kw">+ Add anime</b> →
+                <span class="inline-code">requireLogin</span> redirects you to <b class="kw">/login</b> · ③ log in with
+                <b class="kw">sensei</b> / <b class="kw">anime123</b> · ④ now Add &amp; Delete work, and the header shows
+                <b class="kw">👤 sensei · Log out</b> · ⑤ log out and watch the tools lock again. Watch the status line at the bottom.</p>
+            </div>
+        </section>
+
+        <div class="doc-content">
+
+            <!-- ============ WHAT CHANGED ============ -->
+            <section id="whats-new">
+                <h2><i class="fas fa-code-compare" style="color:var(--primary-accent)"></i> What we added to the Week 11 app</h2>
+                <div class="board-line"><i class="fas fa-plus"></i>
+                    <span>The list/add/delete logic is <span class="b">unchanged</span>. We bolted on a session, a login/logout controller, and one guard.</span>
+                </div>
+                <p>Four new files and two small edits turn the open app into an authenticated one. New files are marked <span class="fnew">NEW</span>:</p>
+                <div class="filetree">
+anime-collection-auth/
+├── <a href="app.js" download>app.js</a>                  <span class="fnote"># + session &amp; res.locals.user (edited)</span>
+├── <a href="package.json" download>package.json</a>          <span class="fnote"># + express-session, bcryptjs</span>
+│
+├── <span class="fdir">data/</span>
+│   └── <a href="data/anime.json" download>anime.json</a>        <span class="mvc-tag">← MODEL</span>
+│
+├── <span class="fdir">middleware/</span>       <span class="fnew">← NEW</span>
+│   └── <a href="middleware/requireLogin.js" download>requireLogin.js</a>    <span class="auth-tag">← the route guard</span>
+│
+├── <span class="fdir">controllers/</span>
+│   ├── <a href="controllers/animeController.js" download>animeController.js</a>  <span class="mvc-tag">← CONTROLLER (same)</span>
+│   └── <a href="controllers/authController.js" download>authController.js</a>   <span class="auth-tag">← NEW · login / logout</span>
+│
+├── <span class="fdir">routes/</span>
+│   ├── <a href="routes/anime.js" download>anime.js</a>          <span class="fnote"># + requireLogin on add/delete</span>
+│   └── <a href="routes/auth.js" download>auth.js</a>           <span class="fnew">← NEW</span>
+│
+├── <span class="fdir">views/</span>            <span class="mvc-tag">← VIEW (Pug)</span>
+│   ├── <a href="views/layout.pug" download>layout.pug</a>       <span class="fnote"># session-aware nav (edited)</span>
+│   ├── <a href="views/index.pug" download>index.pug</a>
+│   ├── <a href="views/add.pug" download>add.pug</a>
+│   ├── <a href="views/details.pug" download>details.pug</a>      <span class="fnote"># delete only if logged in</span>
+│   └── <a href="views/login.pug" download>login.pug</a>        <span class="fnew">← NEW</span>
+│
+└── <span class="fdir">public/</span>
+    └── <span class="fdir">css/</span>
+        └── <a href="public/css/style.css" download>style.css</a>
+                </div>
+                <div class="callout def">
+                    <i class="fas fa-route"></i>
+                    <p><strong>The one new idea:</strong> a request to a protected route now passes through
+                    <span class="inline-code">requireLogin</span> <em>first</em>. Logged in? It calls <span class="inline-code">next()</span>
+                    and the controller runs. Not logged in? It <span class="inline-code">res.redirect("/login")</span> and the controller
+                    never runs.</p>
+                </div>
+            </section>
+
+            <!-- ============ BUILD IT ============ -->
+            <section id="build">
+                <h2><i class="fas fa-hammer" style="color:var(--primary-accent)"></i> Build the login, step by step</h2>
+                <p class="section-lede">Start from your finished Week 11 app (or download the files above), then add these pieces.</p>
+
+                <h3><i class="fas fa-1"></i> Install the two new packages</h3>
+                <div class="code-block">
+                    <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">terminal</span></div>
+                    <pre><code>npm install express-session bcryptjs</code></pre>
+                </div>
+                <p><span class="inline-code">express-session</span> stores the logged-in user on the server; <span class="inline-code">bcryptjs</span> hashes passwords so we never store them in plain text.</p>
+
+                <h3><i class="fas fa-2"></i> Turn on sessions — edit <span class="inline-code">app.js</span></h3>
+                <p>Add the session middleware, then a tiny middleware that copies the logged-in user onto <span class="inline-code">res.locals</span> so <em>every</em> view can see it as <span class="inline-code">user</span>.</p>
+                <div class="code-block">
+                    <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">app.js (additions)</span></div>
+                    <pre><code>const session = require("express-session");
+
+app.use(session({
+  secret: "change-me-in-production",  // signs the session-id cookie
+  resave: false,
+  saveUninitialized: false            // don't make a session until login
+}));
+
+// make the logged-in user available to every view as `user`
+app.use((req, res, next) => {
+  res.locals.user = req.session.user || null;
+  next();
+});
+
+// mount the auth routes alongside the anime routes
+app.use("/", require("./routes/auth"));
+app.use("/", require("./routes/anime"));</code></pre>
+                </div>
+
+                <h3><i class="fas fa-3"></i> The auth controller — <span class="inline-code">controllers/authController.js</span> <span class="fnew">NEW</span></h3>
+                <p>This is where hashing lives. We store a demo user whose password is hashed <em>once</em> at startup, then check logins with <span class="inline-code">bcrypt.compareSync</span>.</p>
+                <div class="code-block">
+                    <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">controllers/authController.js</span></div>
+                    <pre><code>const bcrypt = require("bcryptjs");
+
+// In a real app users live in a database (Week 12). We never store the
+// raw password — we hash it. demo → sensei / anime123
+const users = [
+  { username: "sensei", passwordHash: bcrypt.hashSync("anime123", 10) }
+];
+
+// GET /login → show the form
+exports.showLogin = (req, res) => {
+  res.render("login", { title: "Log in", error: null });
+};
+
+// POST /login → check credentials, start a session
+exports.login = (req, res) => {
+  const { username, password } = req.body;
+  const user = users.find(u => u.username === username);
+  if (user && bcrypt.compareSync(password, user.passwordHash)) {
+    req.session.user = { username: user.username };   // ← logged in!
+    return res.redirect("/");
+  }
+  res.status(401).render("login", { title: "Log in", error: "Wrong username or password." });
+};
+
+// POST /logout → destroy the session
+exports.logout = (req, res) => {
+  req.session.destroy(() => res.redirect("/"));
+};</code></pre>
+                </div>
+                <div class="callout warn">
+                    <i class="fas fa-triangle-exclamation"></i>
+                    <p><strong>Why hashing?</strong> If your data ever leaks, the attacker sees a bcrypt hash — not <span class="inline-code">anime123</span>.
+                    You never decrypt a hash; you <span class="inline-code">compare</span> the typed password against it.</p>
+                </div>
+
+                <h3><i class="fas fa-4"></i> The guard — <span class="inline-code">middleware/requireLogin.js</span> <span class="fnew">NEW</span></h3>
+                <div class="code-block">
+                    <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">middleware/requireLogin.js</span></div>
+                    <pre><code>// Only let logged-in users through. Otherwise send them to /login.
+module.exports = function requireLogin(req, res, next) {
+  if (req.session.user) return next();
+  res.redirect("/login");
+};</code></pre>
+                </div>
+
+                <h3><i class="fas fa-5"></i> The routes — <span class="inline-code">routes/auth.js</span> <span class="fnew">NEW</span> &amp; guard the anime routes</h3>
+                <div class="code-compare">
+                    <div>
+                        <div class="compare-label good">routes/auth.js</div>
+                        <div class="code-block"><div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">auth.js</span></div>
+                        <pre><code>const express = require("express");
+const router = express.Router();
+const auth = require("../controllers/authController");
+
+router.get("/login", auth.showLogin);
+router.post("/login", auth.login);
+router.post("/logout", auth.logout);
+
+module.exports = router;</code></pre></div>
+                    </div>
+                    <div>
+                        <div class="compare-label">routes/anime.js (guarded)</div>
+                        <div class="code-block"><div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">anime.js</span></div>
+                        <pre><code>const requireLogin = require("../middleware/requireLogin");
+
+// public
+router.get("/", c.index);
+router.get("/anime/:id", c.details);
+
+// protected — requireLogin runs first
+router.get("/add", requireLogin, c.addForm);
+router.post("/add", requireLogin, c.create);
+router.post("/anime/:id/delete", requireLogin, c.remove);</code></pre></div>
+                    </div>
+                </div>
+                <div class="callout tip">
+                    <i class="fas fa-layer-group"></i>
+                    <p>Middleware you list <em>before</em> the controller runs first. <span class="inline-code">router.post("/add", requireLogin, c.create)</span>
+                    means: run <span class="inline-code">requireLogin</span>, and only if it calls <span class="inline-code">next()</span> does <span class="inline-code">c.create</span> run.</p>
+                </div>
+
+                <h3><i class="fas fa-6"></i> The login view — <span class="inline-code">views/login.pug</span> <span class="fnew">NEW</span></h3>
+                <div class="code-block">
+                    <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">views/login.pug</span></div>
+                    <pre><code>extends layout
+
+block content
+  h1 Log in
+  if error
+    p.error #{error}
+  form.form(action="/login" method="POST")
+    label(for="username") Username
+    input(type="text" name="username" required)
+    label(for="password") Password
+    input(type="password" name="password" required)
+    button.btn(type="submit") Log in
+  p.hint Demo — username: sensei · password: anime123</code></pre>
+                </div>
+
+                <h3><i class="fas fa-7"></i> Make the nav session-aware — <span class="inline-code">views/layout.pug</span></h3>
+                <p>Show <b class="kw">Log in</b> to guests; show the username + a <b class="kw">Log out</b> button to logged-in users. The <span class="inline-code">user</span> variable comes from the <span class="inline-code">res.locals.user</span> line you added in <span class="inline-code">app.js</span>.</p>
+                <div class="code-block">
+                    <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">views/layout.pug (header)</span></div>
+                    <pre><code>header.site-header
+  a.brand(href="/") 🎬 Anime Collection
+  .nav-actions
+    a.btn(href="/add") + Add anime
+    if user
+      span.user-badge 👤 #{user.username}
+      form.logout-form(action="/logout" method="POST")
+        button.linkbtn(type="submit") Log out
+    else
+      a.loginlink(href="/login") Log in</code></pre>
+                </div>
+                <p>And in <span class="inline-code">views/details.pug</span>, only show the Delete button to logged-in users:</p>
+                <div class="code-block">
+                    <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">views/details.pug (Delete)</span></div>
+                    <pre><code>if user
+  form.inline(action=`/anime/${anime.id}/delete` method="POST")
+    button.btn.danger(type="submit") Delete
+else
+  p.hint 🔒 Log in to delete anime.</code></pre>
+                </div>
+            </section>
+
+            <!-- ============ RUN IT ============ -->
+            <section id="run">
+                <h2><i class="fas fa-play" style="color:var(--primary-accent)"></i> Run it on your own machine</h2>
+                <div class="code-block">
+                    <div class="code-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-title">terminal</span></div>
+                    <pre><code># 1. grab the files from the tree above (every filename is a download link)
+# 2. install everything (express, pug, express-session, bcryptjs)
+npm install
+# 3. start the server
+node app.js
+# 4. open http://localhost:3000  → log in with sensei / anime123 🎉</code></pre>
+                </div>
+                <div class="callout def">
+                    <i class="fas fa-download"></i>
+                    <p><strong>Grab the files:</strong> every filename in the <a href="#whats-new">tree above</a> is a download link.
+                    Recreate the structure, run the commands, and you've got the exact app you just played with — login and all.</p>
+                </div>
+
+                <h3><i class="fas fa-wand-magic-sparkles"></i> Make it yours (challenges)</h3>
+                <ul class="tight">
+                    <li><b class="kw">Register</b> — add a <span class="inline-code">/register</span> route + form that <span class="inline-code">bcrypt.hashSync</span>es a new user into the list.</li>
+                    <li><b class="kw">Real users</b> — move the users array into <b class="kw">MongoDB</b> (Week 12) so accounts persist.</li>
+                    <li><b class="kw">Return-to</b> — after login, redirect back to the page the user originally wanted.</li>
+                    <li><b class="kw">Ownership</b> — store <span class="inline-code">addedBy</span> on each anime and only let its owner delete it.</li>
+                    <li><b class="kw">Tokens</b> — swap sessions for a <b class="kw">JWT</b> (see the Week 13 island) for an API version.</li>
+                </ul>
+
+                <div class="doc-pager">
+                    <a class="pager-link" href="../index.html">
+                        <span class="pager-dir"><i class="fas fa-arrow-left"></i> Back to</span>
+                        <span class="pager-title">Week 13 · Auth &amp; Deploy</span>
+                    </a>
+                    <a class="pager-link next" href="#play">
+                        <span class="pager-dir">Play again <i class="fas fa-arrow-up"></i></span>
+                        <span class="pager-title">The live app</span>
+                    </a>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-bottom">
+            <p>CST8326 · Week 13 · Anime Collection + Login (MVC + auth sample) · &copy; <span id="year"></span> Algonquin College</p>
+        </div>
+    </footer>
+
+    <script>
+        window.ALGO_TIPS = [
+            "Same app as Week 11 — now it knows who you are! Log in with sensei / anime123 🔑",
+            "Click + Add anime while logged out — requireLogin bounces you to /login. That's the guard!",
+            "The login controller uses bcrypt.compareSync — it never stores or decrypts your password.",
+            "res.locals.user makes the logged-in user visible in every Pug view as `user`.",
+            "Challenge: move the users into MongoDB so accounts survive a restart. 💾"
+        ];
+    </script>
+    <script src="../../../assets/js/mascot.js" defer></script>
+    <script src="./app-demo.js" defer></script>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+        var bar = document.getElementById('progress-bar');
+        window.addEventListener('scroll', function () {
+            var h = document.documentElement;
+            bar.style.width = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100 + '%';
+        }, { passive: true });
+    </script>
+</body>
+
+</html>

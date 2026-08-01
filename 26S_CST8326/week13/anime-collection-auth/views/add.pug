@@ -1,0 +1,11 @@
+extends layout
+
+block content
+  h1 Add a new anime
+  form.form(action="/add" method="POST")
+    label(for="title") Title
+    input(type="text" id="title" name="title" required)
+    label(for="rating") Rating (1–10)
+    input(type="number" id="rating" name="rating" min="1" max="10" required)
+    button.btn(type="submit") Save
+  a.back(href="/") ← Cancel

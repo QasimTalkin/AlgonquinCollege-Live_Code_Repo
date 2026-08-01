@@ -116,6 +116,14 @@
                         <a href="#jwt" style="color:var(--primary-accent)">JWT</a>, and <a href="#deploy-render" style="color:var(--primary-accent)">deploy to Render</a>
                         — all in your browser, no setup.</p>
                     </div>
+                    <div class="callout def">
+                        <i class="fas fa-key"></i>
+                        <p><strong>New guided project 🔑</strong> — the Week 11 <b class="kw">Anime Collection</b> app, now with a real
+                        <a href="anime-collection-auth/index.html" style="color:var(--primary-accent)">login &amp; logout</a>
+                        (<span class="inline-code">express-session</span> + <span class="inline-code">bcrypt</span>). Browsing is public;
+                        adding &amp; deleting need a login. Play it live, then build the auth flow file by file →
+                        <a href="anime-collection-auth/index.html" style="color:var(--primary-accent)">Anime Collection + Login</a>.</p>
+                    </div>
                 </section>
 
                 <!-- 1. STATELESS -->
@@ -731,8 +739,20 @@ app.listen(PORT, () =&gt; console.log("Live on port " + PORT));</code></pre>
                         <li><a href="https://www.npmjs.com/package/bcryptjs" target="_blank" rel="noopener">bcryptjs — docs</a></li>
                         <li><a href="https://render.com/docs/deploy-node-express-app" target="_blank" rel="noopener">Render — deploy a Node/Express app</a></li>
                     </ul>
+                    <h3><i class="fas fa-gamepad"></i> Guided capstone project</h3>
+                    <div class="callout def">
+                        <i class="fas fa-key"></i>
+                        <p><strong>Anime Collection + Login.</strong> The Week 11 MVC app, upgraded with a simple
+                        <b class="kw">session login/logout</b> (<span class="inline-code">express-session</span> + <span class="inline-code">bcrypt</span>):
+                        browsing is public, but <b class="kw">add</b> and <b class="kw">delete</b> require logging in. Play the finished app right
+                        in your browser, then build the auth flow file by file.</p>
+                    </div>
+                    <div class="poster-actions-row" style="margin: 4px 0 10px;">
+                        <a class="run-btn" href="anime-collection-auth/index.html"><i class="fas fa-play"></i> Open the project</a>
+                        <a class="clear-btn" href="../week11/anime-collection/index.html"><i class="fas fa-arrow-left"></i> The Week 11 original</a>
+                    </div>
                     <div class="board-line"><i class="fas fa-trophy"></i>
-                        <span><span class="b">Capstone:</span> add login/logout to your <a href="../week11/anime-collection/index.html" style="color:var(--primary-accent)">Anime Collection app</a>, store users in MongoDB with hashed passwords, then deploy it to Render.</span>
+                        <span><span class="b">Stretch:</span> move the users into <span class="b">MongoDB</span> (Week 12) with hashed passwords, add a register page, then <span class="b">deploy it to Render</span>.</span>
                     </div>
 
                     <div class="doc-pager">
@@ -765,6 +785,7 @@ app.listen(PORT, () =&gt; console.log("Live on port " + PORT));</code></pre>
             "Never store raw passwords — hash them with bcrypt. Type in the hash lab 👇",
             "A JWT is header.payload.signature. Forge one, then tamper with it and verify 😈",
             "Deploy checklist: .gitignore, no secrets, dynamic PORT, cloud DB. Then Render 🚀",
+            "New project: the Anime Collection app now has login/logout — play it & build it 🔑",
             "You made it across every island. Go build something and deploy it! 🏝️"
         ];
     </script>

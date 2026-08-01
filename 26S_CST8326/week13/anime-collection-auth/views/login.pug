@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  h1 Log in
+  if error
+    p.error #{error}
+  form.form(action="/login" method="POST")
+    label(for="username") Username
+    input(type="text" id="username" name="username" required)
+    label(for="password") Password
+    input(type="password" id="password" name="password" required)
+    button.btn(type="submit") Log in
+  p.hint Demo account — username: <b>sensei</b> · password: <b>anime123</b>
+  a.back(href="/") ← Back to list
