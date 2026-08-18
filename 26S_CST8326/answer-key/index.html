@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>CST8326 Answer Key</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+:root{
+  --paper:#FFFFFF; --surface:#F4F8F5; --raise:#FFFFFF; --line:#D7E0DA;
+  --ink:#14181B; --ink2:#4A554F; --ink3:#6E7B74;
+  --ac:#007A33; --ac-dk:#00532A; --ac-tint:#E8F2EB;
+  --alert:#9B1C1C; --alert-bg:#FBECEC; --alert-line:#E9C6C6;
+  --shadow:0 1px 2px rgba(20,24,27,.05), 0 8px 24px rgba(20,24,27,.06);
+  --sans:"Libre Franklin",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --serif:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#0D1411; --surface:#141D19; --raise:#16211C; --line:#26332C;
+  --ink:#E9F0EB; --ink2:#9DACA3; --ink3:#7C8C83;
+  --ac:#45C173; --ac-dk:#8CE2AC; --ac-tint:#122117;
+  --alert:#F0A3A3; --alert-bg:#2A1516; --alert-line:#4A2626;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.3);
+}}
+:root[data-theme="dark"]{
+  --paper:#0D1411; --surface:#141D19; --raise:#16211C; --line:#26332C;
+  --ink:#E9F0EB; --ink2:#9DACA3; --ink3:#7C8C83;
+  --ac:#45C173; --ac-dk:#8CE2AC; --ac-tint:#122117;
+  --alert:#F0A3A3; --alert-bg:#2A1516; --alert-line:#4A2626;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.3);
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);
+  font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:1120px;margin:0 auto;padding:32px 22px 80px;display:flex;flex-direction:column;gap:26px;}
+
+/* header */
+.top{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;
+  border-top:5px solid var(--ac);padding-top:18px;}
+.lock{display:flex;align-items:center;gap:12px;}
+.mark{width:46px;height:46px;border-radius:7px;background:var(--ac);color:#fff;display:grid;place-items:center;
+  font-weight:700;font-size:19px;letter-spacing:-.5px;flex:none;}
+.lock h1{margin:0;font-size:21px;font-weight:700;letter-spacing:-.2px;line-height:1.15;}
+.lock .sch{margin:2px 0 0;font-size:11.5px;letter-spacing:1.4px;text-transform:uppercase;color:var(--ink3);}
+.meta{text-align:right;font-size:13.5px;color:var(--ink2);line-height:1.5;}
+.meta b{display:block;color:var(--ink);font-size:15px;font-weight:600;}
+@media (max-width:640px){.meta{text-align:left;}}
+
+/* alert */
+.alert{display:flex;align-items:center;gap:12px;background:var(--alert-bg);border:1px solid var(--alert-line);
+  border-left:4px solid var(--alert);border-radius:9px;padding:13px 16px;color:var(--alert);
+  font-size:13.5px;font-weight:600;letter-spacing:.3px;}
+.alert svg{flex:none;}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:13px 15px;}
+.stat .sv{font-family:var(--mono);font-size:22px;font-weight:600;color:var(--ac-dk);font-variant-numeric:tabular-nums;}
+.stat .sk{font-size:11px;letter-spacing:1.1px;text-transform:uppercase;color:var(--ink3);margin-top:2px;}
+
+/* quick grid */
+.sec-h{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:0;}
+.sec-h h2{margin:0;font-size:17px;font-weight:700;letter-spacing:-.1px;}
+.sec-h .hint{font-size:13px;color:var(--ink3);font-family:var(--serif);}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(74px,1fr));gap:7px;margin-top:14px;}
+.cell{display:flex;align-items:center;justify-content:space-between;gap:6px;background:var(--raise);
+  border:1px solid var(--line);border-radius:8px;padding:7px 10px;box-shadow:var(--shadow);}
+.cell .cn{font-family:var(--mono);font-size:12px;color:var(--ink3);font-variant-numeric:tabular-nums;}
+.cell .cl{font-family:var(--mono);font-size:15px;font-weight:600;color:var(--ac-dk);}
+
+/* filters */
+.filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+.filters .flabel{font-size:11px;letter-spacing:1.1px;text-transform:uppercase;color:var(--ink3);margin-right:2px;}
+.chip{font-family:var(--sans);font-size:13px;font-weight:500;padding:6px 14px;border-radius:999px;cursor:pointer;
+  background:transparent;border:1px solid var(--line);color:var(--ink2);transition:background .15s,border-color .15s,color .15s;}
+.chip:hover{border-color:var(--ac);color:var(--ac-dk);}
+.chip[aria-pressed="true"]{background:var(--ac);border-color:var(--ac);color:#fff;}
+.chip:focus-visible{outline:2px solid var(--ac);outline-offset:2px;}
+
+/* detail */
+.part{display:flex;flex-direction:column;gap:11px;}
+.part.hide,.qa.hide{display:none;}
+.part-h{display:flex;align-items:baseline;gap:11px;flex-wrap:wrap;margin:22px 0 2px;
+  font-size:16px;font-weight:600;color:var(--ink);padding-bottom:9px;border-bottom:2px solid var(--ac);}
+.part-k{font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;
+  background:var(--ac-tint);color:var(--ac-dk);padding:3px 9px;border-radius:5px;}
+.part-c{margin-left:auto;font-size:12px;color:var(--ink3);font-weight:400;}
+.qa{background:var(--raise);border:1px solid var(--line);border-radius:11px;padding:15px 17px;
+  display:flex;flex-direction:column;gap:9px;box-shadow:var(--shadow);}
+.qa-h{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.qa-n{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--ink3);min-width:26px;font-variant-numeric:tabular-nums;}
+.qa-a{font-family:var(--mono);font-size:14px;font-weight:600;background:var(--ac);color:#fff;
+  width:26px;height:26px;display:grid;place-items:center;border-radius:6px;flex:none;}
+.qa-tags{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto;}
+.tag{font-size:11px;letter-spacing:.4px;text-transform:uppercase;color:var(--ink3);
+  border:1px solid var(--line);border-radius:999px;padding:2px 9px;}
+.tag.topic{text-transform:none;letter-spacing:0;font-family:var(--serif);font-size:12px;}
+.tag.dif-medium{color:#8A6100;border-color:#E4C989;}
+.tag.dif-hard{color:var(--alert);border-color:var(--alert-line);}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .tag.dif-medium{color:#E3B95F;border-color:#4A3C1A;}}
+:root[data-theme="dark"] .tag.dif-medium{color:#E3B95F;border-color:#4A3C1A;}
+.qa-q{margin:0;font-size:15px;line-height:1.5;max-width:72ch;}
+.qa-code{margin:0;background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--ac);
+  border-radius:8px;padding:11px 13px;overflow-x:auto;font-family:var(--mono);font-size:12.5px;line-height:1.6;color:var(--ink2);}
+.qa-code code{font-family:inherit;white-space:pre;}
+.qa-correct{margin:0;display:flex;gap:9px;align-items:flex-start;font-size:14.5px;font-weight:500;color:var(--ac-dk);max-width:72ch;}
+.qa-correct .tick{font-family:var(--mono);font-weight:600;flex:none;}
+.qa-why{margin:0;font-family:var(--serif);font-size:14.5px;line-height:1.6;color:var(--ink2);
+  background:var(--ac-tint);border-radius:8px;padding:10px 13px;max-width:76ch;}
+.foot{margin-top:26px;padding-top:16px;border-top:1px solid var(--line);font-size:12.5px;color:var(--ink3);}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;}}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="lock">
+      <div class="mark">AC</div>
+      <div><h1>Algonquin College</h1><p class="sch">School of Advanced Technology</p></div>
+    </div>
+    <div class="meta"><b>CST8326 — Web Programming</b>Final Examination &middot; Summer 2026<br>
+      Tuesday, 18 August 2026 &middot; 18:30 &ndash; 20:30 &middot; Room A 1701<br>
+      2 hours (120 minutes) &middot; 65 marks &middot; Prof. Abul Qasim</div>
+  </header>
+
+  <div class="alert">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>
+    Instructor copy — confidential. Do not distribute to students.
+  </div>
+
+  <section>
+    <div class="sec-h"><h2>Quick mark</h2><span class="hint">All 65 answers at a glance.</span></div>
+    <div class="grid"><div class="cell" data-sec="A"><span class="cn">1</span><span class="cl">D</span></div><div class="cell" data-sec="A"><span class="cn">2</span><span class="cl">C</span></div><div class="cell" data-sec="A"><span class="cn">3</span><span class="cl">D</span></div><div class="cell" data-sec="A"><span class="cn">4</span><span class="cl">B</span></div><div class="cell" data-sec="A"><span class="cn">5</span><span class="cl">A</span></div><div class="cell" data-sec="A"><span class="cn">6</span><span class="cl">B</span></div><div class="cell" data-sec="A"><span class="cn">7</span><span class="cl">D</span></div><div class="cell" data-sec="A"><span class="cn">8</span><span class="cl">C</span></div><div class="cell" data-sec="A"><span class="cn">9</span><span class="cl">A</span></div><div class="cell" data-sec="A"><span class="cn">10</span><span class="cl">A</span></div><div class="cell" data-sec="A"><span class="cn">11</span><span class="cl">C</span></div><div class="cell" data-sec="A"><span class="cn">12</span><span class="cl">D</span></div><div class="cell" data-sec="A"><span class="cn">13</span><span class="cl">C</span></div><div class="cell" data-sec="A"><span class="cn">14</span><span class="cl">D</span></div><div class="cell" data-sec="A"><span class="cn">15</span><span class="cl">D</span></div><div class="cell" data-sec="A"><span class="cn">16</span><span class="cl">B</span></div><div class="cell" data-sec="A"><span class="cn">17</span><span class="cl">B</span></div><div class="cell" data-sec="A"><span class="cn">18</span><span class="cl">C</span></div><div class="cell" data-sec="A"><span class="cn">19</span><span class="cl">A</span></div><div class="cell" data-sec="A"><span class="cn">20</span><span class="cl">B</span></div><div class="cell" data-sec="B"><span class="cn">21</span><span class="cl">C</span></div><div class="cell" data-sec="B"><span class="cn">22</span><span class="cl">D</span></div><div class="cell" data-sec="B"><span class="cn">23</span><span class="cl">C</span></div><div class="cell" data-sec="B"><span class="cn">24</span><span class="cl">A</span></div><div class="cell" data-sec="B"><span class="cn">25</span><span class="cl">C</span></div><div class="cell" data-sec="B"><span class="cn">26</span><span class="cl">A</span></div><div class="cell" data-sec="B"><span class="cn">27</span><span class="cl">B</span></div><div class="cell" data-sec="B"><span class="cn">28</span><span class="cl">B</span></div><div class="cell" data-sec="C"><span class="cn">29</span><span class="cl">B</span></div><div class="cell" data-sec="C"><span class="cn">30</span><span class="cl">A</span></div><div class="cell" data-sec="C"><span class="cn">31</span><span class="cl">C</span></div><div class="cell" data-sec="C"><span class="cn">32</span><span class="cl">D</span></div><div class="cell" data-sec="C"><span class="cn">33</span><span class="cl">A</span></div><div class="cell" data-sec="C"><span class="cn">34</span><span class="cl">A</span></div><div class="cell" data-sec="C"><span class="cn">35</span><span class="cl">D</span></div><div class="cell" data-sec="C"><span class="cn">36</span><span class="cl">D</span></div><div class="cell" data-sec="D"><span class="cn">37</span><span class="cl">D</span></div><div class="cell" data-sec="D"><span class="cn">38</span><span class="cl">A</span></div><div class="cell" data-sec="D"><span class="cn">39</span><span class="cl">D</span></div><div class="cell" data-sec="D"><span class="cn">40</span><span class="cl">C</span></div><div class="cell" data-sec="D"><span class="cn">41</span><span class="cl">C</span></div><div class="cell" data-sec="D"><span class="cn">42</span><span class="cl">A</span></div><div class="cell" data-sec="D"><span class="cn">43</span><span class="cl">D</span></div><div class="cell" data-sec="D"><span class="cn">44</span><span class="cl">B</span></div><div class="cell" data-sec="D"><span class="cn">45</span><span class="cl">A</span></div><div class="cell" data-sec="D"><span class="cn">46</span><span class="cl">B</span></div><div class="cell" data-sec="E"><span class="cn">47</span><span class="cl">A</span></div><div class="cell" data-sec="E"><span class="cn">48</span><span class="cl">D</span></div><div class="cell" data-sec="E"><span class="cn">49</span><span class="cl">B</span></div><div class="cell" data-sec="E"><span class="cn">50</span><span class="cl">C</span></div><div class="cell" data-sec="E"><span class="cn">51</span><span class="cl">C</span></div><div class="cell" data-sec="E"><span class="cn">52</span><span class="cl">A</span></div><div class="cell" data-sec="E"><span class="cn">53</span><span class="cl">A</span></div><div class="cell" data-sec="E"><span class="cn">54</span><span class="cl">C</span></div><div class="cell" data-sec="E"><span class="cn">55</span><span class="cl">C</span></div><div class="cell" data-sec="E"><span class="cn">56</span><span class="cl">D</span></div><div class="cell" data-sec="F"><span class="cn">57</span><span class="cl">A</span></div><div class="cell" data-sec="F"><span class="cn">58</span><span class="cl">B</span></div><div class="cell" data-sec="F"><span class="cn">59</span><span class="cl">D</span></div><div class="cell" data-sec="F"><span class="cn">60</span><span class="cl">B</span></div><div class="cell" data-sec="F"><span class="cn">61</span><span class="cl">B</span></div><div class="cell" data-sec="F"><span class="cn">62</span><span class="cl">A</span></div><div class="cell" data-sec="F"><span class="cn">63</span><span class="cl">C</span></div><div class="cell" data-sec="F"><span class="cn">64</span><span class="cl">B</span></div><div class="cell" data-sec="F"><span class="cn">65</span><span class="cl">B</span></div></div>
+  </section>
+
+  <section class="stats">
+    <div class="stat"><div class="sv">65</div><div class="sk">Questions</div></div>
+    <div class="stat"><div class="sv">41 / 20 / 4</div><div class="sk">Easy / Med / Hard</div></div>
+    <div class="stat"><div class="sv">A17 B16 C16 D16</div><div class="sk">Answer spread</div></div>
+    <div class="stat"><div class="sv">2 HOURS</div><div class="sk">Time allowed</div></div>
+  </section>
+
+  <section>
+    <div class="sec-h"><h2>Answers &amp; rationale</h2><span class="hint">Filter to the part you are marking.</span></div>
+    <div class="filters" style="margin-top:14px;">
+      <span class="flabel">Part</span>
+      <button class="chip" data-filter="all" aria-pressed="true">All</button>
+      <button class="chip" data-filter="A" aria-pressed="false">A</button><button class="chip" data-filter="B" aria-pressed="false">B</button><button class="chip" data-filter="C" aria-pressed="false">C</button><button class="chip" data-filter="D" aria-pressed="false">D</button><button class="chip" data-filter="E" aria-pressed="false">E</button><button class="chip" data-filter="F" aria-pressed="false">F</button>
+    </div>
+    <section class="part" data-sec="A"><h2 class="part-h"><span class="part-k">Part A</span>HTML, CSS & JavaScript Fundamentals<span class="part-c">20 questions</span></h2>
+      <article class="qa" data-sec="A" data-dif="easy">
+        <header class="qa-h">
+          <span class="qa-n">1</span>
+          <span class="qa-a">D</span>
+          <span class="qa-tags"><span class="tag dif-easy">easy</span><span class="tag">concept</span><span class="tag topic">HTML5 structure</span></span>
+        </header>
+        <p class="qa-q">Which declaration must appear at the very beginning of a document to define it as HTML5?</p>
+        
+        <p class="qa-correct"><span class="tick">D</span>&lt;!DOCTYPE html&gt;</p>
+        <p class="qa-why">HTML5 uses the short doctype &lt;!DOCTYPE html&gt; as the very first line of the document.</p>
+      </article>
+      <article class="qa" data-sec="A" data-dif="easy">
+        <header class="qa-h">
+          <span class="qa-n">2</span>
+          <span class="qa-a">C</span>
+          <span class="qa-tags"><span class="tag dif-easy">easy</span><span class="tag">concept</span><span class="tag topic">Semantic HTML</span></span>
+        </header>
+        <p class="qa-q">Which semantic element should wrap a site’s main navigation links?</p>
+        
+        <p class="qa-correct"><span class="tick">C</span>&lt;nav&gt;</p>
+        <p class="qa-why">&lt;nav&gt; is the semantic element for a block of navigation links. &lt;navbar&gt; is not a real HTML element.</p>
+      </article>
+      <article class="qa" data-sec="A" data-dif="easy">
+        <header class="qa-h">
+          <span class="qa-n">3</span>
+          <span class="qa-a">D</span>
+          <span class="qa-tags"><span class="tag dif-easy">easy</span><span class="tag">concept</span><span class="tag topic">Accessibility</span></span>
+        </header>
+        <p class="qa-q">What is the purpose of the alt attribute on an &lt;img&gt; element?</p>
+        
+        <p class="qa-correct"><span class="tick">D</span>It provides alternative text for screen readers and when the image fails to load</p>
+        <p class="qa-why">alt supplies a text alternative used by assistive technology and shown if the image cannot be displayed.</p>
+      </article>
+      <article class="qa" data-sec="A" data-dif="easy">
+        <header class="qa-h">
+          <span class="qa-n">4</span>
+          <span class="qa-a">B</span>
+          <span class="qa-tags"><span class="tag dif-easy">easy</span><span class="tag">concept</span><span class="tag topic">CSS box model</span></span>
+        </header>
+        <p class="qa-q">In the CSS box model, which property adds space INSIDE the element, between its content and its border?</p>
+        
+        <p class="qa-correct"><span class="tick">B</span>padding</p>
+        <p class="qa-why">padding is inside the border; margin is the space outside the border.</p>
+      </article>
+      <article class="qa" data-sec="A" data-dif="easy">
+        <header class="qa-h">
+          <span class="qa-n">5</span>
+          <span class="qa-a">A</span>
+          <span class="qa-tags"><span class="tag dif-easy">easy</span><span class="tag">concept</span><span class="tag topic">CSS selectors</span></span>
+        </header>
+        <p class="qa-q">Which CSS selector targets the element written as &lt;p id=&quot;total&quot;&gt;?</p>
+        
+        <p class="qa-correct"><span class="tick">A</span>#total</p>
+        <p class="qa-why"># selects by id; . selects by class.</p>
+      </article>
+      <article class="qa" data-sec="A" data-dif="easy">
+        <header class="qa-h">
+          <span class="qa-n">6</span>
+          <span class="qa-a">B</span>
+          <span class="qa-tags"><span class="tag dif-easy">easy</span><span class="tag">concept</span><span class="tag topic">Flexbox</span></span>
+        </header>
+        <p class="qa-q">In Flexbox, which property aligns items along the MAIN axis?</p>
+        
+        <p class="qa-correct"><span class="tick">B</span>justify-content</p>
+        <p class="qa-why">justify-content works on the main axis; align-items works on the cross axis.</p>
+      </article>
+      <article class="qa" data-sec="A" data-dif="easy">
+        <header class="qa-h">
+          <span class="qa-n">7</span>
+          <span class="qa-a">D</span>
+          <span class="qa-tags"><span class="tag dif-easy">easy</span><span class="tag">concept</span><span class="tag topic">CSS Grid</span></span>
+        </header>
+        <p class="qa-q">Which declaration creates a grid of three equal-width columns?</p>
+        
+        <p class="qa-correct"><span class="tick">D</span>grid-template-columns: repeat(3, 1fr);</p>
+        <p class="qa-why">repeat(3, 1fr) creates three columns that each take one equal fraction of the free space.</p>
+      </article>
+      <article class="qa" data-sec="A" data-dif="medium">
+        <header class="qa-h">
+          <span class="qa-n">8</span>
+          <span class="qa-a">C</span>
+          <span class="qa-tags"><span class="tag dif-medium">medium</span><span class="tag">concept</span><span class="tag topic">CSS specificity</span></span>
+        </header>
+        <p class="qa-q">A single paragraph is matched by an element selector, a class selector and an id selector, each setting a different colour. Which declaration is applied?</p>
+        
+        <p class="qa-correct"><span class="tick">C</span>The id selector, because it has the highest specificity</p>
+        <p class="qa-why">Specificity ranks id above class above element. Source order only breaks ties between declarations of equal specificity.</p>
+      </article>
+      <article class="qa" data-sec="A" data-dif="easy">
+        <header class="qa-h">
+          <span class="qa-n">9</span>
+          <span class="qa-a">A</span>
+          <span class="qa-tags"><span class="tag dif-easy">easy</span><span class="tag">concept</span><span class="tag topic">Variables</span></span>
+        </header>
+        <p class="qa-q">Which keyword declares a variable that cannot be reassigned?</p>
+        
+        <p class="qa-correct"><span class="tick">A</span>const</p>
+        <p class="qa-why">const prevents reassignment of the binding (object contents can still change).</p>
+      </article>
+      <article class="qa" data-sec="A" data-dif="easy">
+        <header class="qa-h">
+          <span class="qa-n">10</span>
+          <span class="qa-a">A</span>
+          <span class="qa-tags"><span class="tag dif-easy">easy</span><span class="tag">true / false</span><span class="tag topic">Equality operators</span></span>
+        </header>
+        <p class="qa-q">True or False: === compares both value and type, while == performs type coercion before comparing.</p>
+        
+        <p class="qa-correct"><span class="tick">A</span>True — === is strict equality and checks type as well as value</p>
+        <p class="qa-why">=== is strict: no coercion, types must match. == coerces, so &quot;5&quot; == 5 is true but &quot;5&quot; === 5 is false.</p>
+      </article>
+      <article class="qa" data-sec="A" data-dif="medium">
+        <header class="qa-h">
+          <span class="qa-n">11</span>
+          <span class="qa-a">C</span>
+          <span class="qa-tags"><span class="tag dif-medium">medium</span><span class="tag">output</span><span class="tag topic">Type coercion</span></span>
+        </header>
+        <p class="qa-q">What is printed by the following code?</p>
+        <pre class="qa-code"><code>console.log(typeof &quot;5&quot; + 5);
+console.log(&quot;5&quot; - 2);</code></pre>
+        <p class="qa-correct"><span class="tick">C</span>string5   then   3</p>
+        <p class="qa-why">typeof &quot;5&quot; is the string &quot;string&quot;, and &quot;string&quot; + 5 concatenates to &quot;string5&quot;. The - operator has no string meaning, so &quot;5&quot; - 2 coerces to 3.</p>
+      </article>
+      <article class="qa" data-sec="A" data-dif="easy">
+        <header class="qa-h">
+          <span class="qa-n">12</span>
+          <span class="qa-a">D</span>
+          <span class="qa-tags"><span class="tag dif-easy">easy</span><span class="tag">concept</span><span class="tag topic">Array methods</span></span>
+        </header>
+        <p class="qa-q">Which array method creates a NEW array containing only the elements that pass a test?</p>
+        
+        <p class="qa-correct"><span class="tick">D</span>filter()</p>
+        <p class="qa-why">filter() returns a new array of the elements for which the callback returned true. forEach() returns undefined.</p>
+      </article>
+      <article class="qa" data-sec="A" data-dif="medium">
+        <header class="qa-h">
+          <span class="qa-n">13</span>
+          <span class="qa-a">C</span>
+          <span class="qa-tags"><span class="tag dif-medium">medium</span><span class="tag">find the bug</span><span class="tag topic">Loop bounds</span></span>
+        </header>
+        <p class="qa-q">The function below should total the array but prints NaN. What is the bug?</p>
+        <pre class="qa-code"><code>function getTotal(items) {
+  let total = 0;
+  for (let i = 0; i &lt;= items.length; i++) {
+    total += items[i];
+  }
+  return total;
+}
+console.log(getTotal([10, 20, 30]));</code></pre>
+        <p class="qa-correct"><span class="tick">C</span>The condition i &lt;= items.length runs one iteration too many, so items[3] is undefined and the total becomes NaN</p>
+        <p class="qa-why">Valid indexes are 0 to length-1. Using &lt;= reads items[3] (undefined); adding undefined to a number gives NaN. Use i &lt; items.length.</p>
+      </article>
+      <article class="qa" data-sec="A" data-dif="easy">
+        <header class="qa-h">
+          <span class="qa-n">14</span>
+          <span class="qa-a">D</span>
+          <span class="qa-tags"><span class="tag dif-easy">easy</span><span class="tag">concept</span><span class="tag topic">DOM selection</span></span>
+        </header>
+        <p class="qa-q">Which method returns the FIRST element that matches a CSS selector?</p>
+        
+        <p class="qa-correct"><span class="tick">D</span>document.querySelector()</p>
+        <p class="qa-why">querySelector returns the first match; querySelectorAll returns all matches as a NodeList.</p>
+      </article>
+      <article class="qa" data-sec="A" data-dif="easy">
+        <header class="qa-h">
+          <span class="qa-n">15</span>
+          <span class="qa-a">D</span>
+          <span class="qa-tags"><span class="tag dif-easy">easy</span><span class="tag">concept</span><span class="tag topic">DOM events</span></span>
+        </header>
+        <p class="qa-q">Which line correctly runs the function handleClick when the button is clicked?</p>
+        
+        <p class="qa-correct"><span class="tick">D</span>btn.addEventListener(&quot;click&quot;, handleClick);</p>
+        <p class="qa-why">Pass the function reference, not a call. handleClick() would run immediately and register its return value instead.</p>
+      </article>
+      <article class="qa" data-sec="A" data-dif="easy">
+        <header class="qa-h">
+          <span class="qa-n">16</span>
+          <span class="qa-a">B</span>
+          <span class="qa-tags"><span class="tag dif-easy">easy</span><span class="tag">concept</span><span class="tag topic">Destructuring</span></span>
+        </header>
+        <p class="qa-q">Given const user = { name: &quot;Light&quot;, role: &quot;admin&quot; }, which statement uses destructuring to create a variable called name?</p>
+        
+        <p class="qa-correct"><span class="tick">B</span>const { name } = user;</p>
+        <p class="qa-why">Object destructuring uses curly braces and matches the property by name.</p>
+      </article>
+      <article class="qa" data-sec="A" data-dif="medium">
+        <header class="qa-h">
+          <span class="qa-n">17</span>
+          <span class="qa-a">B</span>
+          <span class="qa-tags"><span class="tag dif-medium">medium</span><span class="tag">concept</span><span class="tag topic">Arrow functions</span></span>
+        </header>
+        <p class="qa-q">Which arrow function correctly returns double its argument?</p>
+        
+        <p class="qa-correct"><span class="tick">B</span>const double = n =&gt; n * 2;</p>
+        <p class="qa-why">A concise body returns the expression automatically. With a block body ({ }) you must write an explicit return, so option A returns undefined.</p>
+      </article>
+      <article class="qa" data-sec="A" data-dif="easy">
+        <header class="qa-h">
+          <span class="qa-n">18</span>
+          <span class="qa-a">C</span>
+          <span class="qa-tags"><span class="tag dif-easy">easy</span><span class="tag">concept</span><span class="tag topic">JSON</span></span>
+        </header>
+        <p class="qa-q">What does JSON.stringify(obj) do?</p>
+        
+        <p class="qa-correct"><span class="tick">C</span>Converts a JavaScript object into a JSON string</p>
+        <p class="qa-why">stringify serialises an object to a JSON string; JSON.parse does the reverse.</p>
+      </article>
+      <article class="qa" data-sec="A" data-dif="medium">
+        <header class="qa-h">
+          <span class="qa-n">19</span>
+          <span class="qa-a">A</span>
+          <span class="qa-tags"><span class="tag dif-medium">medium</span><span class="tag">concept</span><span class="tag topic">Reference semantics</span></span>
+        </header>
+        <p class="qa-q">After const a = { count: 1 }; const b = a; what has been copied into b?</p>
+        
+        <p class="qa-correct"><span class="tick">A</span>A reference to the same object, so a change made through b is visible through a</p>
+        <p class="qa-why">Objects are assigned by reference. const only prevents reassigning the variable; the shared object can still be mutated.</p>
+      </article>
+      <article class="qa" data-sec="A" data-dif="hard">
+        <header class="qa-h">
+          <span class="qa-n">20</span>
+          <span class="qa-a">B</span>
+          <span class="qa-tags"><span class="tag dif-hard">hard</span><span class="tag">output</span><span class="tag topic">Hoisting &amp; the TDZ</span></span>
+        </header>
+        <p class="qa-q">What happens when the following code runs?</p>
+        <pre class="qa-code"><code>console.log(x);
+var x = 10;
+
+console.log(y);
+let y = 20;</code></pre>
+        <p class="qa-correct"><span class="tick">B</span>It prints undefined, then throws a ReferenceError for y</p>
+        <p class="qa-why">var declarations are hoisted and initialised to undefined. let is hoisted but sits in the Temporal Dead Zone, so reading it before its declaration throws a ReferenceError.</p>
+      </article></section><section class="part" data-sec="B"><h2 class="part-h"><span class="part-k">Part B</span>Asynchronous JavaScript<span class="part-c">8 questions</span></h2>
+      <article class="qa" data-sec="B" data-dif="easy">
+        <header class="qa-h">
+          <span class="qa-n">21</span>
+          <span class="qa-a">C</span>
+          <span class="qa-tags"><span class="tag dif-easy">easy</span><span class="tag">concept</span><span class="tag topic">Promises</span></span>
+        </header>
+        <p class="qa-q">A Promise represents:</p>
+        
+        <p class="qa-correct"><span class="tick">C</span>The eventual result of an asynchronous operation — pending, fulfilled, or rejected</p>
+        <p class="qa-why">A Promise is a placeholder for a future value and is always in one of three states.</p>
+      </article>
+      <article class="qa" data-sec="B" data-dif="easy">
+        <header class="qa-h">
+          <span class="qa-n">22</span>
+          <span class="qa-a">D</span>
+          <span class="qa-tags"><span class="tag dif-easy">easy</span><span class="tag">concept</span><span class="tag topic">async functions</span></span>
+        </header>
+        <p class="qa-q">What does an async function always return?</p>
+        
+        <p class="qa-correct"><span class="tick">D</span>A Promise</p>
+        <p class="qa-why">Any value returned from an async function is automatically wrapped in a resolved Promise.</p>
+      </article>
+      <article class="qa" data-sec="B" data-dif="medium">
+        <header class="qa-h">
+          <span class="qa-n">23</span>
+          <span class="qa-a">C</span>
+          <span class="qa-tags"><span class="tag dif-medium">medium</span><span class="tag">concept</span><span class="tag topic">Event loop</span></span>
+        </header>
+        <p class="qa-q">A callback passed to setTimeout with a delay of 0 milliseconds will run:</p>
+        
+        <p class="qa-correct"><span class="tick">C</span>After all of the currently running synchronous code has finished</p>
+        <p class="qa-why">The callback is queued and can only be taken by the event loop once the call stack is empty, no matter how small the delay is.</p>
+      </article>
+      <article class="qa" data-sec="B" data-dif="hard">
+        <header class="qa-h">
+          <span class="qa-n">24</span>
+          <span class="qa-a">A</span>
+          <span class="qa-tags"><span class="tag dif-hard">hard</span><span class="tag">output</span><span class="tag topic">Microtasks vs macrotasks</span></span>
+        </header>
+        <p class="qa-q">What is the output order of the following code?</p>
+        <pre class="qa-code"><code>console.log(&quot;1&quot;);
+setTimeout(() =&gt; console.log(&quot;2&quot;), 0);
+Promise.resolve().then(() =&gt; console.log(&quot;3&quot;));
+console.log(&quot;4&quot;);</code></pre>
+        <p class="qa-correct"><span class="tick">A</span>1  4  3  2</p>
+        <p class="qa-why">Synchronous lines run first (1, 4). The event loop then drains the microtask queue (the Promise callback, 3) before macrotasks such as setTimeout (2).</p>
+      </article>
+      <article class="qa" data-sec="B" data-dif="easy">
+        <header class="qa-h">
+          <span class="qa-n">25</span>
+          <span class="qa-a">C</span>
+          <span class="qa-tags"><span class="tag dif-easy">easy</span><span class="tag">true / false</span><span class="tag topic">await rules</span></span>
+        </header>
+        <p class="qa-q">True or False: await may be used at the top of any ordinary (non-async) function.</p>
+        
+        <p class="qa-correct"><span class="tick">C</span>False — await is only valid inside an async function (or at the top level of a module)</p>
+        <p class="qa-why">Using await inside a normal function is a syntax error; the enclosing function must be declared async.</p>
+      </article>
+      <article class="qa" data-sec="B" data-dif="medium">
+        <header class="qa-h">
+          <span class="qa-n">26</span>
+          <span class="qa-a">A</span>
+          <span class="qa-tags"><span class="tag dif-medium">medium</span><span class="tag">concept</span><span class="tag topic">fetch + await</span></span>
+        </header>
+        <p class="qa-q">Inside an async function, which pair of statements correctly retrieves and parses JSON from an endpoint?</p>
+        
+        <p class="qa-correct"><span class="tick">A</span>const res = await fetch(url); const data = await res.json();</p>
+        <p class="qa-why">fetch() returns a Promise that resolves to a Response, and .json() itself returns a Promise — so both calls must be awaited.</p>
+      </article>
+      <article class="qa" data-sec="B" data-dif="easy">
+        <header class="qa-h">
+          <span class="qa-n">27</span>
+          <span class="qa-a">B</span>
+          <span class="qa-tags"><span class="tag dif-easy">easy</span><span class="tag">concept</span><span class="tag topic">Fetch API</span></span>
+        </header>
+        <p class="qa-q">What does fetch() return?</p>
+        
+        <p class="qa-correct"><span class="tick">B</span>A Promise that resolves to a Response object</p>
+        <p class="qa-why">fetch resolves to a Response; you then call .json() (which also returns a Promise) to read the body.</p>
+      </article>
+      <article class="qa" data-sec="B" data-dif="medium">
+        <header class="qa-h">
+          <span class="qa-n">28</span>
+          <span class="qa-a">B</span>
+          <span class="qa-tags"><span class="tag dif-medium">medium</span><span class="tag">concept</span><span class="tag topic">Error handling</span></span>
+        </header>
+        <p class="qa-q">Which is the correct way to handle an error thrown by an awaited call?</p>
+        
+        <p class="qa-correct"><span class="tick">B</span>try { const d = await getData(); } catch (err) { console.log(err); }</p>
+        <p class="qa-why">await turns a rejected Promise into a thrown error, so try/catch is the natural way to handle it.</p>
+      </article></section><section class="part" data-sec="C"><h2 class="part-h"><span class="part-k">Part C</span>Node.js<span class="part-c">8 questions</span></h2>
+      <article class="qa" data-sec="C" data-dif="easy">
+        <header class="qa-h">
+          <span class="qa-n">29</span>
+          <span class="qa-a">B</span>
+          <span class="qa-tags"><span class="tag dif-easy">easy</span><span class="tag">concept</span><span class="tag topic">What Node.js is</span></span>
+        </header>
+        <p class="qa-q">Node.js is best described as:</p>
+        
+        <p class="qa-correct"><span class="tick">B</span>A JavaScript runtime built on Chrome’s V8 engine that runs JavaScript outside the browser</p>
+        <p class="qa-why">Node takes the V8 engine out of the browser and adds server-side APIs such as file system and HTTP.</p>
+      </article>
+      <article class="qa" data-sec="C" data-dif="easy">
+        <header class="qa-h">
+          <span class="qa-n">30</span>
+          <span class="qa-a">A</span>
+          <span class="qa-tags"><span class="tag dif-easy">easy</span><span class="tag">concept</span><span class="tag topic">package.json</span></span>
+        </header>
+        <p class="qa-q">What is the main purpose of package.json?</p>
+        
+        <p class="qa-correct"><span class="tick">A</span>It records project metadata, scripts, and the list of dependencies</p>
+        <p class="qa-why">package.json describes the project and lets npm install rebuild node_modules from the dependency list.</p>
+      </article>
+      <article class="qa" data-sec="C" data-dif="easy">
+        <header class="qa-h">
+          <span class="qa-n">31</span>
+          <span class="qa-a">C</span>
+          <span class="qa-tags"><span class="tag dif-easy">easy</span><span class="tag">concept</span><span class="tag topic">Modules</span></span>
+        </header>
+        <p class="qa-q">Which line makes a function available to other files in a Node.js (CommonJS) project?</p>
+        
+        <p class="qa-correct"><span class="tick">C</span>module.exports = myFunction;</p>
+        <p class="qa-why">CommonJS exports through module.exports (or exports.name). window does not exist in Node.</p>
+      </article>
+      <article class="qa" data-sec="C" data-dif="easy">
+        <header class="qa-h">
+          <span class="qa-n">32</span>
+          <span class="qa-a">D</span>
+          <span class="qa-tags"><span class="tag dif-easy">easy</span><span class="tag">concept</span><span class="tag topic">require()</span></span>
+        </header>
+        <p class="qa-q">In a CommonJS project, which statement imports a local module named math.js from the same folder?</p>
+        
+        <p class="qa-correct"><span class="tick">D</span>const math = require(&quot;./math&quot;);</p>
+        <p class="qa-why">CommonJS uses require(), and local files need a relative path beginning with ./ — otherwise Node looks in node_modules.</p>
+      </article>
+      <article class="qa" data-sec="C" data-dif="easy">
+        <header class="qa-h">
+          <span class="qa-n">33</span>
+          <span class="qa-a">A</span>
+          <span class="qa-tags"><span class="tag dif-easy">easy</span><span class="tag">true / false</span><span class="tag topic">npm install &amp; node_modules</span></span>
+        </header>
+        <p class="qa-q">True or False: npm install reads package.json and downloads the listed dependencies into the node_modules folder.</p>
+        
+        <p class="qa-correct"><span class="tick">A</span>True — package.json lists what the project needs and npm install fetches those packages into node_modules</p>
+        <p class="qa-why">package.json records the dependency list; npm install resolves it and places the packages, plus their own dependencies, into node_modules.</p>
+      </article>
+      <article class="qa" data-sec="C" data-dif="medium">
+        <header class="qa-h">
+          <span class="qa-n">34</span>
+          <span class="qa-a">A</span>
+          <span class="qa-tags"><span class="tag dif-medium">medium</span><span class="tag">concept</span><span class="tag topic">Semantic versioning</span></span>
+        </header>
+        <p class="qa-q">In &quot;express&quot;: &quot;^4.21.2&quot;, what does the caret (^) allow npm to install?</p>
+        
+        <p class="qa-correct"><span class="tick">A</span>Any 4.x.x release at or above 4.21.2 (minor and patch updates, but not version 5)</p>
+        <p class="qa-why">^ allows changes that do not modify the left-most non-zero digit — that is, minor and patch updates within the same major version.</p>
+      </article>
+      <article class="qa" data-sec="C" data-dif="easy">
+        <header class="qa-h">
+          <span class="qa-n">35</span>
+          <span class="qa-a">D</span>
+          <span class="qa-tags"><span class="tag dif-easy">easy</span><span class="tag">concept</span><span class="tag topic">HTTP server</span></span>
+        </header>
+        <p class="qa-q">Which statement creates a plain Node HTTP server listening on port 3000?</p>
+        
+        <p class="qa-correct"><span class="tick">D</span>http.createServer(handler).listen(3000);</p>
+        <p class="qa-why">createServer() builds the server with a request handler; .listen(port) starts it.</p>
+      </article>
+      <article class="qa" data-sec="C" data-dif="easy">
+        <header class="qa-h">
+          <span class="qa-n">36</span>
+          <span class="qa-a">D</span>
+          <span class="qa-tags"><span class="tag dif-easy">easy</span><span class="tag">concept</span><span class="tag topic">Core modules</span></span>
+        </header>
+        <p class="qa-q">Which built-in Node.js module provides functions for reading and writing files?</p>
+        
+        <p class="qa-correct"><span class="tick">D</span>fs</p>
+        <p class="qa-why">The fs (file system) module provides readFileSync, writeFileSync and their asynchronous equivalents. path only builds and resolves file paths.</p>
+      </article></section><section class="part" data-sec="D"><h2 class="part-h"><span class="part-k">Part D</span>Express.js, Pug & MVC<span class="part-c">10 questions</span></h2>
+      <article class="qa" data-sec="D" data-dif="easy">
+        <header class="qa-h">
+          <span class="qa-n">37</span>
+          <span class="qa-a">D</span>
+          <span class="qa-tags"><span class="tag dif-easy">easy</span><span class="tag">concept</span><span class="tag topic">Middleware</span></span>
+        </header>
+        <p class="qa-q">In Express, middleware is:</p>
+        
+        <p class="qa-correct"><span class="tick">D</span>A function with access to req, res and next that runs during the request/response cycle</p>
+        <p class="qa-why">Middleware sits in the pipeline; it can inspect or modify the request and either respond or call next().</p>
+      </article>
+      <article class="qa" data-sec="D" data-dif="easy">
+        <header class="qa-h">
+          <span class="qa-n">38</span>
+          <span class="qa-a">A</span>
+          <span class="qa-tags"><span class="tag dif-easy">easy</span><span class="tag">concept</span><span class="tag topic">Routing</span></span>
+        </header>
+        <p class="qa-q">Which line handles a GET request to /about?</p>
+        
+        <p class="qa-correct"><span class="tick">A</span>app.get(&quot;/about&quot;, handler);</p>
+        <p class="qa-why">app.get(path, handler) registers a handler for the GET method on that path.</p>
+      </article>
+      <article class="qa" data-sec="D" data-dif="easy">
+        <header class="qa-h">
+          <span class="qa-n">39</span>
+          <span class="qa-a">D</span>
+          <span class="qa-tags"><span class="tag dif-easy">easy</span><span class="tag">concept</span><span class="tag topic">Route parameters</span></span>
+        </header>
+        <p class="qa-q">In app.get(&quot;/anime/:id&quot;, ...), how do you read the id value?</p>
+        
+        <p class="qa-correct"><span class="tick">D</span>req.params.id</p>
+        <p class="qa-why">Named route segments (:id) arrive in req.params.</p>
+      </article>
+      <article class="qa" data-sec="D" data-dif="easy">
+        <header class="qa-h">
+          <span class="qa-n">40</span>
+          <span class="qa-a">C</span>
+          <span class="qa-tags"><span class="tag dif-easy">easy</span><span class="tag">concept</span><span class="tag topic">Query strings</span></span>
+        </header>
+        <p class="qa-q">For the request GET /search?title=naruto, how is &quot;naruto&quot; read?</p>
+        
+        <p class="qa-correct"><span class="tick">C</span>req.query.title</p>
+        <p class="qa-why">Everything after the ? is parsed into req.query.</p>
+      </article>
+      <article class="qa" data-sec="D" data-dif="medium">
+        <header class="qa-h">
+          <span class="qa-n">41</span>
+          <span class="qa-a">C</span>
+          <span class="qa-tags"><span class="tag dif-medium">medium</span><span class="tag">find the bug</span><span class="tag topic">Body parsing</span></span>
+        </header>
+        <p class="qa-q">A Pug form is submitted with method=&quot;POST&quot; but the handler below always logs undefined. What is missing?</p>
+        <pre class="qa-code"><code>app.post(&quot;/add&quot;, (req, res) =&gt; {
+  console.log(req.body.title);   // undefined
+  res.redirect(&quot;/&quot;);
+});</code></pre>
+        <p class="qa-correct"><span class="tick">C</span>app.use(express.urlencoded({ extended: true })) has not been registered</p>
+        <p class="qa-why">Express does not parse request bodies by default. express.urlencoded() populates req.body for HTML form posts.</p>
+      </article>
+      <article class="qa" data-sec="D" data-dif="medium">
+        <header class="qa-h">
+          <span class="qa-n">42</span>
+          <span class="qa-a">A</span>
+          <span class="qa-tags"><span class="tag dif-medium">medium</span><span class="tag">true / false</span><span class="tag topic">next() and the pipeline</span></span>
+        </header>
+        <p class="qa-q">True or False: middleware that neither sends a response nor calls next() will leave the request hanging.</p>
+        
+        <p class="qa-correct"><span class="tick">A</span>True — the request stops at that middleware, so no later route handler ever runs</p>
+        <p class="qa-why">Every middleware must either end the response or call next(). If it does neither, the pipeline stalls and the browser waits until it times out.</p>
+      </article>
+      <article class="qa" data-sec="D" data-dif="easy">
+        <header class="qa-h">
+          <span class="qa-n">43</span>
+          <span class="qa-a">D</span>
+          <span class="qa-tags"><span class="tag dif-easy">easy</span><span class="tag">concept</span><span class="tag topic">Routers</span></span>
+        </header>
+        <p class="qa-q">What is express.Router() used for?</p>
+        
+        <p class="qa-correct"><span class="tick">D</span>Splitting routes into separate, focused files that are mounted with app.use()</p>
+        <p class="qa-why">A Router groups related routes in their own file, keeping app.js small.</p>
+      </article>
+      <article class="qa" data-sec="D" data-dif="medium">
+        <header class="qa-h">
+          <span class="qa-n">44</span>
+          <span class="qa-a">B</span>
+          <span class="qa-tags"><span class="tag dif-medium">medium</span><span class="tag">concept</span><span class="tag topic">Mount paths</span></span>
+        </header>
+        <p class="qa-q">app.js contains app.use(&quot;/anime&quot;, animeRoutes) and the router file defines router.get(&quot;/:id&quot;, ...). Which URL does that route answer?</p>
+        
+        <p class="qa-correct"><span class="tick">B</span>/anime/42</p>
+        <p class="qa-why">The mount path is a prefix, so the router’s &quot;/:id&quot; becomes &quot;/anime/:id&quot;.</p>
+      </article>
+      <article class="qa" data-sec="D" data-dif="easy">
+        <header class="qa-h">
+          <span class="qa-n">45</span>
+          <span class="qa-a">A</span>
+          <span class="qa-tags"><span class="tag dif-easy">easy</span><span class="tag">concept</span><span class="tag topic">Rendering views</span></span>
+        </header>
+        <p class="qa-q">Which response method renders a Pug template and sends the resulting HTML?</p>
+        
+        <p class="qa-correct"><span class="tick">A</span>res.render(&quot;index&quot;, { title })</p>
+        <p class="qa-why">res.render() compiles the named view with the supplied locals and sends the HTML.</p>
+      </article>
+      <article class="qa" data-sec="D" data-dif="medium">
+        <header class="qa-h">
+          <span class="qa-n">46</span>
+          <span class="qa-a">B</span>
+          <span class="qa-tags"><span class="tag dif-medium">medium</span><span class="tag">output</span><span class="tag topic">Pug templates</span></span>
+        </header>
+        <p class="qa-q">What HTML does the Pug snippet below produce?</p>
+        <pre class="qa-code"><code>ul
+  each item in [&quot;A&quot;, &quot;B&quot;]
+    li= item</code></pre>
+        <p class="qa-correct"><span class="tick">B</span>&lt;ul&gt;&lt;li&gt;A&lt;/li&gt;&lt;li&gt;B&lt;/li&gt;&lt;/ul&gt;</p>
+        <p class="qa-why">each loops the array and indentation nests the li inside the ul. The = outputs the value of the variable rather than the literal text.</p>
+      </article></section><section class="part" data-sec="E"><h2 class="part-h"><span class="part-k">Part E</span>Databases — MongoDB & Mongoose<span class="part-c">10 questions</span></h2>
+      <article class="qa" data-sec="E" data-dif="easy">
+        <header class="qa-h">
+          <span class="qa-n">47</span>
+          <span class="qa-a">A</span>
+          <span class="qa-tags"><span class="tag dif-easy">easy</span><span class="tag">concept</span><span class="tag topic">NoSQL</span></span>
+        </header>
+        <p class="qa-q">MongoDB is best described as:</p>
+        
+        <p class="qa-correct"><span class="tick">A</span>A NoSQL document database that stores JSON-like documents</p>
+        <p class="qa-why">MongoDB stores flexible, JSON-like documents rather than fixed-schema tables.</p>
+      </article>
+      <article class="qa" data-sec="E" data-dif="easy">
+        <header class="qa-h">
+          <span class="qa-n">48</span>
+          <span class="qa-a">D</span>
+          <span class="qa-tags"><span class="tag dif-easy">easy</span><span class="tag">concept</span><span class="tag topic">Terminology</span></span>
+        </header>
+        <p class="qa-q">In MongoDB, a collection is most similar to which relational concept?</p>
+        
+        <p class="qa-correct"><span class="tick">D</span>Table</p>
+        <p class="qa-why">database → collection → document maps to database → table → row.</p>
+      </article>
+      <article class="qa" data-sec="E" data-dif="easy">
+        <header class="qa-h">
+          <span class="qa-n">49</span>
+          <span class="qa-a">B</span>
+          <span class="qa-tags"><span class="tag dif-easy">easy</span><span class="tag">concept</span><span class="tag topic">Mongoose</span></span>
+        </header>
+        <p class="qa-q">Mongoose is:</p>
+        
+        <p class="qa-correct"><span class="tick">B</span>An ODM library that models MongoDB data for Node.js</p>
+        <p class="qa-why">Mongoose is an Object Data Modeling layer providing schemas, validation and CRUD helpers on top of MongoDB.</p>
+      </article>
+      <article class="qa" data-sec="E" data-dif="easy">
+        <header class="qa-h">
+          <span class="qa-n">50</span>
+          <span class="qa-a">C</span>
+          <span class="qa-tags"><span class="tag dif-easy">easy</span><span class="tag">concept</span><span class="tag topic">Models &amp; collections</span></span>
+        </header>
+        <p class="qa-q">mongoose.model(&quot;Anime&quot;, animeSchema) will read and write which collection?</p>
+        
+        <p class="qa-correct"><span class="tick">C</span>animes</p>
+        <p class="qa-why">Mongoose lower-cases and pluralises the model name, so &quot;Anime&quot; maps to the animes collection.</p>
+      </article>
+      <article class="qa" data-sec="E" data-dif="medium">
+        <header class="qa-h">
+          <span class="qa-n">51</span>
+          <span class="qa-a">C</span>
+          <span class="qa-tags"><span class="tag dif-medium">medium</span><span class="tag">output</span><span class="tag topic">find vs findOne</span></span>
+        </header>
+        <p class="qa-q">No document in the collection has a rating of 100. What does the code print?</p>
+        <pre class="qa-code"><code>const a = await Anime.find({ rating: 100 });
+const b = await Anime.findOne({ rating: 100 });
+console.log(Array.isArray(a), b);</code></pre>
+        <p class="qa-correct"><span class="tick">C</span>true null</p>
+        <p class="qa-why">find() always resolves to an array (empty when nothing matches); findOne() resolves to null when there is no match.</p>
+      </article>
+      <article class="qa" data-sec="E" data-dif="easy">
+        <header class="qa-h">
+          <span class="qa-n">52</span>
+          <span class="qa-a">A</span>
+          <span class="qa-tags"><span class="tag dif-easy">easy</span><span class="tag">concept</span><span class="tag topic">Query operators</span></span>
+        </header>
+        <p class="qa-q">Which query returns all anime with a rating of 9 or higher?</p>
+        
+        <p class="qa-correct"><span class="tick">A</span>Anime.find({ rating: { $gte: 9 } })</p>
+        <p class="qa-why">$gte means &quot;greater than or equal&quot; and is placed inside the field’s object. find returns every match.</p>
+      </article>
+      <article class="qa" data-sec="E" data-dif="medium">
+        <header class="qa-h">
+          <span class="qa-n">53</span>
+          <span class="qa-a">A</span>
+          <span class="qa-tags"><span class="tag dif-medium">medium</span><span class="tag">concept</span><span class="tag topic">Combined filters</span></span>
+        </header>
+        <p class="qa-q">Anime.find({ studio: &quot;Madhouse&quot;, year: { $lt: 2010 } }) returns documents that:</p>
+        
+        <p class="qa-correct"><span class="tick">A</span>match both conditions (AND)</p>
+        <p class="qa-why">Multiple keys in one filter object are combined with AND. Use $or for an either/or query.</p>
+      </article>
+      <article class="qa" data-sec="E" data-dif="medium">
+        <header class="qa-h">
+          <span class="qa-n">54</span>
+          <span class="qa-a">C</span>
+          <span class="qa-tags"><span class="tag dif-medium">medium</span><span class="tag">true / false</span><span class="tag topic">updateOne vs updateMany</span></span>
+        </header>
+        <p class="qa-q">True or False: updateOne() modifies every document that matches the filter.</p>
+        
+        <p class="qa-correct"><span class="tick">C</span>False — updateOne changes only the first match; updateMany changes every match</p>
+        <p class="qa-why">updateOne stops after the first matching document. Use updateMany to change every match.</p>
+      </article>
+      <article class="qa" data-sec="E" data-dif="medium">
+        <header class="qa-h">
+          <span class="qa-n">55</span>
+          <span class="qa-a">C</span>
+          <span class="qa-tags"><span class="tag dif-medium">medium</span><span class="tag">find the bug</span><span class="tag topic">Missing await</span></span>
+        </header>
+        <p class="qa-q">The list page renders empty and the view cannot loop over the data. What is wrong?</p>
+        <pre class="qa-code"><code>exports.index = async (req, res) =&gt; {
+  const anime = Anime.find();
+  res.render(&quot;index&quot;, { anime });
+};</code></pre>
+        <p class="qa-correct"><span class="tick">C</span>await is missing — anime holds a Promise instead of the array of documents</p>
+        <p class="qa-why">Every Mongoose query returns a Promise. Without await the template receives the Promise object, not the documents.</p>
+      </article>
+      <article class="qa" data-sec="E" data-dif="hard">
+        <header class="qa-h">
+          <span class="qa-n">56</span>
+          <span class="qa-a">D</span>
+          <span class="qa-tags"><span class="tag dif-hard">hard</span><span class="tag">concept</span><span class="tag topic">Destructive queries</span></span>
+        </header>
+        <p class="qa-q">What is the effect of await Anime.deleteMany({}) ?</p>
+        
+        <p class="qa-correct"><span class="tick">D</span>It deletes every document in the collection</p>
+        <p class="qa-why">An empty filter matches all documents, so deleteMany({}) empties the entire collection — a well-known production hazard.</p>
+      </article></section><section class="part" data-sec="F"><h2 class="part-h"><span class="part-k">Part F</span>Sessions & Authentication<span class="part-c">9 questions</span></h2>
+      <article class="qa" data-sec="F" data-dif="easy">
+        <header class="qa-h">
+          <span class="qa-n">57</span>
+          <span class="qa-a">A</span>
+          <span class="qa-tags"><span class="tag dif-easy">easy</span><span class="tag">true / false</span><span class="tag topic">Stateless HTTP</span></span>
+        </header>
+        <p class="qa-q">True or False: HTTP is a stateless protocol.</p>
+        
+        <p class="qa-correct"><span class="tick">A</span>True — each request is independent and the server keeps no memory of earlier requests on its own</p>
+        <p class="qa-why">Each request runs the application from scratch, which is exactly why sessions and tokens are needed.</p>
+      </article>
+      <article class="qa" data-sec="F" data-dif="easy">
+        <header class="qa-h">
+          <span class="qa-n">58</span>
+          <span class="qa-a">B</span>
+          <span class="qa-tags"><span class="tag dif-easy">easy</span><span class="tag">concept</span><span class="tag topic">Basic authentication</span></span>
+        </header>
+        <p class="qa-q">Basic authentication is considered very insecure mainly because:</p>
+        
+        <p class="qa-correct"><span class="tick">B</span>Credentials are sent with every single request and there is no login/logout system</p>
+        <p class="qa-why">Sending the username and password on every request greatly increases exposure, and there is no session to end.</p>
+      </article>
+      <article class="qa" data-sec="F" data-dif="easy">
+        <header class="qa-h">
+          <span class="qa-n">59</span>
+          <span class="qa-a">D</span>
+          <span class="qa-tags"><span class="tag dif-easy">easy</span><span class="tag">concept</span><span class="tag topic">Session flow</span></span>
+        </header>
+        <p class="qa-q">After a successful login using session authentication, what does the browser store?</p>
+        
+        <p class="qa-correct"><span class="tick">D</span>A session ID, held in a cookie, that it sends automatically on later requests</p>
+        <p class="qa-why">The server keeps the session data; the browser only carries the session id in a cookie.</p>
+      </article>
+      <article class="qa" data-sec="F" data-dif="easy">
+        <header class="qa-h">
+          <span class="qa-n">60</span>
+          <span class="qa-a">B</span>
+          <span class="qa-tags"><span class="tag dif-easy">easy</span><span class="tag">concept</span><span class="tag topic">Cookies vs sessions</span></span>
+        </header>
+        <p class="qa-q">Which statement correctly contrasts cookies and sessions?</p>
+        
+        <p class="qa-correct"><span class="tick">B</span>Cookies are stored client-side and can be modified or disabled by the user, while session data is stored server-side</p>
+        <p class="qa-why">Cookies are small, client-side and user-editable; sessions live on the server and cannot be tampered with by the user.</p>
+      </article>
+      <article class="qa" data-sec="F" data-dif="medium">
+        <header class="qa-h">
+          <span class="qa-n">61</span>
+          <span class="qa-a">B</span>
+          <span class="qa-tags"><span class="tag dif-medium">medium</span><span class="tag">concept</span><span class="tag topic">Ending a session</span></span>
+        </header>
+        <p class="qa-q">Which call ends a user’s session in an Express application?</p>
+        
+        <p class="qa-correct"><span class="tick">B</span>req.session.destroy()</p>
+        <p class="qa-why">req.session.destroy() removes the session from the server store — the standard logout step.</p>
+      </article>
+      <article class="qa" data-sec="F" data-dif="medium">
+        <header class="qa-h">
+          <span class="qa-n">62</span>
+          <span class="qa-a">A</span>
+          <span class="qa-tags"><span class="tag dif-medium">medium</span><span class="tag">concept</span><span class="tag topic">Password storage</span></span>
+        </header>
+        <p class="qa-q">When a new user registers, how should their password be stored?</p>
+        
+        <p class="qa-correct"><span class="tick">A</span>As a salted one-way hash created with bcrypt, then verified at login with compareSync</p>
+        <p class="qa-why">Passwords must never be recoverable. bcrypt stores a salted one-way hash; at login the typed password is hashed and compared — never decrypted.</p>
+      </article>
+      <article class="qa" data-sec="F" data-dif="easy">
+        <header class="qa-h">
+          <span class="qa-n">63</span>
+          <span class="qa-a">C</span>
+          <span class="qa-tags"><span class="tag dif-easy">easy</span><span class="tag">concept</span><span class="tag topic">JWT structure</span></span>
+        </header>
+        <p class="qa-q">A JSON Web Token is made of three base64url parts in which order?</p>
+        
+        <p class="qa-correct"><span class="tick">C</span>header . payload . signature</p>
+        <p class="qa-why">A JWT is header.payload.signature — the header names the algorithm, the payload carries the claims, the signature protects both.</p>
+      </article>
+      <article class="qa" data-sec="F" data-dif="hard">
+        <header class="qa-h">
+          <span class="qa-n">64</span>
+          <span class="qa-a">B</span>
+          <span class="qa-tags"><span class="tag dif-hard">hard</span><span class="tag">concept</span><span class="tag topic">JWT integrity</span></span>
+        </header>
+        <p class="qa-q">An attacker edits the payload of a valid JWT but leaves the original signature untouched. What happens at jwt.verify()?</p>
+        
+        <p class="qa-correct"><span class="tick">B</span>It throws — the signature no longer matches the recomputed header.payload, so the token is rejected</p>
+        <p class="qa-why">The signature is computed over header.payload with the secret. Changing the payload invalidates it, which is exactly how tampering is detected.</p>
+      </article>
+      <article class="qa" data-sec="F" data-dif="medium">
+        <header class="qa-h">
+          <span class="qa-n">65</span>
+          <span class="qa-a">B</span>
+          <span class="qa-tags"><span class="tag dif-medium">medium</span><span class="tag">concept</span><span class="tag topic">JWT confidentiality</span></span>
+        </header>
+        <p class="qa-q">Which statement about the payload of a JSON Web Token is correct?</p>
+        
+        <p class="qa-correct"><span class="tick">B</span>It is only base64url-encoded, so anyone holding the token can read it — secrets must never be placed inside it</p>
+        <p class="qa-why">A JWT is signed, not encrypted. The signature prevents tampering, but the header and payload are merely encoded and are readable by anyone with the token.</p>
+      </article></section>
+  </section>
+
+  <p class="foot">CST8326 — Web Programming &middot; Final Examination &middot; Summer 2026 &middot; Answer key generated for Prof. Abul Qasim.</p>
+</div>
+
+<script>
+(function(){
+  var chips = document.querySelectorAll('.chip');
+  chips.forEach(function(chip){
+    chip.addEventListener('click', function(){
+      var f = chip.dataset.filter;
+      chips.forEach(function(c){ c.setAttribute('aria-pressed', String(c === chip)); });
+      document.querySelectorAll('.part').forEach(function(p){
+        p.classList.toggle('hide', f !== 'all' && p.dataset.sec !== f);
+      });
+      document.querySelectorAll('.cell').forEach(function(c){
+        c.style.opacity = (f === 'all' || c.dataset.sec === f) ? '' : '.28';
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>
