@@ -56,31 +56,18 @@ body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);
 .poll[hidden]{display:none;}
 .poll h2{margin:0;font-size:16.5px;font-weight:700;letter-spacing:-.1px;color:var(--ink);}
 .poll .poll-sub{margin:0;font-family:var(--serif);font-size:14px;color:var(--ink2);}
-.poll-opts{display:flex;gap:9px;flex-wrap:wrap;margin-top:9px;}
-.poll-opts[hidden]{display:none;}
-.poll-b{font-family:var(--sans);font-size:14px;font-weight:600;padding:9px 20px;border-radius:999px;
-  cursor:pointer;background:var(--raise);border:1px solid var(--line);color:var(--ink);
-  transition:background .15s,border-color .15s,color .15s,transform .1s;}
-.poll-b:hover{border-color:var(--ac);color:var(--ac-dk);transform:translateY(-1px);}
-.poll-b:active{transform:none;}
-.poll-b:focus-visible{outline:2px solid var(--ac);outline-offset:2px;}
-.poll-done{margin:9px 0 0;font-size:14.5px;font-weight:600;color:var(--ac-dk);}
+.poll-cta{margin:11px 0 0;}
+.poll-cta[hidden]{display:none;}
+.poll-go{display:inline-block;font-family:var(--sans);font-size:14.5px;font-weight:600;
+  padding:10px 24px;border-radius:999px;text-decoration:none;background:var(--ac);color:#fff;
+  border:1px solid var(--ac);transition:filter .15s,transform .1s;}
+.poll-go:hover{filter:brightness(1.1);transform:translateY(-1px);}
+.poll-go:active{transform:none;}
+.poll-go:focus-visible{outline:2px solid var(--ac-dk);outline-offset:3px;}
+.poll-done{margin:11px 0 0;font-size:14.5px;font-weight:600;color:var(--ac-dk);}
 .poll-done[hidden]{display:none;}
-.poll-results{margin-top:11px;display:flex;flex-direction:column;gap:7px;}
-.poll-results[hidden]{display:none;}
-.pr-row{display:grid;grid-template-columns:112px 1fr 48px;align-items:center;gap:11px;font-size:14px;}
-@media (max-width:520px){.pr-row{grid-template-columns:96px 1fr 42px;gap:8px;font-size:13px;}}
-.pr-l{color:var(--ink2);}
-.pr-bar{background:var(--raise);border:1px solid var(--line);border-radius:999px;height:16px;overflow:hidden;}
-.pr-fill{display:block;height:100%;background:var(--ac);opacity:.45;border-radius:999px;
-  transition:width .5s cubic-bezier(.16,1,.3,1);}
-.pr-n{font-family:var(--mono);font-size:13px;color:var(--ink2);text-align:right;font-variant-numeric:tabular-nums;}
-.pr-row.mine .pr-l{color:var(--ac-dk);font-weight:700;}
-.pr-row.mine .pr-fill{opacity:1;}
-.pr-row.mine .pr-n{color:var(--ac-dk);font-weight:600;}
-.pr-total{margin:5px 0 0;font-family:var(--serif);font-size:13.5px;color:var(--ink2);}
-.pr-total b{color:var(--ac-dk);}
-@media (prefers-reduced-motion:reduce){.pr-fill{transition:none;}}
+.poll-done a{color:var(--ac-dk);}
+@media (prefers-reduced-motion:reduce){.poll-go:hover{transform:none;}}
 @media (prefers-reduced-motion:reduce){.poll-b:hover{transform:none;}}
 
 /* stats */
@@ -157,15 +144,9 @@ body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);
 
   <section class="poll" id="poll" hidden>
     <h2>Quick question — how did you find the exam?</h2>
-    <p class="poll-sub">Anonymous, one tap. It helps me tune the course for next term.</p>
-    <div class="poll-opts" id="poll-opts">
-      <button class="poll-b" type="button" data-v="Easy">Easy</button>
-      <button class="poll-b" type="button" data-v="Just right">Just right</button>
-      <button class="poll-b" type="button" data-v="Challenging">Challenging</button>
-      <button class="poll-b" type="button" data-v="Too hard">Too hard</button>
-    </div>
-    <div class="poll-results" id="poll-results" hidden></div>
-    <p class="poll-done" id="poll-done" hidden>Thanks — your answer was recorded.</p>
+    <p class="poll-sub">Anonymous, about ten seconds — and you'll see how the rest of the class answered. It helps me tune the course for next term.</p>
+    <p class="poll-cta" id="poll-cta"><a class="poll-go" id="poll-link" href="#" target="_blank" rel="noopener">Vote &amp; see results &rarr;</a></p>
+    <p class="poll-done" id="poll-done" hidden>Thanks for voting. <a id="poll-link2" href="#" target="_blank" rel="noopener">See how the class answered &rarr;</a></p>
   </section>
 
   <section>
@@ -935,65 +916,33 @@ console.log(Array.isArray(a), b);</code></pre>
 
 <script>
 /* ============================================================
-   EXAM POLL  →  Google Apps Script Web App  →  the responses
-   spreadsheet (File ▸ Download ▸ CSV).
-
-   Paste the deployed Web App /exec URL below to switch the poll
-   on. While it is blank the poll stays hidden, so a vote is never
-   collected with nowhere to store it.
+   EXAM POLL — links out to a hosted poll (StrawPoll or similar),
+   which collects the votes and shows students the results.
+   Paste the poll URL below to switch it on; while it is blank the
+   whole block stays hidden.
    ============================================================ */
-var POLL_API = "";
+var POLL_URL = "";
 
 (function(){
   var sec = document.getElementById('poll');
-  if (!sec || !POLL_API) return;                    // not configured → stay hidden
-  var KEY  = 'cst8326-exam-poll';
-  var opts = document.getElementById('poll-opts');
-  var done = document.getElementById('poll-done');
-  var res  = document.getElementById('poll-results');
-  var mine = null;
-  try { mine = localStorage.getItem(KEY); } catch (e) {}
+  if (!sec || !POLL_URL) return;                    // not configured → stay hidden
+  var KEY   = 'cst8326-exam-poll';
+  var cta   = document.getElementById('poll-cta');
+  var done  = document.getElementById('poll-done');
+  var link  = document.getElementById('poll-link');
+  var link2 = document.getElementById('poll-link2');
+  link.href = POLL_URL;
+  link2.href = POLL_URL;
   sec.hidden = false;
 
-  function render(data){
-    if (!data || !data.options || !data.options.length) { done.hidden = false; return; }
-    var total = data.total || 0;
-    res.innerHTML = data.options.map(function(o){
-      var count = (data.counts && data.counts[o]) || 0;
-      var pct   = total ? Math.round(count / total * 100) : 0;
-      return '<div class="pr-row' + (o === mine ? ' mine' : '') + '">'
-           +   '<span class="pr-l">' + o + '</span>'
-           +   '<span class="pr-bar"><span class="pr-fill" style="width:' + pct + '%"></span></span>'
-           +   '<span class="pr-n">' + pct + '%</span>'
-           + '</div>';
-    }).join('')
-      + '<p class="pr-total">' + total + ' response' + (total === 1 ? '' : 's')
-      + (mine ? ' &middot; you chose <b>' + mine + '</b>' : '') + '</p>';
-    res.hidden = false;
-  }
+  var voted = false;
+  try { voted = !!localStorage.getItem(KEY); } catch (e) {}
+  if (voted) { cta.hidden = true; done.hidden = false; }
 
-  function load(answer){
-    var url = POLL_API + (POLL_API.indexOf('?') === -1 ? '?' : '&') + 't=' + Date.now()
-            + (answer ? '&answer=' + encodeURIComponent(answer) : '');
-    return fetch(url)
-      .then(function(r){ return r.json(); })
-      .then(render)
-      .catch(function(){ done.hidden = false; });   // offline / blocked → still thank them
-  }
-
-  if (mine) {                                       // already voted → just show results
-    opts.hidden = true;
-    load(null);
-  } else {
-    sec.querySelectorAll('.poll-b').forEach(function(btn){
-      btn.addEventListener('click', function(){
-        mine = btn.getAttribute('data-v');
-        try { localStorage.setItem(KEY, mine); } catch (e) {}
-        opts.hidden = true;
-        load(mine);
-      });
-    });
-  }
+  link.addEventListener('click', function(){
+    try { localStorage.setItem(KEY, '1'); } catch (e) {}
+    setTimeout(function(){ cta.hidden = true; done.hidden = false; }, 500);
+  });
 })();
 
 (function(){
