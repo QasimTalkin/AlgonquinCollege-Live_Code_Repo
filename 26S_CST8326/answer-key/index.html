@@ -50,6 +50,24 @@ body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);
 .meta b{display:block;color:var(--ink);font-size:15px;font-weight:600;}
 @media (max-width:640px){.meta{text-align:left;}}
 
+/* poll */
+.poll{background:var(--ac-tint);border:1px solid var(--line);border-left:4px solid var(--ac);
+  border-radius:11px;padding:17px 20px;display:flex;flex-direction:column;gap:6px;}
+.poll[hidden]{display:none;}
+.poll h2{margin:0;font-size:16.5px;font-weight:700;letter-spacing:-.1px;color:var(--ink);}
+.poll .poll-sub{margin:0;font-family:var(--serif);font-size:14px;color:var(--ink2);}
+.poll-opts{display:flex;gap:9px;flex-wrap:wrap;margin-top:9px;}
+.poll-opts[hidden]{display:none;}
+.poll-b{font-family:var(--sans);font-size:14px;font-weight:600;padding:9px 20px;border-radius:999px;
+  cursor:pointer;background:var(--raise);border:1px solid var(--line);color:var(--ink);
+  transition:background .15s,border-color .15s,color .15s,transform .1s;}
+.poll-b:hover{border-color:var(--ac);color:var(--ac-dk);transform:translateY(-1px);}
+.poll-b:active{transform:none;}
+.poll-b:focus-visible{outline:2px solid var(--ac);outline-offset:2px;}
+.poll-done{margin:9px 0 0;font-size:14.5px;font-weight:600;color:var(--ac-dk);}
+.poll-done[hidden]{display:none;}
+@media (prefers-reduced-motion:reduce){.poll-b:hover{transform:none;}}
+
 /* stats */
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;}
 .stat{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:13px 15px;}
@@ -121,6 +139,18 @@ body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);
       Tuesday, 18 August 2026 &middot; 18:30 &ndash; 20:30 &middot; Room A 1701<br>
       2 hours (120 minutes) &middot; 65 marks &middot; Prof. Abul Qasim</div>
   </header>
+
+  <section class="poll" id="poll" hidden>
+    <h2>Quick question — how did you find the exam?</h2>
+    <p class="poll-sub">Anonymous, one tap. It helps me tune the course for next term.</p>
+    <div class="poll-opts" id="poll-opts">
+      <button class="poll-b" type="button" data-v="Easy">Easy</button>
+      <button class="poll-b" type="button" data-v="Just right">Just right</button>
+      <button class="poll-b" type="button" data-v="Challenging">Challenging</button>
+      <button class="poll-b" type="button" data-v="Too hard">Too hard</button>
+    </div>
+    <p class="poll-done" id="poll-done" hidden>Thanks — your answer was recorded.</p>
+  </section>
 
   <section>
     <div class="sec-h"><h2>All answers</h2><span class="hint">Every question at a glance — check how you did.</span></div>
@@ -888,6 +918,44 @@ console.log(Array.isArray(a), b);</code></pre>
 </div>
 
 <script>
+/* ============================================================
+   EXAM POLL  →  Google Form  →  spreadsheet  →  CSV export
+   Paste the two values below to switch the poll on. Until both
+   are filled in the poll stays hidden, so no vote is ever lost.
+
+   1. Create a Google Form with ONE multiple-choice question and
+      the four options: Easy / Just right / Challenging / Too hard
+   2. POLL_ENDPOINT = the form URL with /viewform replaced by
+      /formResponse   e.g.
+      https://docs.google.com/forms/d/e/FORM_ID/formResponse
+   3. POLL_ENTRY = that question's field id. Open the live form,
+      View Source, search for "entry." — e.g. entry.1234567890
+   Responses land in the form's spreadsheet → File ▸ Download ▸ CSV
+   ============================================================ */
+var POLL_ENDPOINT = "";
+var POLL_ENTRY    = "";
+
+(function(){
+  var sec = document.getElementById('poll');
+  if (!sec || !POLL_ENDPOINT || !POLL_ENTRY) return;      // not configured → stay hidden
+  var KEY = 'cst8326-exam-poll';
+  try { if (localStorage.getItem(KEY)) return; } catch (e) {}   // already answered
+  sec.hidden = false;
+  var opts = document.getElementById('poll-opts');
+  var done = document.getElementById('poll-done');
+  sec.querySelectorAll('.poll-b').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var value = btn.getAttribute('data-v');
+      var body = new FormData();
+      body.append(POLL_ENTRY, value);
+      fetch(POLL_ENDPOINT, { method: 'POST', mode: 'no-cors', body: body }).catch(function(){});
+      try { localStorage.setItem(KEY, value); } catch (e) {}
+      opts.hidden = true;
+      done.hidden = false;
+    });
+  });
+})();
+
 (function(){
   var chips = document.querySelectorAll('.chip');
   chips.forEach(function(chip){
