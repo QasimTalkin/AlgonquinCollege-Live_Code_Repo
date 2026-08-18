@@ -50,12 +50,6 @@ body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);
 .meta b{display:block;color:var(--ink);font-size:15px;font-weight:600;}
 @media (max-width:640px){.meta{text-align:left;}}
 
-/* alert */
-.alert{display:flex;align-items:center;gap:12px;background:var(--alert-bg);border:1px solid var(--alert-line);
-  border-left:4px solid var(--alert);border-radius:9px;padding:13px 16px;color:var(--alert);
-  font-size:13.5px;font-weight:600;letter-spacing:.3px;}
-.alert svg{flex:none;}
-
 /* stats */
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;}
 .stat{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:13px 15px;}
@@ -128,13 +122,8 @@ body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);
       2 hours (120 minutes) &middot; 65 marks &middot; Prof. Abul Qasim</div>
   </header>
 
-  <div class="alert">
-    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>
-    Instructor copy — confidential. Do not distribute to students.
-  </div>
-
   <section>
-    <div class="sec-h"><h2>Quick mark</h2><span class="hint">All 65 answers at a glance.</span></div>
+    <div class="sec-h"><h2>All answers</h2><span class="hint">Every question at a glance — check how you did.</span></div>
     <div class="grid"><div class="cell" data-sec="A"><span class="cn">1</span><span class="cl">D</span></div><div class="cell" data-sec="A"><span class="cn">2</span><span class="cl">C</span></div><div class="cell" data-sec="A"><span class="cn">3</span><span class="cl">D</span></div><div class="cell" data-sec="A"><span class="cn">4</span><span class="cl">B</span></div><div class="cell" data-sec="A"><span class="cn">5</span><span class="cl">A</span></div><div class="cell" data-sec="A"><span class="cn">6</span><span class="cl">B</span></div><div class="cell" data-sec="A"><span class="cn">7</span><span class="cl">D</span></div><div class="cell" data-sec="A"><span class="cn">8</span><span class="cl">C</span></div><div class="cell" data-sec="A"><span class="cn">9</span><span class="cl">A</span></div><div class="cell" data-sec="A"><span class="cn">10</span><span class="cl">A</span></div><div class="cell" data-sec="A"><span class="cn">11</span><span class="cl">C</span></div><div class="cell" data-sec="A"><span class="cn">12</span><span class="cl">D</span></div><div class="cell" data-sec="A"><span class="cn">13</span><span class="cl">C</span></div><div class="cell" data-sec="A"><span class="cn">14</span><span class="cl">D</span></div><div class="cell" data-sec="A"><span class="cn">15</span><span class="cl">D</span></div><div class="cell" data-sec="A"><span class="cn">16</span><span class="cl">B</span></div><div class="cell" data-sec="A"><span class="cn">17</span><span class="cl">B</span></div><div class="cell" data-sec="A"><span class="cn">18</span><span class="cl">C</span></div><div class="cell" data-sec="A"><span class="cn">19</span><span class="cl">A</span></div><div class="cell" data-sec="A"><span class="cn">20</span><span class="cl">B</span></div><div class="cell" data-sec="B"><span class="cn">21</span><span class="cl">C</span></div><div class="cell" data-sec="B"><span class="cn">22</span><span class="cl">D</span></div><div class="cell" data-sec="B"><span class="cn">23</span><span class="cl">C</span></div><div class="cell" data-sec="B"><span class="cn">24</span><span class="cl">A</span></div><div class="cell" data-sec="B"><span class="cn">25</span><span class="cl">C</span></div><div class="cell" data-sec="B"><span class="cn">26</span><span class="cl">A</span></div><div class="cell" data-sec="B"><span class="cn">27</span><span class="cl">B</span></div><div class="cell" data-sec="B"><span class="cn">28</span><span class="cl">B</span></div><div class="cell" data-sec="C"><span class="cn">29</span><span class="cl">B</span></div><div class="cell" data-sec="C"><span class="cn">30</span><span class="cl">A</span></div><div class="cell" data-sec="C"><span class="cn">31</span><span class="cl">C</span></div><div class="cell" data-sec="C"><span class="cn">32</span><span class="cl">D</span></div><div class="cell" data-sec="C"><span class="cn">33</span><span class="cl">A</span></div><div class="cell" data-sec="C"><span class="cn">34</span><span class="cl">A</span></div><div class="cell" data-sec="C"><span class="cn">35</span><span class="cl">D</span></div><div class="cell" data-sec="C"><span class="cn">36</span><span class="cl">D</span></div><div class="cell" data-sec="D"><span class="cn">37</span><span class="cl">D</span></div><div class="cell" data-sec="D"><span class="cn">38</span><span class="cl">A</span></div><div class="cell" data-sec="D"><span class="cn">39</span><span class="cl">D</span></div><div class="cell" data-sec="D"><span class="cn">40</span><span class="cl">C</span></div><div class="cell" data-sec="D"><span class="cn">41</span><span class="cl">C</span></div><div class="cell" data-sec="D"><span class="cn">42</span><span class="cl">A</span></div><div class="cell" data-sec="D"><span class="cn">43</span><span class="cl">D</span></div><div class="cell" data-sec="D"><span class="cn">44</span><span class="cl">B</span></div><div class="cell" data-sec="D"><span class="cn">45</span><span class="cl">A</span></div><div class="cell" data-sec="D"><span class="cn">46</span><span class="cl">B</span></div><div class="cell" data-sec="E"><span class="cn">47</span><span class="cl">A</span></div><div class="cell" data-sec="E"><span class="cn">48</span><span class="cl">D</span></div><div class="cell" data-sec="E"><span class="cn">49</span><span class="cl">B</span></div><div class="cell" data-sec="E"><span class="cn">50</span><span class="cl">C</span></div><div class="cell" data-sec="E"><span class="cn">51</span><span class="cl">C</span></div><div class="cell" data-sec="E"><span class="cn">52</span><span class="cl">A</span></div><div class="cell" data-sec="E"><span class="cn">53</span><span class="cl">A</span></div><div class="cell" data-sec="E"><span class="cn">54</span><span class="cl">C</span></div><div class="cell" data-sec="E"><span class="cn">55</span><span class="cl">C</span></div><div class="cell" data-sec="E"><span class="cn">56</span><span class="cl">D</span></div><div class="cell" data-sec="F"><span class="cn">57</span><span class="cl">A</span></div><div class="cell" data-sec="F"><span class="cn">58</span><span class="cl">B</span></div><div class="cell" data-sec="F"><span class="cn">59</span><span class="cl">D</span></div><div class="cell" data-sec="F"><span class="cn">60</span><span class="cl">B</span></div><div class="cell" data-sec="F"><span class="cn">61</span><span class="cl">B</span></div><div class="cell" data-sec="F"><span class="cn">62</span><span class="cl">A</span></div><div class="cell" data-sec="F"><span class="cn">63</span><span class="cl">C</span></div><div class="cell" data-sec="F"><span class="cn">64</span><span class="cl">B</span></div><div class="cell" data-sec="F"><span class="cn">65</span><span class="cl">B</span></div></div>
   </section>
 
@@ -146,7 +135,7 @@ body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);
   </section>
 
   <section>
-    <div class="sec-h"><h2>Answers &amp; rationale</h2><span class="hint">Filter to the part you are marking.</span></div>
+    <div class="sec-h"><h2>Answers &amp; explanations</h2><span class="hint">Filter to the part you want to review.</span></div>
     <div class="filters" style="margin-top:14px;">
       <span class="flabel">Part</span>
       <button class="chip" data-filter="all" aria-pressed="true">All</button>
@@ -895,7 +884,7 @@ console.log(Array.isArray(a), b);</code></pre>
       </article></section>
   </section>
 
-  <p class="foot">CST8326 — Web Programming &middot; Final Examination &middot; Summer 2026 &middot; Answer key generated for Prof. Abul Qasim.</p>
+  <p class="foot">CST8326 — Web Programming &middot; Final Examination &middot; Summer 2026 &middot; Prof. Abul Qasim</p>
 </div>
 
 <script>
