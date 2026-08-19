@@ -56,18 +56,12 @@ body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);
 .poll[hidden]{display:none;}
 .poll h2{margin:0;font-size:16.5px;font-weight:700;letter-spacing:-.1px;color:var(--ink);}
 .poll .poll-sub{margin:0;font-family:var(--serif);font-size:14px;color:var(--ink2);}
-.poll-cta{margin:11px 0 0;}
-.poll-cta[hidden]{display:none;}
-.poll-go{display:inline-block;font-family:var(--sans);font-size:14.5px;font-weight:600;
-  padding:10px 24px;border-radius:999px;text-decoration:none;background:var(--ac);color:#fff;
-  border:1px solid var(--ac);transition:filter .15s,transform .1s;}
-.poll-go:hover{filter:brightness(1.1);transform:translateY(-1px);}
-.poll-go:active{transform:none;}
-.poll-go:focus-visible{outline:2px solid var(--ac-dk);outline-offset:3px;}
-.poll-done{margin:11px 0 0;font-size:14.5px;font-weight:600;color:var(--ac-dk);}
-.poll-done[hidden]{display:none;}
-.poll-done a{color:var(--ac-dk);}
-@media (prefers-reduced-motion:reduce){.poll-go:hover{transform:none;}}
+.poll-embed{margin-top:12px;width:100%;max-width:620px;border:1px solid var(--line);
+  border-radius:10px;overflow:hidden;background:#fff;}
+.poll-embed iframe{display:block;width:100%;height:470px;border:0;}
+@media (max-width:560px){.poll-embed iframe{height:540px;}}
+.poll-fallback{margin:9px 0 0;font-size:13px;color:var(--ink3);}
+.poll-fallback a{color:var(--ac-dk);font-weight:600;}
 @media (prefers-reduced-motion:reduce){.poll-b:hover{transform:none;}}
 
 /* stats */
@@ -145,8 +139,8 @@ body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);
   <section class="poll" id="poll" hidden>
     <h2>Quick question — how was the exam?</h2>
     <p class="poll-sub">Anonymous, and you'll see how the rest of the class answered. It helps me tune the course for next term.</p>
-    <p class="poll-cta" id="poll-cta"><a class="poll-go" id="poll-link" href="#" target="_blank" rel="noopener">Vote &amp; see results &rarr;</a></p>
-    <p class="poll-done" id="poll-done" hidden>Thanks for voting. <a id="poll-link2" href="#" target="_blank" rel="noopener">See how the class answered &rarr;</a></p>
+    <div class="poll-embed"><iframe id="poll-frame" title="Exam feedback poll" src="" loading="lazy" allowfullscreen></iframe></div>
+    <p class="poll-fallback">Poll not loading? <a id="poll-link" href="#" target="_blank" rel="noopener">Open it in a new tab &rarr;</a></p>
   </section>
 
   <section>
@@ -916,33 +910,28 @@ console.log(Array.isArray(a), b);</code></pre>
 
 <script>
 /* ============================================================
-   EXAM POLL — links out to a hosted poll (StrawPoll or similar),
-   which collects the votes and shows students the results.
-   Paste the poll URL below to switch it on; while it is blank the
-   whole block stays hidden.
+   EXAM POLL — the hosted poll embedded directly in the page.
+   Students vote here and StrawPoll shows the results in place.
+   POLL_EMBED is derived from POLL_URL; set it explicitly if the
+   Share > Embed dialog gives a different address.
    ============================================================ */
-var POLL_URL = "https://strawpoll.com/ajnE14Mq0nW";
+var POLL_URL   = "https://strawpoll.com/ajnE14Mq0nW";
+var POLL_EMBED = "";     // leave blank to derive it from POLL_URL
 
 (function(){
   var sec = document.getElementById('poll');
   if (!sec || !POLL_URL) return;                    // not configured → stay hidden
-  var KEY   = 'cst8326-exam-poll';
-  var cta   = document.getElementById('poll-cta');
-  var done  = document.getElementById('poll-done');
+  var frame = document.getElementById('poll-frame');
   var link  = document.getElementById('poll-link');
-  var link2 = document.getElementById('poll-link2');
+  var src = POLL_EMBED;
+  if (!src) {                                       // derive the embed address
+    src = (POLL_URL.indexOf('/embed/') !== -1)
+      ? POLL_URL
+      : POLL_URL.replace('strawpoll.com/', 'strawpoll.com/embed/');
+  }
+  frame.src = src;
   link.href = POLL_URL;
-  link2.href = POLL_URL;
   sec.hidden = false;
-
-  var voted = false;
-  try { voted = !!localStorage.getItem(KEY); } catch (e) {}
-  if (voted) { cta.hidden = true; done.hidden = false; }
-
-  link.addEventListener('click', function(){
-    try { localStorage.setItem(KEY, '1'); } catch (e) {}
-    setTimeout(function(){ cta.hidden = true; done.hidden = false; }, 500);
-  });
 })();
 
 (function(){
